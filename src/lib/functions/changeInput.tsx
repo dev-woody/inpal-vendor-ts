@@ -1,0 +1,92 @@
+export function changeDays(inputDays: string | undefined) {
+  const year = inputDays?.substring(0, 4);
+  const month = inputDays?.substring(4, 6);
+  const days = inputDays?.substring(6, 8);
+  const fulldays = year + "." + month + "." + days;
+  return inputDays ? fulldays : "";
+}
+
+export function changePhone(inputPhone: string | undefined) {
+  const firstNum = inputPhone?.substring(0, 3);
+  const middleNum = inputPhone?.substring(3, 7);
+  const lastNum = inputPhone?.substring(7, 11);
+  const fullNum = firstNum + "-" + middleNum + "-" + lastNum;
+  return inputPhone ? fullNum : "";
+}
+
+export function changeTextCut(text: string | undefined) {
+  if (text && text?.length > 5) {
+    return text.substring(0, 5) + "...";
+  }
+}
+
+export function changeStatus(status: string | undefined) {
+  switch (status) {
+    case "APPROVING":
+      return "승인대기";
+    case "WAIT":
+      return "휴면";
+    case "USE":
+      return "사용중";
+    case "STOP":
+      return "사용중지";
+  }
+}
+
+export function changeSellStatus(status: string | undefined) {
+  switch (status) {
+    case "READY":
+      return "준비중";
+    case "SELL":
+      return "판매중";
+    case "STOP":
+      return "판매중지";
+  }
+}
+
+export function changeDeliveryStatus(status: string | undefined) {
+  switch (status) {
+    case "ORDER_READY":
+      return "주문대기";
+    case "ORDER_REGISTER":
+      return "주문등록";
+    case "PAYMENT_WAIT":
+      return "입금대기";
+    case "PAYMENT_COMPLETE":
+      return "결제완료";
+    case "ITEM_READY":
+      return "상품준비중";
+    case "DELIVERY_START":
+      return "배송처리";
+    case "DELIVERY_END":
+      return "배송완료";
+    case "CANCEL_REQUEST":
+      return "취소요청";
+    case "CANCEL_COMPLETE":
+      return "취소완료";
+    case "EXCHANGE_REQUEST":
+      return "교환요청";
+    case "EXCHANGE_COMPLETE":
+      return "교환완료";
+    case "RETURN_REQUEST":
+      return "반품요청";
+    case "RETURN_COMPLETE":
+      return "반품완료";
+    case "REFUND_REQUEST":
+      return "환불요청";
+    case "REFUND_COMPLETE":
+      return "환불완료";
+    case "CONFIRM":
+      return "구매확정";
+  }
+}
+
+export const predictDelivery = (inputDays: string) => {
+  // inputDays + 2;
+  console.log(inputDays);
+  const year = inputDays?.substring(0, 4);
+  const month = inputDays?.substring(4, 6);
+  const days = inputDays?.substring(6, 8);
+  const fulldays = year + "." + month + "." + days;
+  return inputDays ? fulldays : "";
+};

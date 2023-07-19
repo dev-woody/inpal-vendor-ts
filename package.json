@@ -1,0 +1,67 @@
+{
+  "name": "inpal-master",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@hookform/error-message": "^2.0.1",
+    "@hookform/resolvers": "^2.9.10",
+    "@reduxjs/toolkit": "^1.9.1",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^13.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/axios": "^0.14.0",
+    "@types/jest": "^27.0.1",
+    "@types/lodash": "^4.14.195",
+    "@types/node": "^16.7.13",
+    "@types/react": "^18.0.0",
+    "@types/react-daum-postcode": "^1.6.1",
+    "@types/react-dom": "^18.0.0",
+    "@types/react-icons": "^3.0.0",
+    "@types/react-redux": "^7.1.24",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/redux-saga": "^0.10.5",
+    "@types/styled-components": "^5.1.26",
+    "apexcharts": "^3.36.3",
+    "axios": "^1.2.2",
+    "react": "^18.2.0",
+    "react-apexcharts": "^1.4.0",
+    "react-daum-postcode": "^3.1.1",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.41.5",
+    "react-icons": "^4.8.0",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.6.1",
+    "react-scripts": "5.0.1",
+    "redux-saga": "^1.2.2",
+    "styled-components": "^5.3.6",
+    "typesafe-actions": "^5.1.0",
+    "typescript": "^4.4.2",
+    "web-vitals": "^2.1.0",
+    "yup": "^0.32.11"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "proxy": "http://49.247.31.111:8080/api/v000"
+}
