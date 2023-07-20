@@ -1,7 +1,7 @@
 import { accessClient, client } from "./createAPI";
 
 export const findAll = async (data: object) => {
-  return client
+  return accessClient
     .get(`/vendor/good/group/findAll`, {
       params: {
         ...data,

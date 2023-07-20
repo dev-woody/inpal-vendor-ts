@@ -4,12 +4,14 @@ import { detailPageActions } from "reducers/goodsGroup/detailPage";
 import { goodsGroupImageActions } from "reducers/goodsGroup/image";
 import { goodsGroupRegisterActions } from "reducers/goodsGroup/register";
 import { vendorProductActions } from "reducers/product/vendorProduct";
+import { vendorGoodsGroupActions } from "reducers/goodsGroup/vendorGoodsGroup";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 
 const GoodsGroupRegisterContainer = () => {
   const {
     user,
     productList,
+    propertyList,
     categoryList,
     manufacturerList,
     imageUpload,
@@ -18,6 +20,7 @@ const GoodsGroupRegisterContainer = () => {
   } = useAppSelector((state) => ({
     user: state.user,
     productList: state.vendorProduct.findAll,
+    propertyList: state.vendorProduct.findAllProperty,
     categoryList: state.vendorProduct.findAllCategory,
     manufacturerList: state.vendorProduct.findManufacturerByProductId,
     imageUpload: state.goodsGroupImage,
@@ -28,21 +31,20 @@ const GoodsGroupRegisterContainer = () => {
   const [newCategory, setNewCategory] = useState<{ [key: string]: any }[]>([]);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const onSubmit = ({ data }: { data: object }) => {
+  const onSubmit = (data: object) => {
     dispatch(
-      goodsGroupRegisterActions.postRegister({
-        data: { vendorId: user.vendorId, ...data },
-      })
+      vendorGoodsGroupActions.postRegister({ vendorId: user.vendorId, ...data })
     );
   };
 
-  const onSelectManufact = (id: string) => {
+  const onSelectProduct = (id: string) => {
     const data = {
       productId: id,
       isDesc: false,
     };
-    dispatch(vendorProductActions.findAllCategory({ data }));
-    dispatch(vendorProductActions.findManufacturerByProductId({ data }));
+    dispatch(vendorProductActions.findAllCategory(data));
+    dispatch(vendorProductActions.findManufacturerByProductId(data));
+    dispatch(vendorProductActions.findAllProperty(data));
   };
 
   const onImageUpload = (
@@ -70,22 +72,22 @@ const GoodsGroupRegisterContainer = () => {
   useEffect(() => {
     let category: { [key: string]: any }[] = [];
     if (categoryList.success) {
-      categoryList.data.map((list1st: any) => {
+      categoryList.data.category1sts.map((list1st: any) => {
         category.push({
-          id: list1st.id,
-          description: list1st.description,
+          id: list1st.category1st.id,
+          description: list1st.category1st.description,
           checked: false,
-          category2nd: list1st.category2nd.map((list2nd: any) => {
+          category2nd: list1st.category2nds.map((list2nd: any) => {
             return {
-              category1stId: list2nd.category1stId,
-              id: list2nd.id,
-              description: list2nd.description,
+              category1stId: list2nd.category2nd.ownerId,
+              id: list2nd.category2nd.id,
+              description: list2nd.category2nd.description,
               checked: false,
-              category3rd: list2nd.category3rd.map((list3rd: any) => {
+              category3rd: list2nd.category3rds.map((list3rd: any) => {
                 return {
-                  category2ndId: list3rd.category2ndId,
-                  id: list3rd.id,
-                  description: list3rd.description,
+                  category2ndId: list3rd.category3rd.ownerId,
+                  id: list3rd.category3rd.id,
+                  description: list3rd.category3rd.description,
                   checked: false,
                 };
               }),
@@ -99,37 +101,38 @@ const GoodsGroupRegisterContainer = () => {
 
   useEffect(() => {
     if (groupRegister.success) {
-      dispatch(goodsGroupRegisterActions.reset({}));
+      dispatch(vendorGoodsGroupActions.reset("register"));
       setModalVisible(true);
     }
   }, [groupRegister]);
 
   useEffect(() => {
-    dispatch(goodsGroupRegisterActions.reset({}));
-    dispatch(vendorProductActions.findAll("findAll"));
+    dispatch(vendorGoodsGroupActions.reset("register"));
+    dispatch(vendorProductActions.findAll(false));
     dispatch(vendorProductActions.reset("findAllCategory"));
     dispatch(vendorProductActions.reset("findManufacturerByProductId"));
     dispatch(detailPageActions.reset({}));
     return () => {
-      dispatch(goodsGroupRegisterActions.reset({}));
+      dispatch(vendorGoodsGroupActions.reset("register"));
       dispatch(vendorProductActions.reset("findAll"));
       dispatch(vendorProductActions.reset("findAllCategory"));
       dispatch(vendorProductActions.reset("findManufacturerByProductId"));
       dispatch(detailPageActions.reset({}));
     };
-  }, [dispatch]);
+  }, []);
 
   return (
     <GoodsGroupRregister
       user={user}
       productList={productList.data}
+      propertyList={propertyList.data}
       categoryList={newCategory}
       manufacturerList={manufacturerList.data}
       imageUpload={imageUpload}
       detailPage={detailPage}
       setNewCategory={setNewCategory}
       onSubmit={onSubmit}
-      onSelectManufact={onSelectManufact}
+      onSelectProduct={onSelectProduct}
       onImageUpload={onImageUpload}
       onDetailUpload={onDetailUpload}
       modalVisible={modalVisible}

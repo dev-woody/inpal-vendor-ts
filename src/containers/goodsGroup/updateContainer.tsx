@@ -177,7 +177,7 @@ const GoodsGroupUpdateContainer = () => {
     return () => {
       dispatch(vendorGoodsGroupActions.reset("findAll"));
     };
-  }, [dispatch]);
+  }, []);
 
   return (
     <GoodsGroupDetail

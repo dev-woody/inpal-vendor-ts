@@ -1,7 +1,7 @@
 import GoodsGroupItemDetail from "components/goodsGroup/items/itemDetail";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { deliveryFindByPIdActions } from "reducers/deliveryCode/findByPId";
+import { vendorDeliveryCodeActions } from "reducers/deliveryCode/vendorDeliveryCode";
 import { vendorGoodsGroupActions } from "reducers/goodsGroup/vendorGoodsGroup";
 import { itemFindByIdActions } from "reducers/goodsGroup/items/findById";
 import { itemUpdateActions } from "reducers/goodsGroup/items/update";
@@ -13,7 +13,7 @@ const GoodsGroupItemDetailContainer = () => {
     useAppSelector((state) => ({
       user: state.user,
       itemData: state.itemFindById,
-      dcode: state.deliveryFindByPId,
+      dcode: state.vendorDeliveryCode.findAllByProductId,
       goodsGroup: state.vendorGoodsGroup.findById,
       colorCode: state.vendorProduct.findAllColorCode,
       updateResult: state.itemUpdate,
@@ -47,7 +47,7 @@ const GoodsGroupItemDetailContainer = () => {
   useEffect(() => {
     if (itemData.success) {
       dispatch(
-        deliveryFindByPIdActions.getFindByPId({
+        vendorDeliveryCodeActions.findAllByProductId({
           data: {
             vendorId: user.vendorId,
             productId: goodsGroup.data.product.id,
@@ -64,12 +64,12 @@ const GoodsGroupItemDetailContainer = () => {
     dispatch(vendorProductActions.findAllColorCode({ isDesc: false }));
     return () => {
       dispatch(itemUpdateActions.reset({}));
-      dispatch(deliveryFindByPIdActions.reset({}));
+      dispatch(vendorDeliveryCodeActions.reset("fincAllByProductId"));
       dispatch(vendorGoodsGroupActions.reset("findById"));
       dispatch(itemFindByIdActions.reset({}));
       dispatch(vendorProductActions.reset("findAllColorCode"));
     };
-  }, [dispatch]);
+  }, []);
 
   return (
     <GoodsGroupItemDetail

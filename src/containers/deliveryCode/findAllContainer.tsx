@@ -1,35 +1,49 @@
 import DeliveryCodeList from "components/deliveryCode/deliveryCodeList";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { deliveryFindAllActions } from "reducers/deliveryCode/findAll";
+import { vendorDeliveryCodeActions } from "reducers/deliveryCode/vendorDeliveryCode";
+import { vendorProductActions } from "reducers/product/vendorProduct";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 
 const DeliveryFindAllContainer = () => {
-  const { user, productList } = useAppSelector((state) => ({
+  const { user, deliveryCodeList, productList } = useAppSelector((state) => ({
     user: state.user,
-    productList: state.deliveryFindAll.data,
+    deliveryCodeList: state.vendorDeliveryCode.findAllByProductId,
+    productList: state.vendorProduct.findAll.data,
   }));
-  const arrayProductList = productList?.reduce(function (
-    acc: object[],
-    cur: object
-  ) {
-    return acc.concat(cur);
-  });
+  // const arrayProductList = productList?.reduce(function (
+  //   acc: object[],
+  //   cur: object
+  // ) {
+  //   return acc.concat(cur);
+  // });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const onSelect = (id: string) => {
     dispatch(
-      deliveryFindAllActions.getFindAll({
-        data: { vendorId: user.vendorId, isDesc: true },
+      vendorDeliveryCodeActions.findAllByProductId({
+        vendorId: user.vendorId,
+        productId: id,
+        isDesc: false,
       })
     );
-    return () => {
-      dispatch(deliveryFindAllActions.reset({}));
-    };
-  }, [dispatch]);
+  };
 
-  return <DeliveryCodeList productList={arrayProductList} />;
+  useEffect(() => {
+    dispatch(dispatch(vendorProductActions.findAll(false)));
+    return () => {
+      dispatch(vendorDeliveryCodeActions.reset("findAll"));
+    };
+  }, []);
+
+  return (
+    <DeliveryCodeList
+      deliveryCodeList={deliveryCodeList.data}
+      productList={productList}
+      onSelect={onSelect}
+    />
+  );
 };
 
 export default DeliveryFindAllContainer;

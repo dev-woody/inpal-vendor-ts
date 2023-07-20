@@ -26,9 +26,10 @@ accessClient.interceptors.response.use(
     // Do something with response error
 
     // 인증 에러 발생시
-    const navigate = useNavigate();
-    const localStorageGet = localStorage.getItem("user");
-    const localVendorData = localStorageGet && JSON.parse(localStorageGet);
+
+    console.log(error);
+    // const localStorageGet = localStorage.getItem("user");
+    // const localVendorData = localStorageGet && JSON.parse(localStorageGet);
     if (error.response && error.response.status === 401) {
       try {
         const originalRequest = error.config;
@@ -38,15 +39,12 @@ accessClient.interceptors.response.use(
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("refresh_token")}`,
           },
-          url: "/construction/vendor/admin/refreshToken",
+          url: "/vendor/admin/refreshToken",
           params: {
-            vendorId: localVendorData.vendorId,
-            userId: localVendorData.userId,
             grant_type: `refresh_token`,
           },
         });
         if (data) {
-          console.log(data);
           const access_token = data.data.data;
           localStorage.removeItem("access_token");
           localStorage.setItem("access_token", access_token);

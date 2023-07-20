@@ -42,7 +42,7 @@ const GoodsGroupOptionRegisterContainer = () => {
     return () => {
       dispatch(optionRegisterActions.reset({}));
     };
-  }, [dispatch]);
+  }, []);
 
   return (
     <GoodsGroupOptionRegister

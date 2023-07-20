@@ -59,7 +59,7 @@ const GoodsGroupOptionDetailContainer = () => {
       dispatch(optionUpdateActions.reset({}));
       dispatch(optionSetSellStatusActions.reset({}));
     };
-  }, [dispatch]);
+  }, []);
 
   return (
     <GoodsGroupOptionDetail

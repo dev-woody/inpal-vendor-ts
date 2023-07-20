@@ -5,6 +5,12 @@ import user from "./user";
 import uploadImg, { uploadImgSaga } from "./common/uploadImg";
 import vendorAdmin, { vendorAdminSaga } from "./admin/vendorAdmin";
 import vendorProduct, { vendorProductSaga } from "./product/vendorProduct";
+import vendorDeliveryCode, {
+  vendorDeliveryCodeSaga,
+} from "./deliveryCode/vendorDeliveryCode";
+import vendorGoodsSpec, {
+  vendorGoodsSpecSaga,
+} from "./goodsGroup/vendorGoodsSpec";
 import vendorGoodsGroup, {
   vendorGoodsGroupSaga,
 } from "./goodsGroup/vendorGoodsGroup";
@@ -12,18 +18,6 @@ import vendorGoodsGroup, {
 //*  admin
 import register, { registerSaga } from "./admin/register";
 import findAllUnit, { findAllUnitSaga } from "./admin/findAllUnit";
-//*  delivery
-import deliveryFindAll, { deliveryFindAllSaga } from "./deliveryCode/findAll";
-import deliveryRegister, {
-  deliveryRegisterSaga,
-} from "./deliveryCode/register";
-import deliveryFindById, {
-  deliveryFindByIdSaga,
-} from "./deliveryCode/findById";
-import deliveryUpdate, { deliveryUpdateSaga } from "./deliveryCode/update";
-import deliveryFindByPId, {
-  deliveryFindByPIdSaga,
-} from "./deliveryCode/findByPId";
 //*  goodsGroup
 import goodsGroupImage, { goodsGroupImageSaga } from "./goodsGroup/image";
 import detailPage, { detailPageSaga } from "./goodsGroup/detailPage";
@@ -67,16 +61,12 @@ function* rootSaga() {
     fork(uploadImgSaga),
     fork(vendorAdminSaga),
     fork(vendorProductSaga),
+    fork(vendorDeliveryCodeSaga),
+    fork(vendorGoodsSpecSaga),
     fork(vendorGoodsGroupSaga),
     //* 관리자
     fork(registerSaga),
     fork(findAllUnitSaga),
-    //* 배송
-    fork(deliveryFindAllSaga),
-    fork(deliveryRegisterSaga),
-    fork(deliveryFindByIdSaga),
-    fork(deliveryUpdateSaga),
-    fork(deliveryFindByPIdSaga),
     //* 상품그룹
     fork(goodsGroupImageSaga),
     fork(detailPageSaga),
@@ -104,16 +94,12 @@ const rootReducer = combineReducers({
   uploadImg: uploadImg.reducer,
   vendorAdmin: vendorAdmin.reducer,
   vendorProduct: vendorProduct.reducer,
+  vendorDeliveryCode: vendorDeliveryCode.reducer,
+  vendorGoodsSpec: vendorGoodsSpec.reducer,
   vendorGoodsGroup: vendorGoodsGroup.reducer,
   //* 관리자
   register: register.reducer,
   findAllUnit: findAllUnit.reducer,
-  //* 배송
-  deliveryFindAll: deliveryFindAll.reducer,
-  deliveryRegister: deliveryRegister.reducer,
-  deliveryFindById: deliveryFindById.reducer,
-  deliveryUpdate: deliveryUpdate.reducer,
-  deliveryFindByPId: deliveryFindByPId.reducer,
   //* 상품그룹
   goodsGroupImage: goodsGroupImage.reducer,
   detailPage: detailPage.reducer,

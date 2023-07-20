@@ -2,8 +2,7 @@ import GoodsGroupItemRegister from "components/goodsGroup/items/itemRegister";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { findAllUnitActions } from "reducers/admin/findAllUnit";
-import { deliveryFindAllActions } from "reducers/deliveryCode/findAll";
-import { deliveryFindByPIdActions } from "reducers/deliveryCode/findByPId";
+import { vendorDeliveryCodeActions } from "reducers/deliveryCode/vendorDeliveryCode";
 import { itemRegisterActions } from "reducers/goodsGroup/items/register";
 import { vendorGoodsGroupActions } from "reducers/goodsGroup/vendorGoodsGroup";
 import { vendorProductActions } from "reducers/product/vendorProduct";
@@ -13,7 +12,7 @@ const GoodsGroupItemRegisterContainer = () => {
   const { user, dcode, goodsGroup, colorCode, registerResult, unitCode } =
     useAppSelector((state) => ({
       user: state.user,
-      dcode: state.deliveryFindByPId,
+      dcode: state.vendorDeliveryCode.findAllByProductId,
       goodsGroup: state.vendorGoodsGroup.findById,
       colorCode: state.vendorProduct.findAllColorCode,
       registerResult: state.itemRegister,
@@ -45,7 +44,7 @@ const GoodsGroupItemRegisterContainer = () => {
   useEffect(() => {
     if (goodsGroup.success) {
       dispatch(
-        deliveryFindByPIdActions.getFindByPId({
+        vendorDeliveryCodeActions.findAllByProductId({
           data: {
             vendorId: user.vendorId,
             productId: goodsGroup.data.product.id,
@@ -75,12 +74,12 @@ const GoodsGroupItemRegisterContainer = () => {
     dispatch(vendorGoodsGroupActions.findAll(id));
     dispatch(vendorProductActions.findAllColorCode({ isDesc: false }));
     return () => {
-      dispatch(deliveryFindByPIdActions.reset({}));
+      dispatch(vendorDeliveryCodeActions.reset("findAllByProductId"));
       dispatch(itemRegisterActions.reset({}));
       dispatch(vendorGoodsGroupActions.reset("findAll"));
       dispatch(vendorProductActions.reset("findAllColorCode"));
     };
-  }, [dispatch]);
+  }, []);
 
   return (
     <GoodsGroupItemRegister

@@ -1,40 +1,38 @@
 import DcodeRegister from "components/deliveryCode/register";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { deliveryRegisterActions } from "reducers/deliveryCode/register";
 import { vendorProductActions } from "reducers/product/vendorProduct";
+import { vendorDeliveryCodeActions } from "reducers/deliveryCode/vendorDeliveryCode";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 
 const DeliveryRegisterContainer = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const { productList, register, user } = useAppSelector((state) => ({
     productList: state.vendorProduct.findAll,
-    register: state.deliveryRegister,
+    register: state.vendorDeliveryCode.register,
     user: state.user,
   }));
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
-  const onSubmit = ({ data }: { data: any }) => {
+  const onSubmit = (data: any) => {
     const newData = { ...data, vendorId: user.vendorId };
-    dispatch(deliveryRegisterActions.postRegister({ data: newData }));
+    dispatch(vendorDeliveryCodeActions.register(newData));
     console.log(newData);
   };
 
   useEffect(() => {
     if (register.success) {
       setModalVisible(true);
-      dispatch(deliveryRegisterActions.reset({}));
+      dispatch(vendorDeliveryCodeActions.reset("register"));
     }
   }, [register]);
 
   useEffect(() => {
-    dispatch(vendorProductActions.findAll({}));
+    dispatch(vendorProductActions.findAll(false));
     return () => {
-      dispatch(deliveryRegisterActions.reset({}));
+      dispatch(vendorDeliveryCodeActions.reset("register"));
       dispatch(vendorProductActions.reset("findAll"));
     };
-  }, [dispatch]);
+  }, []);
 
   return (
     <DcodeRegister

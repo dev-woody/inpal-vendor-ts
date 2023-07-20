@@ -43,7 +43,7 @@ function RegisterContainer() {
       dispatch(vendorProductActions.reset("findAll"));
       dispatch(vendorAdminActions.reset("signUp"));
     };
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     if (isRegister.success) {

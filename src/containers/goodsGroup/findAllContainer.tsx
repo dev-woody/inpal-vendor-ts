@@ -37,50 +37,53 @@ const GoodsGroupListContainer = () => {
     return () => {
       dispatch(vendorGoodsGroupActions.reset("findAll"));
     };
-  }, [dispatch]);
+  }, []);
 
   const goodsGroupColumns: ColumnsType[] = [
     {
       title: "코드",
-      dataIndex: "code",
+      dataIndex: "info",
+      render: (info) => info.code,
     },
     {
       title: "그룹명",
-      dataIndex: "name",
-    },
-    {
-      title: "품목명",
-      dataIndex: "productName",
+      dataIndex: "info",
+      render: (info) => info.basic.name,
     },
     {
       title: "제조사명",
-      dataIndex: "manufacturerName",
+      dataIndex: "info",
+      render: (info) => info.manufacturer.basic.name,
     },
     {
       title: "생성일",
-      dataIndex: "createdAt",
+      dataIndex: "base",
       isDesc: true,
-      render: (createdAt) => changeDays(createdAt),
+      render: (base) => changeDays(base.createdAt),
     },
     {
       title: "수정일",
-      dataIndex: "updatedAt",
+      dataIndex: "base",
       isDesc: true,
-      render: (updatedAt) => changeDays(updatedAt),
+      render: (base) => changeDays(base.updatedAt),
     },
     {
       title: "판매상태",
-      dataIndex: "sellStatus",
-      render: (openStatus: string, contentList: any) => {
+      dataIndex: "info",
+      render: (info: any, contentList: any) => {
         const action = () => {
           onSetStatus({
             vendorId: contentList.vendorId,
             id: contentList.id,
-            status: openStatus == "SELL" ? "stop" : "sell",
+            status: info.openStatus == "SELL" ? "stop" : "sell",
           });
         };
         return (
-          <StyledToggle data={openStatus} openStatus="SELL" action={action} />
+          <StyledToggle
+            data={info.openStatus}
+            openStatus="SELL"
+            action={action}
+          />
         );
       },
     },

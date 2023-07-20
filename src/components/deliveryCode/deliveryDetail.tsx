@@ -60,8 +60,8 @@ const DeliveryDetail = ({
       reset();
     }
 
-    setValue("basicFee", dcode?.basicFee);
-    setValue("freeCondition", dcode?.freeCondition);
+    setValue("basicFee", dcode?.info?.basicFee);
+    setValue("freeCondition", dcode?.info?.freeCondition);
   }, [update, dcode, reset, setValue]);
 
   return (
@@ -83,12 +83,12 @@ const DeliveryDetail = ({
       </DeliveryDetailBlock>
       <DeliveryDetailBlock>
         <PageHeader title="" />
-        <StyledForm onSubmit={handleSubmit((data) => onSubmit({ data }))}>
+        <StyledForm onSubmit={handleSubmit((data) => onSubmit(data))}>
           <Description>
-            <DescriptionContent label="코드" content={dcode?.code} />
+            <DescriptionContent label="코드" content={dcode?.info?.code} />
             <DescriptionContent
               label="품목명"
-              content={productId?.data?.name}
+              content={productId?.data?.info?.nameKr}
             />
             <DescriptionContent
               span="12"
@@ -120,11 +120,11 @@ const DeliveryDetail = ({
             />
             <DescriptionContent
               label="생성일"
-              content={changeDays(dcode?.createdAt)}
+              content={changeDays(dcode?.base?.createdAt)}
             />
             <DescriptionContent
               label="수정일"
-              content={changeDays(dcode?.updatedAt)}
+              content={changeDays(dcode?.base?.updatedAt)}
             />
           </Description>
           <Button

@@ -39,7 +39,7 @@ const GoodsGroupOptionContainer = () => {
     return () => {
       dispatch(optionFindAllActions.reset({}));
     };
-  }, [dispatch]);
+  }, []);
 
   const goodsGroupOptionColumns: ColumnsType[] = [
     {

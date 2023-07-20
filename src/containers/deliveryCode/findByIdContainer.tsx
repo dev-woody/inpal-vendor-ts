@@ -1,57 +1,60 @@
 import DeliveryDetail from "components/deliveryCode/deliveryDetail";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { deliveryFindByIdActions } from "reducers/deliveryCode/findById";
-import { deliveryUpdateActions } from "reducers/deliveryCode/update";
+import { vendorDeliveryCodeActions } from "reducers/deliveryCode/vendorDeliveryCode";
 import { vendorProductActions } from "reducers/product/vendorProduct";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 
 const DeliveryDetailContainer = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const { dcode, productId, update } = useAppSelector((state) => ({
-    dcode: state.deliveryFindById,
-    productId: state.vendorProduct.findAllByProductId,
-    update: state.deliveryUpdate,
+  const { user, dcode, productId, update } = useAppSelector((state) => ({
+    user: state.user,
+    dcode: state.vendorDeliveryCode.findById,
+    update: state.vendorDeliveryCode.update,
+    productId: state.vendorProduct.findById,
   }));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const onSubmit = ({ data }: { data: any }) => {
+  const onSubmit = (data: any) => {
     const updateData = {
       id,
-      vendorId: dcode.data?.vendorId,
-      productId: dcode.data?.productId,
+      vendorId: dcode.data?.info?.vendorId,
+      productId: dcode.data?.info?.productId,
       basicFee: Number(data.basicFee),
       freeCondition: Number(data.freeCondition),
     };
-    dispatch(deliveryUpdateActions.postUpdate({ data: updateData }));
+    dispatch(vendorDeliveryCodeActions.update(updateData));
   };
 
   useEffect(() => {
     if (update.success) {
       setModalVisible(true);
-      dispatch(deliveryFindByIdActions.getFindById({ id }));
-      dispatch(deliveryUpdateActions.reset({}));
+      dispatch(vendorDeliveryCodeActions.findById(id));
+      dispatch(vendorDeliveryCodeActions.reset("update"));
     }
   }, [dispatch, update]);
 
   useEffect(() => {
     if (dcode.success) {
-      dispatch(
-        vendorProductActions.findAllByProductId({ id: dcode.data.productId })
-      );
+      dispatch(vendorProductActions.findById(dcode.data.info.productId));
     }
   }, [dcode]);
 
   useEffect(() => {
-    dispatch(vendorProductActions.findAllByProductId({ id }));
+    dispatch(
+      vendorDeliveryCodeActions.findById({
+        vendorId: user.vendorId,
+        id,
+      })
+    );
     return () => {
-      dispatch(deliveryFindByIdActions.reset({}));
-      dispatch(deliveryUpdateActions.reset({}));
-      dispatch(vendorProductActions.reset("findAllByProductId"));
+      dispatch(vendorDeliveryCodeActions.reset("findById"));
+      dispatch(vendorDeliveryCodeActions.reset("update"));
+      dispatch(vendorProductActions.reset("findById"));
     };
-  }, [dispatch]);
+  }, []);
 
   return (
     <DeliveryDetail

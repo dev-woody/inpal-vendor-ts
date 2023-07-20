@@ -1,16 +1,29 @@
 import styled from "styled-components";
-import { BreadCrumb, Button, Responsive, Table } from "lib/styles";
+import {
+  BreadCrumb,
+  Button,
+  Responsive,
+  StyledSelect,
+  Table,
+} from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
 import { deliveryCodeColumns } from "lib/columns/columnsList";
 import { useNavigate } from "react-router-dom";
+import { response } from "types/globalTypes";
 
 const DeliveryCodeListBlock = styled(Responsive)``;
 
 type codeProps = {
-  productList: object[];
+  deliveryCodeList: object[];
+  productList: response;
+  onSelect: (id: string) => void;
 };
 
-const DeliveryCodeList = ({ productList }: codeProps) => {
+const DeliveryCodeList = ({
+  deliveryCodeList,
+  productList,
+  onSelect,
+}: codeProps) => {
   const navigate = useNavigate();
   return (
     <>
@@ -37,10 +50,17 @@ const DeliveryCodeList = ({ productList }: codeProps) => {
         <Table
           filter
           columns={deliveryCodeColumns}
-          content={productList}
+          content={deliveryCodeList}
           pagenation
           url="/dcode/dcode/detail"
-          moveKey="id"
+          moveKey={["base", "id"]}
+          filterInput={
+            <StyledSelect
+              placeholder="품목 선택"
+              optionList={productList}
+              actions={onSelect}
+            />
+          }
         />
       </DeliveryCodeListBlock>
     </>

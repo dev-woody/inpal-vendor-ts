@@ -326,7 +326,21 @@ export const Table = (props: propsTypes) => {
                     } else if (doNoting) {
                       return;
                     } else {
-                      navigate(`${url}/${contentList[moveKey]}`);
+                      if (typeof moveKey === "object") {
+                        if (moveKey.length > 2) {
+                          navigate(
+                            `${url}/${
+                              contentList[moveKey[0]][moveKey[1]][moveKey[2]]
+                            }`
+                          );
+                        } else {
+                          navigate(
+                            `${url}/${contentList[moveKey[0]][moveKey[1]]}`
+                          );
+                        }
+                      } else if (typeof moveKey === "string") {
+                        navigate(`${url}/${contentList.moveKey}`);
+                      }
                     }
                   }}
                   isSelected={

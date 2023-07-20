@@ -26,6 +26,7 @@ const GoodsGroupRregisterBlock = styled(Responsive)``;
 type registerProps = {
   user: any;
   productList: { [key: string]: any }[];
+  propertyList: { [key: string]: any }[];
   categoryList: { [key: string]: any }[];
   manufacturerList: { [key: string]: any }[];
   imageUpload: response;
@@ -37,51 +38,65 @@ type registerProps = {
       }[]
     >
   >;
-  onSelectManufact: (id: string) => void;
+  onSelectProduct: (id: string) => void;
   onImageUpload: (e: React.ChangeEvent<HTMLInputElement>, num: string) => void;
   onDetailUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: ({ data }: { data: object }) => void;
+  onSubmit: (data: object) => void;
   modalVisible: boolean;
   setModalVisible: (status: boolean) => void;
 };
 
 const schema = yup.object({
-  name: yup.string().required("그룹명을 입력해주세요."),
-  goodGroupCategory: yup.string().required("그룹분류를 입력해주세요."),
-  description: yup.string().required("그룹설명을 입력해주세요."),
-  itemPerLine: yup.string().required("상품묶음표시를 입력해주세요."),
-  productId: yup.string().required("품목을 선택해주세요."),
-  productCategoryInfo: yup.object({
-    productCategory1sts: yup
-      .array()
-      .of(yup.object({ id: yup.string() }))
-      .min(1, "카테고리를 최소 1개이상 선택해주세요."),
-    productCategory2nds: yup.array().of(yup.object({ id: yup.string() })),
-    productCategory3rds: yup.array().of(yup.object({ id: yup.string() })),
+  basicInfo: yup.object({
+    name: yup.string().required("그룹명을 입력해주세요."),
+    description: yup.string().required("그룹설명을 입력해주세요."),
+    productId: yup.string().required("품목을 선택해주세요."),
+    propertyId: yup.string().required("속성을 선택해주세요."),
+    handleCategoryInfo: yup.object({
+      categoryIds: yup.array().of(yup.string()),
+    }),
+    manufacturerId: yup.string().required("제조사를 선택해주세요."),
+    detailPageInfo: yup.object({
+      imageNumInfo: yup.array().of(
+        yup.object({
+          num: yup.string(),
+          imageInfo: yup.object({
+            id: yup.string(),
+          }),
+        })
+      ),
+    }),
   }),
-  manufacturerId: yup.string().required("제조사를 선택해주세요."),
-  images: yup
-    .array()
-    .of(
+  goodImageInfo: yup.object({
+    imageNumInfo: yup.array().of(
       yup.object({
-        id: yup.string().required(""),
+        num: yup.string(),
+        imageInfo: yup.object({
+          id: yup.string(),
+        }),
       })
-    )
-    .min(1, "대표 이미지는 필수로 등록해야합니다."),
-  detailPage: yup.object({
-    id: yup.string().required("상세페이지를 선택해주세요."),
+    ),
+  }),
+  specInfo: yup.object({
+    specNumInfos: yup.array().of(
+      yup.object({
+        num: yup.string(),
+        specId: yup.string(),
+      })
+    ),
   }),
 });
 
 const GoodsGroupRregister = ({
   user,
   productList,
+  propertyList,
   categoryList,
   manufacturerList,
   imageUpload,
   detailPage,
   setNewCategory,
-  onSelectManufact,
+  onSelectProduct,
   onImageUpload,
   onDetailUpload,
   onSubmit,
@@ -97,19 +112,25 @@ const GoodsGroupRregister = ({
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      name: "",
-      goodGroupCategory: "",
-      description: "",
-      itemPerLine: "",
-      productId: "",
-      productCategoryInfo: {
-        productCategory1sts: [{}],
-        productCategory2nds: [{}],
-        productCategory3rds: [{}],
+      basicInfo: {
+        name: "",
+        description: "",
+        productId: "",
+        propertyId: "",
+        manufacturerId: "",
+        handleCategoryInfos: {
+          categoryIds: [],
+        },
       },
-      manufacturerId: "",
-      images: [{ id: "" }, { id: "" }, { id: "" }, { id: "" }, { id: "" }],
-      detailPage: { id: "" },
+      detailPageInfo: {
+        imageNumInfos: [{ num: 0, imageInfo: { id: "" } }],
+      },
+      goodImageInfo: {
+        imageNumInfos: [{ num: 0, imageInfo: { id: "" } }],
+      },
+      specInfo: {
+        specNumInfos: [{ num: 0, specId: "" }],
+      },
     },
   });
   const navigate = useNavigate();
@@ -132,44 +153,44 @@ const GoodsGroupRregister = ({
     setImageArray(deleteArray);
   }
 
-  useEffect(() => {
-    let productCategory1sts: { id: string }[] = [];
-    let productCategory2nds: { id: string }[] = [];
-    let productCategory3rds: { id: string }[] = [];
-    categoryList.map(
-      (list1st) =>
-        list1st.checked && productCategory1sts.push({ id: list1st.id })
-    );
-    categoryList.map((list1st) =>
-      list1st.category2nd.map(
-        (list2nd: any) =>
-          list2nd.checked && productCategory2nds.push({ id: list2nd.id })
-      )
-    );
-    categoryList.map((list1st) =>
-      list1st.category2nd.map((list2nd: any) =>
-        list2nd.category3rd.map(
-          (list3rd: any) =>
-            list3rd.checked && productCategory3rds.push({ id: list3rd.id })
-        )
-      )
-    );
-    setValue("productCategoryInfo", {
-      productCategory1sts,
-      productCategory2nds,
-      productCategory3rds,
-    });
-  }, [categoryList, setValue]);
+  // useEffect(() => {
+  //   let productCategory1sts: { id: string }[] = [];
+  //   let productCategory2nds: { id: string }[] = [];
+  //   let productCategory3rds: { id: string }[] = [];
+  //   categoryList.map(
+  //     (list1st) =>
+  //       list1st.checked && productCategory1sts.push({ id: list1st.id })
+  //   );
+  //   categoryList.map((list1st) =>
+  //     list1st.category2nd.map(
+  //       (list2nd: any) =>
+  //         list2nd.checked && productCategory2nds.push({ id: list2nd.id })
+  //     )
+  //   );
+  //   categoryList.map((list1st) =>
+  //     list1st.category2nd.map((list2nd: any) =>
+  //       list2nd.category3rd.map(
+  //         (list3rd: any) =>
+  //           list3rd.checked && productCategory3rds.push({ id: list3rd.id })
+  //       )
+  //     )
+  //   );
+  //   setValue("productCategoryInfo", {
+  //     productCategory1sts,
+  //     productCategory2nds,
+  //     productCategory3rds,
+  //   });
+  // }, [categoryList, setValue]);
 
-  useEffect(() => {
-    setValue("images", imageArray);
-  }, [imageArray, setValue]);
+  // useEffect(() => {
+  //   setValue("images", imageArray);
+  // }, [imageArray, setValue]);
 
-  useEffect(() => {
-    if (detailPage.success) {
-      setValue("detailPage", { id: detailPage.data.id });
-    }
-  }, [detailPage, setValue]);
+  // useEffect(() => {
+  //   if (detailPage.success) {
+  //     setValue("detailPage", { id: detailPage.data.id });
+  //   }
+  // }, [detailPage, setValue]);
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) =>
@@ -213,24 +234,10 @@ const GoodsGroupRregister = ({
                 <StyledInput
                   align="vertical"
                   placeholder="그룹명"
-                  label="name"
+                  label="basicInfo.name"
                   register={register}
                   errors={errors}
-                  status={errors.name}
-                />
-              }
-            />
-            <DescriptionContent
-              span="12"
-              label="그룹분류"
-              content={
-                <StyledInput
-                  align="vertical"
-                  placeholder="그룹분류"
-                  label="goodGroupCategory"
-                  register={register}
-                  errors={errors}
-                  status={errors.goodGroupCategory}
+                  status={errors?.basicInfo?.name}
                 />
               }
             />
@@ -241,24 +248,10 @@ const GoodsGroupRregister = ({
                 <StyledInput
                   align="vertical"
                   placeholder="그룹설명"
-                  label="description"
+                  label="basicInfo.description"
                   register={register}
                   errors={errors}
-                  status={errors.description}
-                />
-              }
-            />
-            <DescriptionContent
-              span="12"
-              label="상품묶음표시"
-              content={
-                <StyledInput
-                  align="vertical"
-                  placeholder="상품묶음표시"
-                  label="itemPerLine"
-                  register={register}
-                  errors={errors}
-                  status={errors.itemPerLine}
+                  status={errors?.basicInfo?.description}
                 />
               }
             />
@@ -268,16 +261,34 @@ const GoodsGroupRregister = ({
               content={
                 <StyledSelect
                   placeholder="품목"
-                  label="productId"
-                  optionList={productList?.filter(
-                    (list: any) => list.openStatus === "OPEN"
-                  )}
+                  label="basicInfo.productId"
+                  optionList={productList}
                   register={register}
                   errors={errors}
-                  status={errors.productId}
+                  status={errors?.basicInfo?.productId}
                   setValue={setValue}
                   align="vertical"
-                  actions={onSelectManufact}
+                  actions={onSelectProduct}
+                  index="2"
+                />
+              }
+            />
+            <DescriptionContent
+              span="12"
+              label="상품속성"
+              content={
+                <StyledSelect
+                  disable={propertyList ? false : true}
+                  placeholder={
+                    propertyList ? "상품속성" : "품목을 선택해주세요."
+                  }
+                  label="basicInfo.propertyId"
+                  optionList={propertyList}
+                  register={register}
+                  errors={errors}
+                  status={errors?.basicInfo?.propertyId}
+                  setValue={setValue}
+                  align="vertical"
                   index="2"
                 />
               }
@@ -288,9 +299,9 @@ const GoodsGroupRregister = ({
               content={
                 <StyledCategory
                   disable={categoryList.length > 0 ? false : true}
-                  label="productCategoryInfo"
+                  label="basicInfo.handleCategoryInfos"
                   register={register}
-                  status={errors.productCategoryInfo}
+                  status={errors?.basicInfo?.handleCategoryInfos}
                   errors={errors}
                   newCategory={newCategory}
                   setNewCategory={setNewCategory}
@@ -306,11 +317,11 @@ const GoodsGroupRregister = ({
                   placeholder={
                     manufacturerList ? "제조사" : "품목을 선택해주세요."
                   }
-                  label="manufacturerId"
+                  label="basicInfo.manufacturerId"
                   optionList={manufacturerList}
                   register={register}
                   errors={errors}
-                  status={errors.manufacturerId}
+                  status={errors?.basicInfo?.manufacturerId}
                   setValue={setValue}
                   align="vertical"
                   index="1"
@@ -319,141 +330,52 @@ const GoodsGroupRregister = ({
             />
             <DescriptionContent
               span="12"
-              label="이미지"
+              label="상세페이지"
               content={
-                <div>
-                  <div style={{ display: "flex", marginBottom: "0.75rem" }}>
-                    <StyledUpload
-                      readOnly
-                      register={register}
-                      placeholder="이미지"
-                      label="images.id"
-                      errors={errors}
-                      status={errors.images}
-                      action={changeImage}
-                      onImageUpload={onImageUpload}
-                      image={imageUpload}
-                      deleteImage={deleteImage}
-                      imageKind="images0"
-                      isBox
-                      num="0"
-                      imageArray={imageArray}
-                      thumnailUrl={`/construction/vendor/good/group/image/displayThumbnail`}
-                      params={{
-                        vendorId: user.vendorId,
-                        id: imageUpload?.data?.id,
-                      }}
-                    />
-                    <StyledUpload
-                      readOnly
-                      register={register}
-                      placeholder="이미지"
-                      label="images.id"
-                      errors={errors}
-                      status={errors.images}
-                      action={changeImage}
-                      onImageUpload={onImageUpload}
-                      image={imageUpload}
-                      deleteImage={deleteImage}
-                      imageKind="images1"
-                      isBox
-                      num="1"
-                      imageArray={imageArray}
-                      thumnailUrl={`/construction/vendor/good/group/image/displayThumbnail`}
-                      params={{
-                        vendorId: user.vendorId,
-                        id: imageUpload?.data?.id,
-                      }}
-                    />
-                    <StyledUpload
-                      readOnly
-                      register={register}
-                      placeholder="이미지"
-                      label="images.id"
-                      errors={errors}
-                      status={errors.images}
-                      action={changeImage}
-                      onImageUpload={onImageUpload}
-                      image={imageUpload}
-                      deleteImage={deleteImage}
-                      imageKind="images2"
-                      isBox
-                      num="2"
-                      imageArray={imageArray}
-                      thumnailUrl={`/construction/vendor/good/group/image/displayThumbnail`}
-                      params={{
-                        vendorId: user.vendorId,
-                        id: imageUpload?.data?.id,
-                      }}
-                    />
-                    <StyledUpload
-                      readOnly
-                      register={register}
-                      placeholder="이미지"
-                      label="images.id"
-                      errors={errors}
-                      status={errors.images}
-                      action={changeImage}
-                      onImageUpload={onImageUpload}
-                      image={imageUpload}
-                      deleteImage={deleteImage}
-                      imageKind="images3"
-                      isBox
-                      num="3"
-                      imageArray={imageArray}
-                      thumnailUrl={`/construction/vendor/good/group/image/displayThumbnail`}
-                      params={{
-                        vendorId: user.vendorId,
-                        id: imageUpload?.data?.id,
-                      }}
-                    />
-                    <StyledUpload
-                      readOnly
-                      register={register}
-                      placeholder="이미지"
-                      label="images.id"
-                      errors={errors}
-                      status={errors.images}
-                      action={changeImage}
-                      onImageUpload={onImageUpload}
-                      image={imageUpload}
-                      deleteImage={deleteImage}
-                      imageKind="images4"
-                      isBox
-                      num="4"
-                      imageArray={imageArray}
-                      thumnailUrl={`/construction/vendor/good/group/image/displayThumbnail`}
-                      params={{
-                        vendorId: user.vendorId,
-                        id: imageUpload?.data?.id,
-                      }}
-                    />
-                  </div>
-                </div>
+                <StyledUpload
+                  readOnly
+                  register={register}
+                  placeholder="상세페이지"
+                  label="detailPageInfo.imageNumInfos"
+                  isBox
+                  maxLength={1}
+                  errors={errors}
+                  status={errors.detailPageInfo?.imageNumInfos}
+                  subject="good_group"
+                  type="detail_page"
+                  successAction={(result: any) => {
+                    const imageArray = result.map(
+                      (image: any, index: number) => {
+                        return { num: index, imageInfo: { id: image.imageId } };
+                      }
+                    );
+                    setValue("detailPageInfo.imageNumInfos", imageArray);
+                  }}
+                />
               }
             />
             <DescriptionContent
               span="12"
-              label="상세페이지"
+              label="상품이미지"
               content={
                 <StyledUpload
-                  // align="vertical"
                   readOnly
-                  placeholder="상세페이지"
-                  label="detailPage.id"
+                  placeholder="상품이미지"
+                  isBox
+                  maxLength={1}
+                  label="goodImageInfo.imageNumInfos"
                   register={register}
                   errors={errors || "상세페이지는 필수입니다."}
-                  status={errors.detailPage?.id}
-                  onImageUpload={onDetailUpload}
-                  image={detailPage}
-                  deleteImage={deleteImage}
-                  imageKind="detailPage"
-                  isBox
-                  imageArray={imageArray}
-                  thumnailUrl={`/construction/vendor/good/group/detailPage/display`}
-                  params={{
-                    vendorId: user.vendorId,
-                    id: detailPage?.data?.id,
+                  status={errors.goodImageInfo?.imageNumInfos}
+                  subject="good_group"
+                  type="good_image"
+                  successAction={(result: any) => {
+                    const imageArray = result.map(
+                      (image: any, index: number) => {
+                        return { num: index, imageInfo: { id: image.imageId } };
+                      }
+                    );
+                    setValue("goodImageInfo.imageNumInfos", imageArray);
                   }}
                 />
               }

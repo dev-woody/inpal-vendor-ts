@@ -14,13 +14,13 @@ const user = createSlice({
   },
   reducers: {
     saveUser(state, action) {
-      state.vendorId = action.payload.vendorId;
-      state.userId = action.payload.userId;
+      state.vendorId = action.payload.adminInfo.vendorId;
+      state.userId = action.payload.adminInfo.signInfo.userId;
       state.name = action.payload.name;
-      state.token = action.payload.token;
-      state.refreshToken = action.payload.refreshToken;
+      state.token = action.payload.tokenInfo.token;
+      state.refreshToken = action.payload.tokenInfo.refreshToken;
       state.loginAt = action.payload.loginAt;
-      state.topLevel = action.payload.topLevel;
+      state.topLevel = action.payload.isTopLevel;
     },
     reset(state, action) {
       Object.assign(state, {

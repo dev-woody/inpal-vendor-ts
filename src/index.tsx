@@ -13,6 +13,7 @@ function loadUser() {
     store.dispatch(userActions.saveUser(JSON.parse(user)));
   } catch (e) {
     console.log("localStorage is not working");
+    console.log(e);
   }
 }
 

@@ -11,32 +11,36 @@ import {
   StyledSelect,
 } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
+import { NavigateFunction } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { response } from "types/globalTypes";
 
-const DcodeRegisterBlock = styled(Responsive)``;
+const SpecRegisterBlock = styled(Responsive)``;
 
 type registerProps = {
-  productList: any;
-  onSubmit: (data: any) => void;
-  modalVisible: boolean;
-  setModalVisible: (status: boolean) => void;
+  productList: response;
+  deliveryCode: response;
+  unitCode: response;
+  onSelectProduct: (id: string) => void;
+  onSubmit: (data: object) => void;
+  navigate: NavigateFunction;
 };
 
 const schema = yup.object({
-  productId: yup.string().required("품목을 선택해주세요."),
-  basicFee: yup.string().required("배송료를 입력해주세요."),
-  freeCondition: yup.string().required("무료배송조건을 입력해주세요."),
+  quantity: yup.string().required("품목을 선택해주세요."),
+  unitId: yup.string().required("배송료를 입력해주세요."),
+  deliveryId: yup.string().required("배송그룹 입력해주세요."),
 });
 
-const DcodeRegister = ({
+const SpecRegister = ({
   productList,
+  deliveryCode,
+  unitCode,
+  onSelectProduct,
   onSubmit,
-  modalVisible,
-  setModalVisible,
+  navigate,
 }: registerProps) => {
   const {
     register,
@@ -47,56 +51,43 @@ const DcodeRegister = ({
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      productId: "",
-      basicFee: "",
-      freeCondition: "",
+      quantity: "",
+      unitId: "",
+      deliveryId: "",
     },
   });
-
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
-      console.log(value, name, type)
-    );
-    return () => subscription.unsubscribe();
-  }, [watch]);
-
-  const navigate = useNavigate();
   return (
     <>
-      <DcodeRegisterBlock>
+      <SpecRegisterBlock>
         <PageHeader
           breadCrumb={
             <BreadCrumb
               indicator={[
                 {
-                  name: "배송코드 관리 /",
-                  url: "/dcode/dcode",
+                  name: "상품사양 관리 /",
+                  url: "/goods/spec",
                 },
                 {
-                  name: "배송코드 등록",
-                  url: "",
+                  name: "상품사양 등록",
+                  url: "/goods/spec/register",
                 },
               ]}
             />
           }
         />
-      </DcodeRegisterBlock>
-      <DcodeRegisterBlock>
+      </SpecRegisterBlock>
+      <SpecRegisterBlock>
         <StyledForm onSubmit={handleSubmit((data) => onSubmit(data))}>
           <Description>
             <DescriptionContent
               span="12"
-              label="품목"
+              label="품목선택"
               content={
                 <StyledSelect
-                  placeholder="품목"
-                  label="productId"
-                  optionList={productList}
-                  register={register}
-                  errors={errors}
-                  status={errors.productId}
-                  setValue={setValue}
+                  optionList={productList.data}
+                  actions={onSelectProduct}
                   align="vertical"
+                  placeholder="품목선택"
                 />
               }
             />
@@ -107,24 +98,42 @@ const DcodeRegister = ({
                 <StyledInput
                   align="vertical"
                   placeholder="배송료"
-                  label="basicFee"
+                  label="quantity"
                   register={register}
                   errors={errors}
-                  status={errors.basicFee}
+                  status={errors.quantity}
                 />
               }
             />
             <DescriptionContent
               span="12"
-              label="무료배송조건"
+              label="단위"
               content={
-                <StyledInput
-                  align="vertical"
-                  placeholder="무료배송조건"
-                  label="freeCondition"
+                <StyledSelect
+                  placeholder="단위"
+                  label="unitId"
+                  optionList={unitCode.data}
                   register={register}
                   errors={errors}
-                  status={errors.freeCondition}
+                  status={errors.unitId}
+                  setValue={setValue}
+                  align="vertical"
+                />
+              }
+            />
+            <DescriptionContent
+              span="12"
+              label="배송코드"
+              content={
+                <StyledSelect
+                  placeholder="배송코드"
+                  label="deliveryId"
+                  optionList={deliveryCode.data}
+                  register={register}
+                  errors={errors}
+                  status={errors.deliveryId}
+                  setValue={setValue}
+                  align="vertical"
                 />
               }
             />
@@ -139,17 +148,17 @@ const DcodeRegister = ({
             등록
           </Button>
         </StyledForm>
-        <Modal
+        {/* <Modal
           title="배송코드 등록"
           msg="등록에 성공하였습니다."
           submitMsg="확인"
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
           action={() => navigate("/dcode/dcode")}
-        />
-      </DcodeRegisterBlock>
+        /> */}
+      </SpecRegisterBlock>
     </>
   );
 };
 
-export default DcodeRegister;
+export default SpecRegister;

@@ -6,10 +6,14 @@ import GoodsGroupOptionRegisterContainer from "containers/goodsGroup/option/opti
 import GoodsGroupOptionDetailContainer from "containers/goodsGroup/option/optionDetailContainer";
 import GoodsGroupItemRegisterContainer from "containers/goodsGroup/items/itemRegisterContainer";
 import GoodsGroupItemDetailContainer from "containers/goodsGroup/items/itemDetailContainer";
+import SpecIndex from "./spec";
 
 const GoodsGroupIndex = () => {
   return (
     <Routes>
+      //*spec
+      <Route path="/spec/*" element={<SpecIndex />} />
+      //* goods
       <Route path="/groups" element={<GoodsGroupListContainer />} />
       <Route
         path="/groups/register"

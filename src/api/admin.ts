@@ -16,7 +16,7 @@ export const vendorLogin = async (data: object) => {
         "refresh_token",
         res.data.data.tokenInfo.refreshToken
       );
-      localStorage.setItem("user", JSON.stringify(res.data.data.adminInfo));
+      localStorage.setItem("user", JSON.stringify(res.data.data));
     }
     return res.data;
   });

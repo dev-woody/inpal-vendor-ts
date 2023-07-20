@@ -17,8 +17,16 @@ yarn start
 
 ## 패치노트
 
-### `07.14 Update`
+### `07.20 Update`
 
-1. vendor register 등록
+1. vendor delivery code 등록
 
-2. signIn 등록
+2. vendor delivery code 조회
+
+3. vendor delivery code 수정
+
+4. vendor goods group 조회
+
+5. vendor goods spec 조회
+
+6. vendor goods spec 등록

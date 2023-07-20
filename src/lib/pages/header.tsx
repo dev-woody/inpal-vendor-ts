@@ -104,17 +104,19 @@ const Header = ({ visible, setVisible }: headerProps) => {
               alignItems: "center",
             }}
           >
-            {localData?.isTopLevel ? (
+            {localData?.adminInfo.isTopLevel ? (
               <div style={{ display: "flex" }}>
                 <HeaderText style={{ fontWeight: "800", color: "#faad14" }}>
                   최고관리자
                 </HeaderText>
                 <HeaderText style={{ marginLeft: "0.5rem" }}>
-                  {localData.signInfo.userId}님 환영합니다.
+                  {localData.adminInfo.signInfo.userId}님 환영합니다.
                 </HeaderText>
               </div>
             ) : (
-              <HeaderText>{localData.signInfo.userId}님 환영합니다.</HeaderText>
+              <HeaderText>
+                {localData.adminInfo.signInfo.userId}님 환영합니다.
+              </HeaderText>
             )}
             <Button style={{ marginLeft: "1rem" }} onClick={logout}>
               로그아웃

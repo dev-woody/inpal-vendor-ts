@@ -46,7 +46,7 @@ function SignInContainer() {
     return () => {
       dispatch(vendorAdminActions.reset("signIn"));
     };
-  }, [dispatch]);
+  }, []);
 
   return <LoginForm onSubmit={onSubmit} errorMsg={errors} />;
 }

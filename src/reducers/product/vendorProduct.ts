@@ -14,6 +14,8 @@ const initialState: ResponseData = {
   findManufacturerByProductId: {},
   findAllCategory: {},
   findAllColorCode: {},
+  findAllProperty: {},
+  findUnitByProductId: {},
 };
 
 export function* vendorProductSaga() {
@@ -46,6 +48,20 @@ export function* vendorProductSaga() {
       productAPI.findAllColorCode
     )
   );
+  yield takeLatest(
+    vendorProductActions.findAllProperty,
+    createRequestSaga(
+      "vendorProduct/findAllProperty",
+      productAPI.findAllProperty
+    )
+  );
+  yield takeLatest(
+    vendorProductActions.findUnitByProductId,
+    createRequestSaga(
+      "vendorProduct/findUnitByProductId",
+      productAPI.findUnitByProductId
+    )
+  );
 }
 
 //* reducer
@@ -72,6 +88,14 @@ const vendorProduct = createSlice({
     ...createAsyncReducers({
       actionName: "findAllColorCode",
       reducerName: "findAllColorCode",
+    })<any, DataForm, string>(),
+    ...createAsyncReducers({
+      actionName: "findAllProperty",
+      reducerName: "findAllProperty",
+    })<any, DataForm, string>(),
+    ...createAsyncReducers({
+      actionName: "findUnitByProductId",
+      reducerName: "findUnitByProductId",
     })<any, DataForm, string>(),
     ...createSingleReducers({
       actionName: "reset",

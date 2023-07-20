@@ -348,7 +348,14 @@ export const StyledSelect = (props: propsTypes) => {
                       return (
                         <OptionItems
                           key={index}
-                          keyName={list.name || list.desc || list.info.nameKr}
+                          keyName={
+                            list.name ||
+                            list.desc ||
+                            list.info.property ||
+                            list.info.nameKr ||
+                            list.info.code ||
+                            list.info.basic.nameKr
+                          }
                           id={list.id || list.base.id}
                         />
                       );

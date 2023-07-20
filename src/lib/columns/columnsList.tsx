@@ -32,6 +32,7 @@ import {
   FaShippingFast,
   FaUserCheck,
   FaUserTimes,
+  FaFileAlt,
 } from "react-icons/fa";
 
 type sideListType = {
@@ -128,6 +129,11 @@ export const sidebarList: sideListType[] = [
     url: "/goods",
     children: [
       {
+        icon: <FaFileAlt />,
+        menuName: "상품사양관리",
+        url: "/spec",
+      },
+      {
         icon: <FaBoxes />,
         menuName: "상품그룹관리",
         url: "/groups",
@@ -192,6 +198,13 @@ export const sidebarList: sideListType[] = [
         url: "/faq",
       },
     ],
+  },
+];
+
+export const specColunms: ColumnsType[] = [
+  {
+    title: "입금전",
+    dataIndex: "beforePayment",
   },
 ];
 
@@ -260,27 +273,30 @@ export const dailySalesColumns: ColumnsType[] = [
 export const deliveryCodeColumns: ColumnsType[] = [
   {
     title: "코드",
-    dataIndex: "code",
+    dataIndex: "info",
+    render: (info) => info.code,
   },
   {
     title: "배송료",
-    dataIndex: "basicFee",
+    dataIndex: "info",
+    render: (info) => info.basicFee,
   },
   {
     title: "무료배송조건",
-    dataIndex: "freeCondition",
+    dataIndex: "info",
+    render: (info) => info.freeCondition,
   },
   {
     title: "생성일",
-    dataIndex: "createdAt",
+    dataIndex: "base",
     isDesc: true,
-    render: (createdAt) => changeDays(createdAt),
+    render: (base) => changeDays(base.createdAt),
   },
   {
     title: "수정일",
-    dataIndex: "updatedAt",
+    dataIndex: "base",
     isDesc: true,
-    render: (updatedAt) => changeDays(updatedAt),
+    render: (base) => changeDays(base.updatedAt),
   },
 ];
 
