@@ -24,6 +24,12 @@ export const findAll = async (data: object) => {
     .then((res) => res.data);
 };
 
+export const findById = async (data: object) => {
+  return accessClient
+    .get(`/vendor/good/spec/findById`, { params: { ...data } })
+    .then((res) => res.data);
+};
+
 export const findAllByProductId = async (data: object) => {
   return accessClient
     .get(`/vendor/good/spec/findByProductId`, {

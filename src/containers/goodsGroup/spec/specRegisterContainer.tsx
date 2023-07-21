@@ -7,14 +7,15 @@ import { vendorProductActions } from "reducers/product/vendorProduct";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 
 const SpecRegisterContainer = () => {
-  const { user, specList, productList, deliveryCode, unitCode } =
-    useAppSelector((state) => ({
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const { user, productList, deliveryCode, unitCode } = useAppSelector(
+    (state) => ({
       user: state.user,
-      specList: state.vendorGoodsSpec.findAll,
       productList: state.vendorProduct.findAll,
       deliveryCode: state.vendorDeliveryCode.findAllByProductId,
       unitCode: state.vendorProduct.findUnitByProductId,
-    }));
+    })
+  );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -33,7 +34,7 @@ const SpecRegisterContainer = () => {
 
   const onSubmit = (data: object) => {
     dispatch(
-      vendorGoodsSpecActions.register({ ...data, vendorId: user.vendorId })
+      vendorGoodsSpecActions.register({ vendorId: user.vendorId, ...data })
     );
   };
 
@@ -49,6 +50,8 @@ const SpecRegisterContainer = () => {
       onSelectProduct={onSelectProduct}
       onSubmit={onSubmit}
       navigate={navigate}
+      modalVisible={modalVisible}
+      setModalVisible={setModalVisible}
     />
   );
 };

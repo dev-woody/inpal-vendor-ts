@@ -12,14 +12,11 @@ const initialState: ResponseData = {
   register: {},
   update: {},
   findAll: {},
+  findById: {},
   findAllByProductId: {},
 };
 
 export function* vendorGoodsSpecSaga() {
-  yield takeLatest(
-    vendorGoodsSpecActions.findAll,
-    createRequestSaga("vendorGoodsSpec/findAll", specAPI.findAll)
-  );
   yield takeLatest(
     vendorGoodsSpecActions.register,
     createRequestSaga("vendorGoodsSpec/register", specAPI.register)
@@ -27,6 +24,14 @@ export function* vendorGoodsSpecSaga() {
   yield takeLatest(
     vendorGoodsSpecActions.update,
     createRequestSaga("vendorGoodsSpec/update", specAPI.update)
+  );
+  yield takeLatest(
+    vendorGoodsSpecActions.findAll,
+    createRequestSaga("vendorGoodsSpec/findAll", specAPI.findAll)
+  );
+  yield takeLatest(
+    vendorGoodsSpecActions.findById,
+    createRequestSaga("vendorGoodsSpec/findById", specAPI.findById)
   );
   yield takeLatest(
     vendorGoodsSpecActions.findAllByProductId,
@@ -53,6 +58,10 @@ const vendorGoodsSpec = createSlice({
     ...createAsyncReducers({
       actionName: "findAll",
       reducerName: "findAll",
+    })<any, DataForm, string>(),
+    ...createAsyncReducers({
+      actionName: "findById",
+      reducerName: "findById",
     })<any, DataForm, string>(),
     ...createAsyncReducers({
       actionName: "findAllByProductId",

@@ -46,23 +46,23 @@ const GoodsGorupList = ({ goodsGroupList, goodsGroupColumns }: listProps) => {
           columns={goodsGroupColumns}
           content={goodsGroupList.data}
           url="/goods/groups/detail"
-          moveKey="id"
+          moveKey={["base", "id"]}
           pagenation
-          filter
-          filterInput={
-            <>
-              <StyledSelect
-                placeholder="품목별"
-                optionList={[]}
-                actions={function () {}}
-              />
-              <StyledSelect
-                placeholder="제조사별"
-                optionList={[]}
-                actions={function () {}}
-              />
-            </>
-          }
+          // filter
+          // filterInput={
+          //   <>
+          //     <StyledSelect
+          //       placeholder="품목별"
+          //       optionList={[]}
+          //       actions={function () {}}
+          //     />
+          //     <StyledSelect
+          //       placeholder="제조사별"
+          //       optionList={[]}
+          //       actions={function () {}}
+          //     />
+          //   </>
+          // }
         />
       </GoodsGorupListBlock>
     </>

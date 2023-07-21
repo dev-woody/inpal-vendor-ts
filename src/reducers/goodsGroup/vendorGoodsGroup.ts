@@ -10,7 +10,9 @@ import createAsyncReducers, {
 
 const initialState: ResponseData = {
   register: {},
-  update: {},
+  basicUpdate: {},
+  detailUpdate: {},
+  goodsImageUpdate: {},
   findAll: {},
   findById: {},
   setOpenStatus: {},
@@ -22,8 +24,22 @@ export function* vendorGoodsGroupSaga() {
     createRequestSaga("vendorGoodsGroup/register", goodsGroupAPI.register)
   );
   yield takeLatest(
-    vendorGoodsGroupActions.update,
-    createRequestSaga("vendorGoodsGroup/update", goodsGroupAPI.update)
+    vendorGoodsGroupActions.basicUpdate,
+    createRequestSaga("vendorGoodsGroup/basicUpdate", goodsGroupAPI.basicUpdate)
+  );
+  yield takeLatest(
+    vendorGoodsGroupActions.detailUpdate,
+    createRequestSaga(
+      "vendorGoodsGroup/detailUpdate",
+      goodsGroupAPI.detailUpdate
+    )
+  );
+  yield takeLatest(
+    vendorGoodsGroupActions.goodsImageUpdate,
+    createRequestSaga(
+      "vendorGoodsGroup/goodsImageUpdate",
+      goodsGroupAPI.goodsImageUpdate
+    )
   );
   yield takeLatest(
     vendorGoodsGroupActions.findAll,
@@ -52,8 +68,16 @@ const vendorGoodsGroup = createSlice({
       reducerName: "register",
     })<any, DataForm, string>(),
     ...createAsyncReducers({
-      actionName: "update",
-      reducerName: "update",
+      actionName: "basicUpdate",
+      reducerName: "basicUpdate",
+    })<any, DataForm, string>(),
+    ...createAsyncReducers({
+      actionName: "detailUpdate",
+      reducerName: "detailUpdate",
+    })<any, DataForm, string>(),
+    ...createAsyncReducers({
+      actionName: "goodsImageUpdate",
+      reducerName: "goodsImageUpdate",
     })<any, DataForm, string>(),
     ...createAsyncReducers({
       actionName: "findAll",

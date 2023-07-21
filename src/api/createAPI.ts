@@ -26,8 +26,6 @@ accessClient.interceptors.response.use(
     // Do something with response error
 
     // 인증 에러 발생시
-
-    console.log(error);
     // const localStorageGet = localStorage.getItem("user");
     // const localVendorData = localStorageGet && JSON.parse(localStorageGet);
     if (error.response && error.response.status === 401) {

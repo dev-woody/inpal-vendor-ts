@@ -203,8 +203,24 @@ export const sidebarList: sideListType[] = [
 
 export const specColunms: ColumnsType[] = [
   {
-    title: "입금전",
-    dataIndex: "beforePayment",
+    title: "코드",
+    dataIndex: "info",
+    render: (info) => info.code,
+  },
+  {
+    title: "배송코드",
+    dataIndex: "info",
+    render: (info) => info.delivery.code,
+  },
+  {
+    title: "용량",
+    dataIndex: "info",
+    render: (info) => info.quantity,
+  },
+  {
+    title: "단위",
+    dataIndex: "info",
+    render: (info) => info.unit.nameKr,
   },
 ];
 

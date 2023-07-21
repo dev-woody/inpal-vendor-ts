@@ -25,12 +25,11 @@ const GoodsGroupRregisterBlock = styled(Responsive)``;
 
 type registerProps = {
   user: any;
-  productList: { [key: string]: any }[];
-  propertyList: { [key: string]: any }[];
+  productList: response;
+  propertyList: response;
   categoryList: { [key: string]: any }[];
-  manufacturerList: { [key: string]: any }[];
-  imageUpload: response;
-  detailPage: response;
+  manufacturerList: response;
+  goodsSpecList: response;
   setNewCategory: React.Dispatch<
     React.SetStateAction<
       {
@@ -39,36 +38,36 @@ type registerProps = {
     >
   >;
   onSelectProduct: (id: string) => void;
-  onImageUpload: (e: React.ChangeEvent<HTMLInputElement>, num: string) => void;
-  onDetailUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (data: object) => void;
   modalVisible: boolean;
   setModalVisible: (status: boolean) => void;
 };
 
 const schema = yup.object({
+  storeType: yup.string().required("판매속성을 선택해주세요"),
+  dsType: yup.string().required("분류속성을 선택해주세요"),
   basicInfo: yup.object({
     name: yup.string().required("그룹명을 입력해주세요."),
     description: yup.string().required("그룹설명을 입력해주세요."),
     productId: yup.string().required("품목을 선택해주세요."),
     propertyId: yup.string().required("속성을 선택해주세요."),
-    handleCategoryInfo: yup.object({
+    handleCategoryInfos: yup.object({
       categoryIds: yup.array().of(yup.string()),
     }),
     manufacturerId: yup.string().required("제조사를 선택해주세요."),
-    detailPageInfo: yup.object({
-      imageNumInfo: yup.array().of(
-        yup.object({
-          num: yup.string(),
-          imageInfo: yup.object({
-            id: yup.string(),
-          }),
-        })
-      ),
-    }),
+  }),
+  detailPageInfo: yup.object({
+    imageNumInfos: yup.array().of(
+      yup.object({
+        num: yup.string(),
+        imageInfo: yup.object({
+          id: yup.string(),
+        }),
+      })
+    ),
   }),
   goodImageInfo: yup.object({
-    imageNumInfo: yup.array().of(
+    imageNumInfos: yup.array().of(
       yup.object({
         num: yup.string(),
         imageInfo: yup.object({
@@ -93,12 +92,9 @@ const GoodsGroupRregister = ({
   propertyList,
   categoryList,
   manufacturerList,
-  imageUpload,
-  detailPage,
+  goodsSpecList,
   setNewCategory,
   onSelectProduct,
-  onImageUpload,
-  onDetailUpload,
   onSubmit,
   modalVisible,
   setModalVisible,
@@ -112,6 +108,8 @@ const GoodsGroupRregister = ({
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
+      storeType: "",
+      dsType: "",
       basicInfo: {
         name: "",
         description: "",
@@ -119,7 +117,7 @@ const GoodsGroupRregister = ({
         propertyId: "",
         manufacturerId: "",
         handleCategoryInfos: {
-          categoryIds: [],
+          categoryIds: new Array(),
         },
       },
       detailPageInfo: {
@@ -153,44 +151,27 @@ const GoodsGroupRregister = ({
     setImageArray(deleteArray);
   }
 
-  // useEffect(() => {
-  //   let productCategory1sts: { id: string }[] = [];
-  //   let productCategory2nds: { id: string }[] = [];
-  //   let productCategory3rds: { id: string }[] = [];
-  //   categoryList.map(
-  //     (list1st) =>
-  //       list1st.checked && productCategory1sts.push({ id: list1st.id })
-  //   );
-  //   categoryList.map((list1st) =>
-  //     list1st.category2nd.map(
-  //       (list2nd: any) =>
-  //         list2nd.checked && productCategory2nds.push({ id: list2nd.id })
-  //     )
-  //   );
-  //   categoryList.map((list1st) =>
-  //     list1st.category2nd.map((list2nd: any) =>
-  //       list2nd.category3rd.map(
-  //         (list3rd: any) =>
-  //           list3rd.checked && productCategory3rds.push({ id: list3rd.id })
-  //       )
-  //     )
-  //   );
-  //   setValue("productCategoryInfo", {
-  //     productCategory1sts,
-  //     productCategory2nds,
-  //     productCategory3rds,
-  //   });
-  // }, [categoryList, setValue]);
-
-  // useEffect(() => {
-  //   setValue("images", imageArray);
-  // }, [imageArray, setValue]);
-
-  // useEffect(() => {
-  //   if (detailPage.success) {
-  //     setValue("detailPage", { id: detailPage.data.id });
-  //   }
-  // }, [detailPage, setValue]);
+  useEffect(() => {
+    const selectedCategoryList: string[] = [];
+    categoryList.map(
+      (list1st) => list1st.checked && selectedCategoryList.push(list1st.id)
+    );
+    categoryList.map((list1st) =>
+      list1st.category2nd.map(
+        (list2nd: any) =>
+          list2nd.checked && selectedCategoryList.push(list2nd.id)
+      )
+    );
+    categoryList.map((list1st) =>
+      list1st.category2nd.map((list2nd: any) =>
+        list2nd.category3rd.map(
+          (list3rd: any) =>
+            list3rd.checked && selectedCategoryList.push(list3rd.id)
+        )
+      )
+    );
+    setValue("basicInfo.handleCategoryInfos.categoryIds", selectedCategoryList);
+  }, [categoryList, setValue]);
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) =>
@@ -222,11 +203,71 @@ const GoodsGroupRregister = ({
       <GoodsGroupRregisterBlock>
         <StyledForm
           onSubmit={handleSubmit(
-            (data) => onSubmit({ data }),
+            (data) => onSubmit(data),
             (errors) => console.log(errors)
           )}
         >
           <Description>
+            <DescriptionContent
+              span="12"
+              label="판매속성"
+              content={
+                <StyledSelect
+                  placeholder="판매속성"
+                  label="storeType"
+                  optionList={[
+                    {
+                      id: "all",
+                      name: "전체",
+                    },
+                    {
+                      id: "construction",
+                      name: "시공",
+                    },
+                    {
+                      id: "self",
+                      name: "셀프",
+                    },
+                  ]}
+                  register={register}
+                  errors={errors}
+                  status={errors?.storeType}
+                  setValue={setValue}
+                  align="vertical"
+                  index="6"
+                />
+              }
+            />
+            <DescriptionContent
+              span="12"
+              label="분류속성"
+              content={
+                <StyledSelect
+                  placeholder="분류속성"
+                  label="dsType"
+                  optionList={[
+                    {
+                      id: "color",
+                      name: "색상",
+                    },
+                    {
+                      id: "image",
+                      name: "이미지",
+                    },
+                    {
+                      id: "material",
+                      name: "재료",
+                    },
+                  ]}
+                  register={register}
+                  errors={errors}
+                  status={errors?.dsType}
+                  setValue={setValue}
+                  align="vertical"
+                  index="5"
+                />
+              }
+            />
             <DescriptionContent
               span="12"
               label="그룹명"
@@ -262,14 +303,14 @@ const GoodsGroupRregister = ({
                 <StyledSelect
                   placeholder="품목"
                   label="basicInfo.productId"
-                  optionList={productList}
+                  optionList={productList.data}
                   register={register}
                   errors={errors}
                   status={errors?.basicInfo?.productId}
                   setValue={setValue}
                   align="vertical"
                   actions={onSelectProduct}
-                  index="2"
+                  index="4"
                 />
               }
             />
@@ -278,18 +319,18 @@ const GoodsGroupRregister = ({
               label="상품속성"
               content={
                 <StyledSelect
-                  disable={propertyList ? false : true}
+                  disable={propertyList.data ? false : true}
                   placeholder={
-                    propertyList ? "상품속성" : "품목을 선택해주세요."
+                    propertyList.data ? "상품속성" : "품목을 선택해주세요."
                   }
                   label="basicInfo.propertyId"
-                  optionList={propertyList}
+                  optionList={propertyList.data}
                   register={register}
                   errors={errors}
                   status={errors?.basicInfo?.propertyId}
                   setValue={setValue}
                   align="vertical"
-                  index="2"
+                  index="3"
                 />
               }
             />
@@ -313,16 +354,50 @@ const GoodsGroupRregister = ({
               label="제조사"
               content={
                 <StyledSelect
-                  disable={manufacturerList ? false : true}
+                  disable={manufacturerList.data ? false : true}
                   placeholder={
-                    manufacturerList ? "제조사" : "품목을 선택해주세요."
+                    manufacturerList.data ? "제조사" : "품목을 선택해주세요."
                   }
                   label="basicInfo.manufacturerId"
-                  optionList={manufacturerList}
+                  optionList={manufacturerList.data}
                   register={register}
                   errors={errors}
                   status={errors?.basicInfo?.manufacturerId}
                   setValue={setValue}
+                  align="vertical"
+                  index="2"
+                />
+              }
+            />
+            <DescriptionContent
+              span="12"
+              label="상품사양"
+              content={
+                <StyledSelect
+                  disable={goodsSpecList.data ? false : true}
+                  placeholder={
+                    goodsSpecList.data ? "상품사양" : "품목을 선택해주세요."
+                  }
+                  label="specInfo.specNumInfos"
+                  optionList={goodsSpecList.data}
+                  register={register}
+                  errors={errors}
+                  status={errors?.specInfo?.specNumInfos}
+                  multiple
+                  setValue={(
+                    label: "specInfo.specNumInfos",
+                    selectedItemInfos: any[]
+                  ) => {
+                    const newSelectedSpec = selectedItemInfos.map(
+                      (list: any, index: number) => {
+                        return {
+                          num: index,
+                          specId: list.id,
+                        };
+                      }
+                    );
+                    setValue(label, newSelectedSpec);
+                  }}
                   align="vertical"
                   index="1"
                 />
@@ -391,7 +466,7 @@ const GoodsGroupRregister = ({
           submitMsg="확인"
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          action={() => navigate("/goods")}
+          action={() => navigate("/goods/groups")}
         />
       </GoodsGroupRregisterBlock>
     </>

@@ -1,11 +1,9 @@
 import GoodsGroupRregister from "components/goodsGroup/register";
 import { useEffect, useState } from "react";
-import { detailPageActions } from "reducers/goodsGroup/detailPage";
-import { goodsGroupImageActions } from "reducers/goodsGroup/image";
-import { goodsGroupRegisterActions } from "reducers/goodsGroup/register";
 import { vendorProductActions } from "reducers/product/vendorProduct";
 import { vendorGoodsGroupActions } from "reducers/goodsGroup/vendorGoodsGroup";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
+import { vendorGoodsSpecActions } from "reducers/goodsGroup/vendorGoodsSpec";
 
 const GoodsGroupRegisterContainer = () => {
   const {
@@ -14,18 +12,16 @@ const GoodsGroupRegisterContainer = () => {
     propertyList,
     categoryList,
     manufacturerList,
-    imageUpload,
-    detailPage,
+    goodsSpecList,
     groupRegister,
-  } = useAppSelector((state) => ({
-    user: state.user,
-    productList: state.vendorProduct.findAll,
-    propertyList: state.vendorProduct.findAllProperty,
-    categoryList: state.vendorProduct.findAllCategory,
-    manufacturerList: state.vendorProduct.findManufacturerByProductId,
-    imageUpload: state.goodsGroupImage,
-    detailPage: state.detailPage,
-    groupRegister: state.goodsGroupRegister,
+  } = useAppSelector((store) => ({
+    user: store.user,
+    productList: store.vendorProduct.findAll,
+    propertyList: store.vendorProduct.findAllProperty,
+    categoryList: store.vendorProduct.findAllCategory,
+    manufacturerList: store.vendorProduct.findManufacturerByProductId,
+    goodsSpecList: store.vendorGoodsSpec.findAllByProductId,
+    groupRegister: store.vendorGoodsGroup.register,
   }));
   const dispatch = useAppDispatch();
   const [newCategory, setNewCategory] = useState<{ [key: string]: any }[]>([]);
@@ -33,7 +29,10 @@ const GoodsGroupRegisterContainer = () => {
 
   const onSubmit = (data: object) => {
     dispatch(
-      vendorGoodsGroupActions.postRegister({ vendorId: user.vendorId, ...data })
+      vendorGoodsGroupActions.register({
+        vendorId: user.vendorId,
+        ...data,
+      })
     );
   };
 
@@ -45,28 +44,12 @@ const GoodsGroupRegisterContainer = () => {
     dispatch(vendorProductActions.findAllCategory(data));
     dispatch(vendorProductActions.findManufacturerByProductId(data));
     dispatch(vendorProductActions.findAllProperty(data));
-  };
-
-  const onImageUpload = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    num: string
-  ) => {
-    const files = e.target.files ? e.target.files : "";
-    const formData = new FormData();
-    formData.append("image", files[0]);
-    formData.append("vendorId", user.vendorId);
-    formData.append("num", num);
-    formData.append("imageKind", num === "0" ? "HEAD" : "NORMAL");
-    dispatch(goodsGroupImageActions.postUpload({ formData }));
-    console.log("업로드");
-  };
-
-  const onDetailUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files ? e.target.files : "";
-    const formData = new FormData();
-    formData.append("image", files[0]);
-    formData.append("vendorId", user.vendorId);
-    dispatch(detailPageActions.postUpload({ formData }));
+    dispatch(
+      vendorGoodsSpecActions.findAllByProductId({
+        vendorId: user.vendorId,
+        ...data,
+      })
+    );
   };
 
   useEffect(() => {
@@ -111,30 +94,25 @@ const GoodsGroupRegisterContainer = () => {
     dispatch(vendorProductActions.findAll(false));
     dispatch(vendorProductActions.reset("findAllCategory"));
     dispatch(vendorProductActions.reset("findManufacturerByProductId"));
-    dispatch(detailPageActions.reset({}));
     return () => {
       dispatch(vendorGoodsGroupActions.reset("register"));
       dispatch(vendorProductActions.reset("findAll"));
       dispatch(vendorProductActions.reset("findAllCategory"));
       dispatch(vendorProductActions.reset("findManufacturerByProductId"));
-      dispatch(detailPageActions.reset({}));
     };
   }, []);
 
   return (
     <GoodsGroupRregister
       user={user}
-      productList={productList.data}
-      propertyList={propertyList.data}
+      productList={productList}
+      propertyList={propertyList}
       categoryList={newCategory}
-      manufacturerList={manufacturerList.data}
-      imageUpload={imageUpload}
-      detailPage={detailPage}
+      manufacturerList={manufacturerList}
+      goodsSpecList={goodsSpecList}
       setNewCategory={setNewCategory}
       onSubmit={onSubmit}
       onSelectProduct={onSelectProduct}
-      onImageUpload={onImageUpload}
-      onDetailUpload={onDetailUpload}
       modalVisible={modalVisible}
       setModalVisible={setModalVisible}
     />

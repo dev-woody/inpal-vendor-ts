@@ -11,20 +11,20 @@ import {
   StyledSelect,
 } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
-import { NavigateFunction } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { response } from "types/globalTypes";
+import { NavigateFunction } from "react-router-dom";
+import { useEffect } from "react";
 
-const SpecRegisterBlock = styled(Responsive)``;
+const SpecDetailBlock = styled(Responsive)``;
 
-type registerProps = {
-  productList: response;
+type specDetailProps = {
+  specDetail: response;
   deliveryCode: response;
   unitCode: response;
-  onSelectProduct: (id: string) => void;
-  onSubmit: (data: object) => void;
+  onSubmit: (data: any) => void;
   navigate: NavigateFunction;
   modalVisible: boolean;
   setModalVisible: (status: boolean) => void;
@@ -36,16 +36,15 @@ const schema = yup.object({
   deliveryId: yup.string().required("배송그룹을 선택해주세요."),
 });
 
-const SpecRegister = ({
-  productList,
+const SpecDetail = ({
+  specDetail,
   deliveryCode,
   unitCode,
-  onSelectProduct,
   onSubmit,
   navigate,
   modalVisible,
   setModalVisible,
-}: registerProps) => {
+}: specDetailProps) => {
   const {
     register,
     handleSubmit,
@@ -60,9 +59,15 @@ const SpecRegister = ({
       deliveryId: "",
     },
   });
+
+  useEffect(() => {
+    setValue("quantity", specDetail?.data?.info?.quantity);
+    setValue("unitId", specDetail?.data?.info?.unit?.id);
+    setValue("deliveryId", specDetail?.data?.info?.delivery?.id);
+  }, []);
   return (
     <>
-      <SpecRegisterBlock>
+      <SpecDetailBlock>
         <PageHeader
           breadCrumb={
             <BreadCrumb
@@ -72,29 +77,17 @@ const SpecRegister = ({
                   url: "/goods/spec",
                 },
                 {
-                  name: "상품사양 등록",
-                  url: "/goods/spec/register",
+                  name: "상품사양 상세조회",
+                  url: "/goods/spec/detail",
                 },
               ]}
             />
           }
         />
-      </SpecRegisterBlock>
-      <SpecRegisterBlock>
+      </SpecDetailBlock>
+      <SpecDetailBlock>
         <StyledForm onSubmit={handleSubmit((data) => onSubmit(data))}>
           <Description>
-            <DescriptionContent
-              span="12"
-              label="품목선택"
-              content={
-                <StyledSelect
-                  optionList={productList.data}
-                  actions={onSelectProduct}
-                  align="vertical"
-                  placeholder="품목선택"
-                />
-              }
-            />
             <DescriptionContent
               span="12"
               label="용량"
@@ -114,7 +107,7 @@ const SpecRegister = ({
               label="단위"
               content={
                 <StyledSelect
-                  placeholder="단위"
+                  placeholder={specDetail?.data?.info?.unit?.nameKr}
                   label="unitId"
                   optionList={unitCode.data}
                   register={register}
@@ -130,7 +123,7 @@ const SpecRegister = ({
               label="배송코드"
               content={
                 <StyledSelect
-                  placeholder="배송코드"
+                  placeholder={specDetail?.data?.info?.delivery?.code}
                   label="deliveryId"
                   optionList={deliveryCode.data}
                   register={register}
@@ -153,16 +146,16 @@ const SpecRegister = ({
           </Button>
         </StyledForm>
         <Modal
-          title="상품사양 등록"
-          msg="상품사양 등록에 성공하였습니다."
+          title="상품사양 수정"
+          msg="상품사양 수정에 성공하였습니다."
           submitMsg="확인"
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
           action={() => navigate("/goods/spec")}
         />
-      </SpecRegisterBlock>
+      </SpecDetailBlock>
     </>
   );
 };
 
-export default SpecRegister;
+export default SpecDetail;

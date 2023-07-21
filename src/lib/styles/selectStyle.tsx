@@ -44,7 +44,7 @@ const SelectBlock = styled.div`
     `}
 
     & + & {
-    /* margin-left: 0.5rem; */
+    margin-left: 0.5rem;
   }
 `;
 
@@ -206,7 +206,7 @@ export const StyledSelect = (props: propsTypes) => {
   const [isTitle, setIsTitle] = useState<string>("");
   const [isheight, setIsHeight] = useState<any>(0);
   const [isMultiple, setIsMultiple] = useState<{ [key: string]: string }[]>([]);
-  const newList = isMultiple.map((item) => item.productId);
+  const newList = isMultiple.map((item) => item.id);
   const ref: any = useRef();
   const selectMenu: any = useRef();
   const OptionItems = ({ keyName, id }: { keyName: string; id: string }) => {
@@ -219,10 +219,10 @@ export const StyledSelect = (props: propsTypes) => {
         }
         if (label && multiple) {
           const newArray = JSON.parse(JSON.stringify(isMultiple));
-          newArray.push({ productId: id, keyName: keyName });
+          newArray.push({ id: id, keyName: keyName });
           const selectedItemInfos = newArray.map(
             (selectedItemInfo: any, index: number) => {
-              return { productId: selectedItemInfo.productId, num: index };
+              return { id: selectedItemInfo.id, num: index };
             }
           );
           setIsMultiple(newArray);
@@ -245,7 +245,7 @@ export const StyledSelect = (props: propsTypes) => {
     e.preventDefault();
     e.stopPropagation();
     const id = e.currentTarget;
-    setIsMultiple(isMultiple.filter((list) => list.productId !== id.id));
+    setIsMultiple(isMultiple.filter((list) => list.id !== id.id));
     setIsTitle(placeholder);
   };
 
@@ -301,14 +301,14 @@ export const StyledSelect = (props: propsTypes) => {
         >
           <div style={{ display: "flex" }}>
             {isMultiple.length > 0 ? (
-              isMultiple.map((product) => {
+              isMultiple.map((item) => {
                 return (
                   <MultipleItem
-                    key={product.productId}
-                    id={product.productId}
+                    key={item.id}
+                    id={item.id}
                     onClick={onMultipleClick}
                   >
-                    {product.keyName}
+                    {item.keyName}
                   </MultipleItem>
                 );
               })
@@ -344,7 +344,7 @@ export const StyledSelect = (props: propsTypes) => {
                   />
                 ) : (
                   optionList.map((list: any, index: number) => {
-                    if (!newList.includes(list.base.id)) {
+                    if (!newList.includes(list.id || list.base.id)) {
                       return (
                         <OptionItems
                           key={index}

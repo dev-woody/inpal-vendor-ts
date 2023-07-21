@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { itemsFindAllActions } from "reducers/goodsGroup/items/findAll";
 import { itemSetSellStatusActions } from "reducers/goodsGroup/items/setSellStatus";
+import { vendorGoodsItemsActions } from "reducers/goodsGroup/vendorGoodsItems";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 
 const GoodsGroupItemsContainer = () => {
@@ -24,11 +25,9 @@ const GoodsGroupItemsContainer = () => {
 
   useEffect(() => {
     dispatch(
-      itemsFindAllActions.getFindAll({
-        data: {
-          goodGroupId: id,
-          isDesc: false,
-        },
+      vendorGoodsItemsActions.findByGoodsGroupId({
+        goodGroupId: id,
+        isDesc: false,
       })
     );
   }, [setSellStatus]);

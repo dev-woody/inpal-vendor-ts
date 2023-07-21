@@ -21,23 +21,15 @@ const GoodsGroupListContainer = () => {
   };
 
   useEffect(() => {
-    const data = {
-      vendorId: user.vendorId,
-      isDesc: true,
-    };
-    dispatch(vendorGoodsGroupActions.findAll(data));
+    dispatch(vendorGoodsGroupActions.findAll(false));
   }, [setOpenStatus]);
 
   useEffect(() => {
-    const data = {
-      vendorId: user.vendorId,
-      isDesc: true,
-    };
-    dispatch(vendorGoodsGroupActions.findAll(data));
+    dispatch(vendorGoodsGroupActions.findAll(false));
     return () => {
       dispatch(vendorGoodsGroupActions.reset("findAll"));
     };
-  }, []);
+  }, [dispatch]);
 
   const goodsGroupColumns: ColumnsType[] = [
     {
@@ -53,7 +45,7 @@ const GoodsGroupListContainer = () => {
     {
       title: "제조사명",
       dataIndex: "info",
-      render: (info) => info.manufacturer.basic.name,
+      render: (info) => info.basic.manufacturer.basic.nameKr,
     },
     {
       title: "생성일",
@@ -73,15 +65,15 @@ const GoodsGroupListContainer = () => {
       render: (info: any, contentList: any) => {
         const action = () => {
           onSetStatus({
-            vendorId: contentList.vendorId,
-            id: contentList.id,
-            status: info.openStatus == "SELL" ? "stop" : "sell",
+            vendorId: user.vendorId,
+            id: contentList.base.id,
+            openStatus: info.openStatus == "OPEN" ? "close" : "open",
           });
         };
         return (
           <StyledToggle
             data={info.openStatus}
-            openStatus="SELL"
+            openStatus="OPEN"
             action={action}
           />
         );

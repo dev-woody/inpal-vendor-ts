@@ -14,11 +14,13 @@ import { NavigateFunction } from "react-router-dom";
 const SpecListBlock = styled(Responsive)``;
 
 type SpecProps = {
+  productList: response;
   specList: response;
+  onSelect: (id: string) => void;
   navigate: NavigateFunction;
 };
 
-const SpecList = ({ specList, navigate }: SpecProps) => {
+const SpecList = ({ productList, specList, onSelect, navigate }: SpecProps) => {
   return (
     <>
       <SpecListBlock>
@@ -50,15 +52,15 @@ const SpecList = ({ specList, navigate }: SpecProps) => {
           columns={specColunms}
           content={specList.data}
           pagenation
-          url="/dcode/dcode/detail"
+          url="/goods/spec/detail"
           moveKey={["base", "id"]}
-          // filterInput={
-          //   <StyledSelect
-          //     placeholder="품목 선택"
-          //     optionList={productList}
-          //     actions={onSelect}
-          //   />
-          // }
+          filterInput={
+            <StyledSelect
+              placeholder="품목 선택"
+              optionList={productList.data}
+              actions={onSelect}
+            />
+          }
         />
       </SpecListBlock>
     </>

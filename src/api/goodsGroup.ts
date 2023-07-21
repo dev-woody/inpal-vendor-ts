@@ -1,12 +1,8 @@
 import { accessClient, client } from "./createAPI";
 
-export const findAll = async (data: object) => {
+export const findAll = async (isDesc: boolean) => {
   return accessClient
-    .get(`/vendor/good/group/findAll`, {
-      params: {
-        ...data,
-      },
-    })
+    .get(`/store/construction/good/group/findAll/${isDesc}`)
     .then((res) => {
       return res.data;
     });
@@ -14,7 +10,7 @@ export const findAll = async (data: object) => {
 
 export const register = async (data: object) => {
   return accessClient
-    .post(`}/vendor/good/group/register`, {
+    .post(`/vendor/good/group/register`, {
       ...data,
     })
     .then((res) => {
@@ -46,35 +42,38 @@ export const detailPage = async (formData: FormData) => {
     });
 };
 
-//todo 파라미터로 바꿔야함
-export const findById = async (data: object) => {
-  return client
-    .get(`/vendor/good/group/findById`, { params: { ...data } })
+export const findById = async (id: string) => {
+  return accessClient
+    .get(`/store/construction/good/group/findById/${id}`)
     .then((res) => {
       return res.data;
     });
 };
 
-//todo 업데이트 3개로 나눠야함
-export const update = async (data: object) => {
+export const basicUpdate = async (data: object) => {
   return accessClient
-    .post(`/construction/vendor/good/group/update`, { ...data })
+    .post(`/vendor/good/group/update/basicInfo`, { ...data })
     .then((res) => {
       return res.data;
     });
 };
 
-export const groupSetSellStatus = async (data: object) => {
+export const detailUpdate = async (data: object) => {
   return accessClient
-    .get(`/construction/vendor/good/group/setSellStatus`, {
-      params: {
-        ...data,
-      },
-    })
+    .post(`/vendor/good/group/update/detailPage`, { ...data })
     .then((res) => {
       return res.data;
     });
 };
+
+export const goodsImageUpdate = async (data: object) => {
+  return accessClient
+    .post(`/vendor/good/group/update/goodImage`, { ...data })
+    .then((res) => {
+      return res.data;
+    });
+};
+
 export const setOpenStatus = async (data: object) => {
   return accessClient
     .get(`/vendor/good/group/setOpenStatus`, {
@@ -87,7 +86,7 @@ export const setOpenStatus = async (data: object) => {
     });
 };
 
-//! -------------------------- goods group option
+//* -------------------------- goods group option
 export const optionFindByGroupId = async (data: object) => {
   return client
     .get(`/construction/common/good/group/option/findAllByGoodGroupId`, {
@@ -136,10 +135,10 @@ export const optionSellStatus = async (data: object) => {
     });
 };
 
-//! -------------------------- goods group item
+//* -------------------------- goods group item
 export const itemRegister = async (data: object) => {
   return accessClient
-    .post(`/construction/vendor/good/item/register`, { ...data })
+    .post(`/vendor/good/item/register`, { ...data })
     .then((res) => {
       return res.data;
     });
@@ -147,7 +146,7 @@ export const itemRegister = async (data: object) => {
 
 export const itemFindByGroupId = async (data: object) => {
   return client
-    .get(`/construction/common/good/item/findAllByGoodGroupId`, {
+    .get(`/store/construction/good/item/findByGoodGroupId`, {
       params: {
         ...data,
       },
@@ -159,7 +158,7 @@ export const itemFindByGroupId = async (data: object) => {
 
 export const itemFindById = async (id: string) => {
   return client
-    .get(`/construction/common/good/item/findById/${id}`)
+    .get(`}/store/construction/good/item/findById/${id}`)
     .then((res) => {
       return res.data;
     });

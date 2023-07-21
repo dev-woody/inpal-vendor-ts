@@ -14,20 +14,13 @@ import vendorGoodsSpec, {
 import vendorGoodsGroup, {
   vendorGoodsGroupSaga,
 } from "./goodsGroup/vendorGoodsGroup";
+import vendorGoodsItems, {
+  vendorGoodsItemsSaga,
+} from "./goodsGroup/vendorGoodsItems";
 
 //*  admin
 import register, { registerSaga } from "./admin/register";
 import findAllUnit, { findAllUnitSaga } from "./admin/findAllUnit";
-//*  goodsGroup
-import goodsGroupImage, { goodsGroupImageSaga } from "./goodsGroup/image";
-import detailPage, { detailPageSaga } from "./goodsGroup/detailPage";
-import goodsGroupRegister, {
-  goodsGroupRegisterSaga,
-} from "./goodsGroup/register";
-import goodsGroupUpdate, { goodsGroupUpdateSaga } from "./goodsGroup/update";
-import groupSetSellStatus, {
-  groupSetSellStatusSaga,
-} from "./goodsGroup/setSellStatus";
 //*  goodsGroup option
 import optionFindAll, {
   optionFindAllSaga,
@@ -64,15 +57,10 @@ function* rootSaga() {
     fork(vendorDeliveryCodeSaga),
     fork(vendorGoodsSpecSaga),
     fork(vendorGoodsGroupSaga),
+    fork(vendorGoodsItemsSaga),
     //* 관리자
     fork(registerSaga),
     fork(findAllUnitSaga),
-    //* 상품그룹
-    fork(goodsGroupImageSaga),
-    fork(detailPageSaga),
-    fork(goodsGroupRegisterSaga),
-    fork(goodsGroupUpdateSaga),
-    fork(groupSetSellStatusSaga),
     //* 상품그룹 옵션
     fork(optionFindAllSaga),
     fork(optionRegisterSaga),
@@ -97,15 +85,10 @@ const rootReducer = combineReducers({
   vendorDeliveryCode: vendorDeliveryCode.reducer,
   vendorGoodsSpec: vendorGoodsSpec.reducer,
   vendorGoodsGroup: vendorGoodsGroup.reducer,
+  vendorGoodsItems: vendorGoodsItems.reducer,
   //* 관리자
   register: register.reducer,
   findAllUnit: findAllUnit.reducer,
-  //* 상품그룹
-  goodsGroupImage: goodsGroupImage.reducer,
-  detailPage: detailPage.reducer,
-  goodsGroupRegister: goodsGroupRegister.reducer,
-  goodsGroupUpdate: goodsGroupUpdate.reducer,
-  groupSetSellStatus: groupSetSellStatus.reducer,
   //* 상품그룹 옵션
   optionFindAll: optionFindAll.reducer,
   optionRegister: optionRegister.reducer,

@@ -25,7 +25,6 @@ type ItemProps = {
   dcode: response;
   isColorItem: boolean;
   colorCode: response;
-  unitCode: response;
   onSubmit: ({ data }: { data: any }) => void;
   modalVisible: boolean;
   setModalVisible: (status: boolean) => void;
@@ -34,31 +33,33 @@ type ItemProps = {
 };
 
 const schema = yup.object({
-  colorCodeId: yup.string().required(),
-  model: yup.string().required(),
-  name: yup.string().required(),
-  vendorDeliveryId: yup.string().required(),
-  stock: yup.string().required(),
-  isOrderMade: yup.boolean().required(),
-  isColorItem: yup.boolean().required(),
-  colorItem: yup
-    .object({
-      colorRgb: yup.string(),
-      capacity: yup.string(),
-      unit: yup.string(),
-      basicPrice: yup.string(),
-      saleRatio: yup.string(),
-      pointRatio: yup.string(),
-    })
-    .nullable(true),
-  imageItem: yup.object().nullable(true),
+  basicInfo: yup.object({
+    model: yup.string(),
+    name: yup.string(),
+    isOrderMade: yup.boolean(),
+    colorCodeId: yup.string(),
+  }),
+  dsInfo: yup.object({
+    dsType: yup.string(),
+    color: yup.object({
+      rgb: yup.string(),
+    }),
+  }),
+  priceInfo: yup.object({
+    priceNumInfos: yup.array().of(
+      yup.object({
+        specNumId: yup.string(),
+        price: yup.number(),
+        salePrice: yup.number(),
+      })
+    ),
+  }),
 });
 
 const GoodsGroupItemRegister = ({
   dcode,
   isColorItem,
   colorCode,
-  unitCode,
   onSubmit,
   modalVisible,
   setModalVisible,
@@ -74,38 +75,31 @@ const GoodsGroupItemRegister = ({
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      colorCodeId: "",
-      model: "",
-      name: "",
-      vendorDeliveryId: "",
-      stock: "",
-      isColorItem: false,
-      isOrderMade: false,
-      colorItem: {
-        colorRgb: "",
-        capacity: "",
-        unit: "",
-        basicPrice: "",
-        saleRatio: "",
-        pointRatio: "",
+      basicInfo: {
+        model: "",
+        name: "",
+        isOrderMade: false,
+        colorCodeId: "",
       },
-      imageItem: null,
+      dsInfo: {
+        dsType: "color",
+        color: { rgb: "" },
+        // "image": {"imageInfo": {"id": ""}} ,
+      },
+      priceInfo: {
+        priceNumInfos: [
+          {
+            specNumId: "",
+            price: "",
+            salePrice: "",
+          },
+        ],
+      },
+      stock: "",
     },
   });
 
   const [isToggle, setIsToggle] = useState(false);
-
-  useEffect(() => {
-    setValue("isOrderMade", isToggle);
-  }, [isToggle, setValue]);
-
-  useEffect(() => {
-    if (isColorItem) {
-      setValue("isColorItem", true);
-    } else {
-      setValue("isColorItem", false);
-    }
-  }, [isColorItem, setValue]);
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) =>
@@ -153,10 +147,10 @@ const GoodsGroupItemRegister = ({
                 <StyledSelect
                   optionList={colorCode.data}
                   placeholder="색상계열"
-                  label="colorCodeId"
+                  label="basicInfo.colorCodeId"
                   register={register}
-                  errors={errors.colorCodeId?.message}
-                  status={errors.colorCodeId}
+                  errors={errors}
+                  status={errors.basicInfo?.colorCodeId}
                   setValue={setValue}
                   align="vertical"
                   // actions={onSelectManufact}
@@ -171,10 +165,10 @@ const GoodsGroupItemRegister = ({
                 <StyledInput
                   align="vertical"
                   placeholder="모델명"
-                  label="model"
+                  label="basicInfo.model"
                   register={register}
-                  errors={errors.model?.message}
-                  status={errors.model}
+                  errors={errors}
+                  status={errors.basicInfo?.model}
                 />
               }
             />
@@ -185,28 +179,10 @@ const GoodsGroupItemRegister = ({
                 <StyledInput
                   align="vertical"
                   placeholder="상품명"
-                  label="name"
+                  label="basicInfo.name"
                   register={register}
-                  errors={errors.name?.message}
-                  status={errors.name}
-                />
-              }
-            />
-            <DescriptionContent
-              span="12"
-              label="배송코드"
-              content={
-                <StyledSelect
-                  optionList={dcode.data}
-                  align="vertical"
-                  placeholder="배송코드"
-                  label="vendorDeliveryId"
-                  register={register}
-                  errors={errors.vendorDeliveryId?.message}
-                  status={errors.vendorDeliveryId}
-                  setValue={setValue}
-                  // actions={onSelectManufact}
-                  index="1"
+                  errors={errors}
+                  status={errors.basicInfo?.name}
                 />
               }
             />
@@ -219,7 +195,7 @@ const GoodsGroupItemRegister = ({
                   placeholder="재고"
                   label="stock"
                   register={register}
-                  errors={errors.stock?.message}
+                  errors={errors}
                   status={errors.stock}
                 />
               }
@@ -247,7 +223,7 @@ const GoodsGroupItemRegister = ({
             />
             {isColorItem ? (
               <Fragment>
-                <DescriptionContent
+                {/* <DescriptionContent
                   span="12"
                   label="색상코드"
                   content={
@@ -260,83 +236,7 @@ const GoodsGroupItemRegister = ({
                       status={errors.colorItem?.colorRgb}
                     />
                   }
-                />
-                <DescriptionContent
-                  span="12"
-                  label="용량"
-                  content={
-                    <StyledInput
-                      align="vertical"
-                      placeholder="용량"
-                      label="colorItem.capacity"
-                      register={register}
-                      errors={errors.colorItem?.capacity?.message}
-                      status={errors.colorItem?.capacity}
-                    />
-                  }
-                />
-                <DescriptionContent
-                  span="12"
-                  label="단위"
-                  content={
-                    <StyledSelect
-                      optionList={unitCode.data?.filter(
-                        (list: any) => list.openStatus === "OPEN"
-                      )}
-                      align="vertical"
-                      placeholder="단위"
-                      label="colorItem.unit"
-                      register={register}
-                      errors={errors.colorItem?.unit?.message}
-                      status={errors.colorItem?.unit}
-                      setValue={setValue}
-                      // actions={onSelectManufact}
-                      index="1"
-                    />
-                  }
-                />
-                <DescriptionContent
-                  span="12"
-                  label="정상가격"
-                  content={
-                    <StyledInput
-                      align="vertical"
-                      placeholder="정상가격"
-                      label="colorItem.basicPrice"
-                      register={register}
-                      errors={errors.colorItem?.basicPrice?.message}
-                      status={errors.colorItem?.basicPrice}
-                    />
-                  }
-                />
-                <DescriptionContent
-                  span="12"
-                  label="할인율"
-                  content={
-                    <StyledInput
-                      align="vertical"
-                      placeholder="할인율"
-                      label="colorItem.saleRatio"
-                      register={register}
-                      errors={errors.colorItem?.saleRatio?.message}
-                      status={errors.colorItem?.saleRatio}
-                    />
-                  }
-                />
-                <DescriptionContent
-                  span="12"
-                  label="적립률"
-                  content={
-                    <StyledInput
-                      align="vertical"
-                      placeholder="적립률"
-                      label="colorItem.pointRatio"
-                      register={register}
-                      errors={errors.colorItem?.pointRatio?.message}
-                      status={errors.colorItem?.pointRatio}
-                    />
-                  }
-                />
+                /> */}
               </Fragment>
             ) : null}
             {/* <DescriptionContent
