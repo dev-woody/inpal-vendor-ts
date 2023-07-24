@@ -158,10 +158,22 @@ export const itemFindByGroupId = async (data: object) => {
 
 export const itemFindById = async (id: string) => {
   return client
-    .get(`}/store/construction/good/item/findById/${id}`)
+    .get(`/store/construction/good/item/findById/${id}`)
     .then((res) => {
       return res.data;
     });
+};
+
+export const itemBasicUpdate = async (data: object) => {
+  return accessClient
+    .post(`/vendor/good/item/update/basicInfo`, { ...data })
+    .then((res) => res.data);
+};
+
+export const itemDsInfoUpdate = async (data: object) => {
+  return accessClient
+    .post(`/vendor/good/item/update/dsInfo`, { ...data })
+    .then((res) => res.data);
 };
 
 export const itemUpdate = async (data: object) => {
@@ -174,11 +186,15 @@ export const itemUpdate = async (data: object) => {
 
 export const itemSetSellStatus = async (data: object) => {
   return await accessClient
-    .get(`/construction/vendor/good/item/setSellStatus`, {
-      params: {
-        ...data,
-      },
-    })
+    .post(
+      `/vendor/good/item/setSellStatus`,
+      {},
+      {
+        params: {
+          ...data,
+        },
+      }
+    )
     .then((res) => {
       return res.data;
     });

@@ -228,7 +228,7 @@ export const StyledSelect = (props: propsTypes) => {
           setIsMultiple(newArray);
           setValue(label, selectedItemInfos);
         } else if (label) {
-          setValue(label, id);
+          setValue(label, id, keyName);
         }
       }
     };
@@ -349,12 +349,14 @@ export const StyledSelect = (props: propsTypes) => {
                         <OptionItems
                           key={index}
                           keyName={
+                            list.id ||
                             list.name ||
                             list.desc ||
                             list.info.property ||
                             list.info.nameKr ||
+                            list.info.name ||
                             list.info.code ||
-                            list.info.basic.nameKr
+                            list.info.basic.info.nameKr
                           }
                           id={list.id || list.base.id}
                         />

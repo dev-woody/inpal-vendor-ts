@@ -40,12 +40,12 @@ const GoodsGroupListContainer = () => {
     {
       title: "그룹명",
       dataIndex: "info",
-      render: (info) => info.basic.name,
+      render: (info) => info.basic.info.name,
     },
     {
       title: "제조사명",
       dataIndex: "info",
-      render: (info) => info.basic.manufacturer.basic.nameKr,
+      render: (info) => info.basic.info.manufacturer.info.basic.info.nameKr,
     },
     {
       title: "생성일",

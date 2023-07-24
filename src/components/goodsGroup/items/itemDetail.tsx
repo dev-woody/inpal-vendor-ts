@@ -17,6 +17,8 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { NavigateFunction } from "react-router-dom";
+import BasicInfoUpdateContainer from "containers/goodsGroup/items/basicInfoUpdateContainer";
+import DsInfoUpdateContainer from "containers/goodsGroup/items/dsInfoUpdaeContainer";
 
 const GoodsGroupItemDetailBlock = styled(Responsive)``;
 
@@ -87,7 +89,7 @@ const GoodsGroupItemDetail = ({
           }
         />
       </GoodsGroupItemDetailBlock>
-      <GoodsGroupItemDetailBlock>
+      {/* <GoodsGroupItemDetailBlock>
         <PageHeader title="상품 상세정보" />
         <StyledForm
           onSubmit={handleSubmit(
@@ -200,7 +202,9 @@ const GoodsGroupItemDetail = ({
             }
           }}
         />
-      </GoodsGroupItemDetailBlock>
+      </GoodsGroupItemDetailBlock> */}
+      <BasicInfoUpdateContainer basicInfo={itemData?.data?.info?.basic} />
+      <DsInfoUpdateContainer dsInfo={itemData?.data?.info?.basic} />
     </>
   );
 };

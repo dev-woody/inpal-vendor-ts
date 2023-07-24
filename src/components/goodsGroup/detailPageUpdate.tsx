@@ -77,9 +77,9 @@ const DetailPageUpdate = ({ detailPage, onSubmit }: basicType) => {
                 status={errors.detailPageInfo?.imageNumInfos}
                 subject="good_group"
                 type="detail_page"
-                isThumbnailImage={detailPage?.imageNums.map(
+                isThumbnailImage={detailPage?.info.imageNums.map(
                   (imageInfo: any) => {
-                    return { imageId: imageInfo.image.id };
+                    return { imageId: imageInfo.info.image.id };
                   }
                 )}
                 successAction={(result: any) => {

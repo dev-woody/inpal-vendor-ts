@@ -3,16 +3,16 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { vendorDeliveryCodeActions } from "reducers/deliveryCode/vendorDeliveryCode";
 import { vendorGoodsGroupActions } from "reducers/goodsGroup/vendorGoodsGroup";
-import { itemFindByIdActions } from "reducers/goodsGroup/items/findById";
 import { itemUpdateActions } from "reducers/goodsGroup/items/update";
 import { vendorProductActions } from "reducers/product/vendorProduct";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
+import { vendorGoodsItemsActions } from "reducers/goodsGroup/vendorGoodsItems";
 
 const GoodsGroupItemDetailContainer = () => {
   const { user, itemData, dcode, goodsGroup, colorCode, updateResult } =
     useAppSelector((state) => ({
       user: state.user,
-      itemData: state.itemFindById,
+      itemData: state.vendorGoodsItems.findById,
       dcode: state.vendorDeliveryCode.findAllByProductId,
       goodsGroup: state.vendorGoodsGroup.findById,
       colorCode: state.vendorProduct.findAllColorCode,
@@ -44,29 +44,29 @@ const GoodsGroupItemDetailContainer = () => {
     }
   }, [updateResult]);
 
-  useEffect(() => {
-    if (itemData.success) {
-      dispatch(
-        vendorDeliveryCodeActions.findAllByProductId({
-          data: {
-            vendorId: user.vendorId,
-            productId: goodsGroup.data.product.id,
-            isDesc: false,
-          },
-        })
-      );
-    }
-  }, [goodsGroup]);
+  // useEffect(() => {
+  //   if (itemData.success) {
+  //     dispatch(
+  //       vendorDeliveryCodeActions.findAllByProductId({
+  //         data: {
+  //           vendorId: user.vendorId,
+  //           productId: goodsGroup.data.product.id,
+  //           isDesc: false,
+  //         },
+  //       })
+  //     );
+  //   }
+  // }, [goodsGroup]);
 
   useEffect(() => {
     dispatch(vendorGoodsGroupActions.findById(id));
-    dispatch(itemFindByIdActions.getFindById({ id: itemId }));
-    dispatch(vendorProductActions.findAllColorCode({ isDesc: false }));
+    dispatch(vendorGoodsItemsActions.findById(itemId));
+    dispatch(vendorProductActions.findAllColorCode(false));
     return () => {
       dispatch(itemUpdateActions.reset({}));
       dispatch(vendorDeliveryCodeActions.reset("fincAllByProductId"));
       dispatch(vendorGoodsGroupActions.reset("findById"));
-      dispatch(itemFindByIdActions.reset({}));
+      dispatch(vendorGoodsItemsActions.reset("findById"));
       dispatch(vendorProductActions.reset("findAllColorCode"));
     };
   }, []);

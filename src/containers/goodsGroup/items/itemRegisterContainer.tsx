@@ -6,37 +6,50 @@ import { vendorDeliveryCodeActions } from "reducers/deliveryCode/vendorDeliveryC
 import { itemRegisterActions } from "reducers/goodsGroup/items/register";
 import { vendorGoodsGroupActions } from "reducers/goodsGroup/vendorGoodsGroup";
 import { vendorGoodsItemsActions } from "reducers/goodsGroup/vendorGoodsItems";
+import { vendorGoodsSpecActions } from "reducers/goodsGroup/vendorGoodsSpec";
 import { vendorProductActions } from "reducers/product/vendorProduct";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 
 const GoodsGroupItemRegisterContainer = () => {
-  const { user, dcode, goodsGroup, colorCode, registerResult } = useAppSelector(
-    (state) => ({
+  const { user, goodsGroup, colorCode, registerResult, specInfo } =
+    useAppSelector((state) => ({
       user: state.user,
-      dcode: state.vendorDeliveryCode.findAllByProductId,
       goodsGroup: state.vendorGoodsGroup.findById,
       colorCode: state.vendorProduct.findAllColorCode,
+      specInfo: state.vendorGoodsSpec.findAllByProductId,
       registerResult: state.vendorGoodsItems.register,
-    })
-  );
+    }));
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
 
   const onSubmit = (data: any) => {
-    dispatch(vendorGoodsItemsActions.register({ ...data }));
+    dispatch(
+      vendorGoodsItemsActions.register({
+        vendorId: user.vendorId,
+        goodGroupId: goodsGroup.data.base.id,
+        ...data,
+      })
+    );
   };
 
   useEffect(() => {
     if (goodsGroup.success) {
       dispatch(
-        vendorDeliveryCodeActions.findAllByProductId({
+        vendorGoodsSpecActions.findAllByProductId({
           vendorId: user.vendorId,
-          // productId: goodsGroup.data.product.id,
+          productId: goodsGroup.data.info.basic.info.product.id,
           isDesc: false,
         })
       );
+      // dispatch(
+      //   vendorDeliveryCodeActions.findAllByProductId({
+      //     vendorId: user.vendorId,
+      //     // productId: goodsGroup.data.product.id,
+      //     isDesc: false,
+      //   })
+      // );
     }
   }, [goodsGroup]);
 
@@ -47,8 +60,9 @@ const GoodsGroupItemRegisterContainer = () => {
   }, [registerResult]);
 
   useEffect(() => {
-    dispatch(vendorGoodsGroupActions.findAll(false));
+    dispatch(vendorGoodsGroupActions.findById(id));
     dispatch(vendorProductActions.findAllColorCode(false));
+
     return () => {
       dispatch(vendorDeliveryCodeActions.reset("findAllByProductId"));
       dispatch(vendorGoodsItemsActions.reset("register"));
@@ -59,9 +73,10 @@ const GoodsGroupItemRegisterContainer = () => {
 
   return (
     <GoodsGroupItemRegister
-      dcode={dcode}
-      isColorItem={goodsGroup.data?.product?.name === "페인트"}
+      isColorItem={goodsGroup.data?.info?.dsType}
       colorCode={colorCode}
+      goodsGroup={goodsGroup}
+      specInfo={specInfo}
       onSubmit={onSubmit}
       modalVisible={modalVisible}
       setModalVisible={setModalVisible}

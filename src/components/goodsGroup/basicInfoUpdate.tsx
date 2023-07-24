@@ -68,10 +68,10 @@ const BasicInfoUpdate = ({
 
   useEffect(() => {
     if (basicInfo) {
-      setValue("name", basicInfo?.name);
-      setValue("description", basicInfo?.description);
-      setValue("productId", basicInfo?.product?.id);
-      setValue("propertyId", basicInfo?.property?.id);
+      setValue("name", basicInfo?.info.name);
+      setValue("description", basicInfo?.info.description);
+      setValue("productId", basicInfo?.info.product?.id);
+      setValue("propertyId", basicInfo?.info.property?.id);
       setValue("manufacturerId", basicInfo?.manufacturer?.id);
     }
   }, [basicInfo]);
@@ -119,7 +119,7 @@ const BasicInfoUpdate = ({
             label="품목"
             content={
               <StyledSelect
-                placeholder={basicInfo?.product.nameKr}
+                placeholder={basicInfo?.info.product.info.nameKr}
                 label="productId"
                 optionList={productList.data}
                 register={register}
@@ -137,7 +137,7 @@ const BasicInfoUpdate = ({
             label="상품속성"
             content={
               <StyledSelect
-                placeholder={basicInfo?.property?.property}
+                placeholder={basicInfo?.info.property?.info.property}
                 label="propertyId"
                 optionList={propertyList.data}
                 register={register}
@@ -154,7 +154,7 @@ const BasicInfoUpdate = ({
             label="제조사"
             content={
               <StyledSelect
-                placeholder={basicInfo?.manufacturer.nameKr}
+                placeholder={basicInfo?.info.manufacturer.info.nameKr}
                 label="manufacturerId"
                 optionList={manufacturerList.data}
                 register={register}

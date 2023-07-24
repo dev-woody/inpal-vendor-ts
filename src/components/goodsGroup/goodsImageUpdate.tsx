@@ -78,9 +78,9 @@ const GoodsImageUpdate = ({ goodsIamge, onSubmit }: basicType) => {
                 status={errors.goodImageInfo?.imageNumInfos}
                 subject="good_group"
                 type="good_image"
-                isThumbnailImage={goodsIamge?.imageNums.map(
+                isThumbnailImage={goodsIamge?.info.imageNums.map(
                   (imageInfo: any) => {
-                    return { imageId: imageInfo.image.id };
+                    return { imageId: imageInfo.info.image.id };
                   }
                 )}
                 successAction={(result: any) => {

@@ -47,11 +47,9 @@ export const findAllCategory = async (data: object) => {
 };
 
 export const findAllColorCode = async (isDesc: boolean) => {
-  return client
-    .get(`/construction/common/colorCode/findAll/${isDesc}`)
-    .then((res) => {
-      return res.data;
-    });
+  return client.get(`/store/color_code/findAll/${isDesc}`).then((res) => {
+    return res.data;
+  });
 };
 
 export const findUnitByProductId = async (data: object) => {

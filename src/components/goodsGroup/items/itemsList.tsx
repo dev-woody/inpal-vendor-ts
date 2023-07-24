@@ -31,11 +31,11 @@ const GoodsGroupItems = ({
       />
       <Table
         columns={goodsGroupItemsColumns}
-        content={itemList.data}
+        content={itemList?.data}
         url={`/goods/groups/detail/${id}/items`}
-        moveKey="id"
+        moveKey={["base", "id"]}
         pagenation
-        filter
+        // filter
       />
     </GoodsGroupItemsBlock>
   );

@@ -34,7 +34,7 @@ const BasicInfoUpdateContainer = ({ basicInfo }: { basicInfo: any }) => {
   useEffect(() => {
     if (goodsGroupInfo.success) {
       const data = {
-        productId: goodsGroupInfo.data.info.basic.property.productId,
+        productId: goodsGroupInfo.data.info.basic.info.product.id,
         isDesc: false,
       };
       dispatch(vendorProductActions.findAllCategory(data));

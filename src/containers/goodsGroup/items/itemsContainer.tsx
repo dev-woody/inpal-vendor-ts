@@ -4,23 +4,21 @@ import { changeDays } from "lib/functions/changeInput";
 import { StyledToggle } from "lib/styles";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { itemsFindAllActions } from "reducers/goodsGroup/items/findAll";
-import { itemSetSellStatusActions } from "reducers/goodsGroup/items/setSellStatus";
 import { vendorGoodsItemsActions } from "reducers/goodsGroup/vendorGoodsItems";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 
 const GoodsGroupItemsContainer = () => {
   const { user, itemList, setSellStatus } = useAppSelector((state) => ({
     user: state.user,
-    itemList: state.itemsFindAll,
-    setSellStatus: state.itemSetSellStatus,
+    itemList: state.vendorGoodsItems.findByGoodsGroupId,
+    setSellStatus: state.vendorGoodsItems.setSellStatus,
   }));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
 
   const onSetStatus = (data: object) => {
-    dispatch(itemSetSellStatusActions.getSetSellStatus({ data }));
+    dispatch(vendorGoodsItemsActions.setSellStatus({ ...data }));
   };
 
   useEffect(() => {
@@ -34,61 +32,67 @@ const GoodsGroupItemsContainer = () => {
 
   useEffect(() => {
     dispatch(
-      itemsFindAllActions.getFindAll({
-        data: {
-          goodGroupId: id,
-          isDesc: false,
-        },
+      vendorGoodsItemsActions.findByGoodsGroupId({
+        goodGroupId: id,
+        isDesc: false,
       })
     );
     return () => {
-      dispatch(itemsFindAllActions.reset({}));
+      dispatch(vendorGoodsItemsActions.reset("findByGoodsGroupId"));
     };
   }, [dispatch, id]);
 
   const goodsGroupItemsColumns: ColumnsType[] = [
     {
       title: "모델명",
-      dataIndex: "model",
+      dataIndex: "info",
+      render: (info) => info.basic.info.model,
     },
     {
       title: "아이템명",
-      dataIndex: "name",
+      dataIndex: "info",
+      render: (info) => info.basic.info.name,
     },
     {
       title: "재고",
-      dataIndex: "stock",
+      dataIndex: "info",
+      render: (info) => info.stock,
     },
     {
       title: "판매량",
-      dataIndex: "sellCount",
+      dataIndex: "info",
+      render: (info) => info.sellCount,
     },
     {
       title: "생성일",
-      dataIndex: "createdAt",
+      dataIndex: "base",
       isDesc: true,
-      render: (createdAt) => changeDays(createdAt),
+      render: (base) => changeDays(base.createdAt),
     },
     {
       title: "수정일",
-      dataIndex: "updatedAt",
+      dataIndex: "base",
       isDesc: true,
-      render: (updatedAt) => changeDays(updatedAt),
+      render: (base) => changeDays(base.updatedAt),
     },
     {
       title: "판매상태",
-      dataIndex: "sellStatus",
-      render: (openStatus: string, contentList: any) => {
+      dataIndex: "info",
+      render: (info: any, contentList: any) => {
         const action = () => {
           onSetStatus({
-            vendorId: contentList.vendorId,
-            goodGroupId: contentList.goodGroupId,
-            id: contentList.id,
-            status: openStatus == "SELL" ? "stop" : "sell",
+            vendorId: user.vendorId,
+            goodGroupId: contentList.info.goodGroupId,
+            id: contentList.base.id,
+            sellStatus: info.sellStatus == "SELL" ? "stop" : "sell",
           });
         };
         return (
-          <StyledToggle data={openStatus} openStatus="SELL" action={action} />
+          <StyledToggle
+            data={info.sellStatus}
+            openStatus="SELL"
+            action={action}
+          />
         );
       },
     },

@@ -12,6 +12,8 @@ const initialState: ResponseData = {
   register: {},
   findByGoodsGroupId: {},
   findById: {},
+  setSellStatus: {},
+  basicUpdate: {},
 };
 
 export function* vendorGoodsItemsSaga() {
@@ -28,7 +30,18 @@ export function* vendorGoodsItemsSaga() {
   );
   yield takeLatest(
     vendorGoodsItemsActions.findById,
-    createRequestSaga("vendorGoodsItems/findById", itemAPI.findById)
+    createRequestSaga("vendorGoodsItems/findById", itemAPI.itemFindById)
+  );
+  yield takeLatest(
+    vendorGoodsItemsActions.setSellStatus,
+    createRequestSaga(
+      "vendorGoodsItems/setSellStatus",
+      itemAPI.itemSetSellStatus
+    )
+  );
+  yield takeLatest(
+    vendorGoodsItemsActions.basicUpdate,
+    createRequestSaga("vendorGoodsItems/basicUpdate", itemAPI.itemBasicUpdate)
   );
 }
 
@@ -48,6 +61,14 @@ const vendorGoodsItems = createSlice({
     ...createAsyncReducers({
       actionName: "findById",
       reducerName: "findById",
+    })<any, DataForm, string>(),
+    ...createAsyncReducers({
+      actionName: "setSellStatus",
+      reducerName: "setSellStatus",
+    })<any, DataForm, string>(),
+    ...createAsyncReducers({
+      actionName: "basicUpdate",
+      reducerName: "basicUpdate",
     })<any, DataForm, string>(),
     ...createSingleReducers({
       actionName: "reset",
