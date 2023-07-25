@@ -90,7 +90,9 @@ export const DescriptionContent = ({
       <div className="label des">
         <div
           style={{
-            padding: "0.375rem 0",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             fontSize: "0.875rem",
           }}
         >

@@ -176,6 +176,12 @@ export const itemDsInfoUpdate = async (data: object) => {
     .then((res) => res.data);
 };
 
+export const itemPriceUpdate = async (data: object) => {
+  return accessClient
+    .post(`/vendor/good/item/update/priceInfo`, { ...data })
+    .then((res) => res.data);
+};
+
 export const itemUpdate = async (data: object) => {
   return accessClient
     .post(`/construction/vendor/good/item/update`, { ...data })

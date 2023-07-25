@@ -19,52 +19,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { NavigateFunction } from "react-router-dom";
 import BasicInfoUpdateContainer from "containers/goodsGroup/items/basicInfoUpdateContainer";
 import DsInfoUpdateContainer from "containers/goodsGroup/items/dsInfoUpdaeContainer";
+import PriceInfoUpdateContainer from "containers/goodsGroup/items/priceInfoUpdateContainer";
 
 const GoodsGroupItemDetailBlock = styled(Responsive)``;
 
 type ItemProps = {
   itemData: response;
-  dcode: response;
-  colorCode: response;
-  onSubmit: ({ data }: { data: any }) => void;
-  modalVisible: boolean;
-  setModalVisible: (status: boolean) => void;
-  navigate: NavigateFunction;
   id: string | undefined;
 };
 
-const schema = yup.object({
-  colorCodeId: yup.string().required(),
-  model: yup.string().required(),
-  name: yup.string().required(),
-  vendorDeliveryId: yup.string().required(),
-});
-
-const GoodsGroupItemDetail = ({
-  itemData,
-  dcode,
-  colorCode,
-  onSubmit,
-  modalVisible,
-  setModalVisible,
-  navigate,
-  id,
-}: ItemProps) => {
-  const data = itemData.data;
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: {
-      colorCodeId: data?.colorCodeId,
-      model: data?.model,
-      name: data?.name,
-      vendorDeliveryId: data?.vendorDeliveryId,
-    },
-  });
+const GoodsGroupItemDetail = ({ itemData, id }: ItemProps) => {
   return (
     <>
       <GoodsGroupItemDetailBlock>
@@ -204,7 +168,8 @@ const GoodsGroupItemDetail = ({
         />
       </GoodsGroupItemDetailBlock> */}
       <BasicInfoUpdateContainer basicInfo={itemData?.data?.info?.basic} />
-      <DsInfoUpdateContainer dsInfo={itemData?.data?.info?.basic} />
+      <DsInfoUpdateContainer dsInfo={itemData?.data?.info?.dsInfo} />
+      <PriceInfoUpdateContainer priceInfo={itemData?.data?.info?.priceOwner} />
     </>
   );
 };

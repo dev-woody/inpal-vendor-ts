@@ -17,10 +17,8 @@ yarn start
 
 ## 패치노트
 
-### `07.24 Update`
+### `07.25 Update`
 
-1. vendor goods item 등록
+1. vendor goods item ds 수정
 
-2. vendor goods item 조회
-
-3. vemdor goods item basic 수정
+2. vendor goods item price 수정

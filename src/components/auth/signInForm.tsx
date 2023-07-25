@@ -57,20 +57,17 @@ function SignInForm({ errorMsg, onSubmit }: SignInProps) {
   return (
     <SignInBlock>
       <SignInFormBlock>
-        <PageHeader
-          title={
-            <Link
-              to="/"
-              style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <img src={LogoTypo} width={"80%"} />
-            </Link>
-          }
-        />
+        <Link
+          to="/"
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "1rem",
+          }}
+        >
+          <img src={LogoTypo} width={"65%"} />
+        </Link>
         <StyledForm onSubmit={handleSubmit((data) => onSubmit(data))}>
           <StyledInput
             placeholder="판매사 코드"

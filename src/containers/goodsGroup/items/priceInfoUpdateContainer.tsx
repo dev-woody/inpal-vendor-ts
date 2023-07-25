@@ -1,11 +1,11 @@
-import DsInfoUpdate from "components/goodsGroup/items/dsInfoUpdate";
+import PriceUpdate from "components/goodsGroup/items/priceUpdate";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { vendorGoodsItemsActions } from "reducers/goodsGroup/vendorGoodsItems";
 import { vendorProductActions } from "reducers/product/vendorProduct";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 
-const DsInfoUpdateContainer = ({ dsInfo }: { dsInfo: any }) => {
+const PriceInfoUpdateContainer = ({ priceInfo }: { priceInfo: any }) => {
   const { user } = useAppSelector((state) => ({
     user: state.user,
   }));
@@ -15,11 +15,11 @@ const DsInfoUpdateContainer = ({ dsInfo }: { dsInfo: any }) => {
 
   const onSubmit = (data: object) => {
     dispatch(
-      vendorGoodsItemsActions.dsInfoUpdate({
+      vendorGoodsItemsActions.basicUpdate({
         vendorId: user.vendorId,
         id: itemId,
         goodGroupId: id,
-        dsInfo: { dsType: dsInfo?.info?.dsType.toLowerCase(), ...data },
+        ...data,
       })
     );
   };
@@ -28,7 +28,7 @@ const DsInfoUpdateContainer = ({ dsInfo }: { dsInfo: any }) => {
     dispatch(vendorProductActions.findAllColorCode(false));
   }, []);
 
-  return <DsInfoUpdate dsInfo={dsInfo} onSubmit={onSubmit} />;
+  return <PriceUpdate priceInfo={priceInfo} onSubmit={onSubmit} />;
 };
 
-export default DsInfoUpdateContainer;
+export default PriceInfoUpdateContainer;

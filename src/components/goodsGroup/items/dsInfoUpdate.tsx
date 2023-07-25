@@ -21,7 +21,6 @@ type DsInfoUpdateProps = {
 const DsInfoUpdateBlock = styled(Responsive)``;
 
 const schema = yup.object({
-  dsType: yup.string().required(),
   rgb: yup.string().required(),
 });
 
@@ -34,20 +33,17 @@ const DsInfoUpdate = ({ dsInfo, onSubmit }: DsInfoUpdateProps) => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      dsType: "",
       rgb: "",
     },
   });
 
   useEffect(() => {
-    // todo lowerCase 적용 안됨
-    setValue("dsType", dsInfo?.info?.dsType.toLowerCase());
     setValue("rgb", dsInfo?.info?.rgb);
   }, []);
 
   return (
     <DsInfoUpdateBlock>
-      <PageHeader title="상품정보" />
+      <PageHeader title="디자인 시뮬레이션 정보" />
       <StyledForm
         onSubmit={handleSubmit(
           (data) => onSubmit(data),
