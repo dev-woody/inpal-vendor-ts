@@ -178,6 +178,7 @@ export const Table = (props: propsTypes) => {
     action,
     align,
     filter,
+    isSearch,
     filterInput,
   } = props;
   const navigate = useNavigate();
@@ -278,7 +279,7 @@ export const Table = (props: propsTypes) => {
       {filter && (
         <FilterBlock>
           <div style={{ display: "flex" }}>{filterInput}</div>
-          <StyledSearchInput />
+          {isSearch && <StyledSearchInput />}
         </FilterBlock>
       )}
       <StyledTableBlock>
