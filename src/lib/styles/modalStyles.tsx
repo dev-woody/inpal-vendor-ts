@@ -81,7 +81,7 @@ const Modal = ({
   }, []);
 
   useEffect(() => {
-    document.addEventListener("keyup", onEnterPress);
+    modalVisible && document.addEventListener("keyup", onEnterPress);
     return () => {
       document.removeEventListener("keyup", onEnterPress);
     };

@@ -17,8 +17,12 @@ yarn start
 
 ## 패치노트
 
-### `07.25 Update`
+### `07.27 Update`
 
-1. vendor goods item ds 수정
+### 1. modal enter bug fix
 
-2. vendor goods item price 수정
+엔터 클릭시 창 이탈 버그 수정
+
+### 2. add filter optional parameter
+
+필터에 검색기능 컨트롤 추가함
