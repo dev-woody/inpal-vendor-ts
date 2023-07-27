@@ -49,6 +49,7 @@ const MenuGroup = styled.ul<{ itemList: any }>`
   margin: 2px 0;
 
   &.active {
+    /* height: ${(props) => props.itemList}*46px; */
     height: calc(${(props) => props.itemList} * 46px + 42px);
   }
 `;
@@ -149,6 +150,7 @@ const IconBlock = styled.div`
 
 const Sidebar = ({ activeUrl, visible }: sideBarProps) => {
   const navigate = useNavigate();
+  const nowURL = window.location.pathname;
   const [isOpen, setIsOpen] = useState<string>();
   const [isSelect, setIsSelect] = useState<string>();
   const mainMenu = window.location.pathname;
@@ -156,6 +158,7 @@ const Sidebar = ({ activeUrl, visible }: sideBarProps) => {
     for (let i = 0; i < sidebarList.length; i++) {
       if (mainMenu.startsWith(sidebarList[i].url)) {
         setIsSelect(sidebarList[i].name);
+        setIsOpen(sidebarList[i].name);
       }
     }
   }, [mainMenu]);
@@ -202,7 +205,13 @@ const Sidebar = ({ activeUrl, visible }: sideBarProps) => {
                   return (
                     <Items
                       key={index}
-                      onClick={() => navigate(`${list.url}${subMenu.url}`)}
+                      onClick={() => {
+                        if (nowURL === `${list.url}${subMenu.url}`) {
+                          window.location.reload();
+                        } else {
+                          navigate(`${list.url}${subMenu.url}`);
+                        }
+                      }}
                       isSelect={
                         activeUrl[0] === urlArray[0] &&
                         activeUrl[1] === urlArray[1]
