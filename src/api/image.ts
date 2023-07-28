@@ -7,17 +7,15 @@ export const uploadImg = async (imageData: FormData) => {
         "Content-Type": "multipart/form-data",
       },
     })
-    .then((res) => res.data);
+    .then((res) => res);
 };
 
 export const displayImg = async (data: object) => {
   return await client
     .post(`/common/image/display`, { ...data })
-    .then((res) => res.data);
+    .then((res) => res);
 };
 
 export const findByIdImg = async (id: string) => {
-  return await client
-    .post(`/common/image/findById`, { id })
-    .then((res) => res.data);
+  return await client.post(`/common/image/findById`, { id }).then((res) => res);
 };

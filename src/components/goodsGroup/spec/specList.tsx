@@ -8,7 +8,7 @@ import {
 } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
 import { response } from "types/globalTypes";
-import { specColunms } from "lib/columns/columnsList";
+import { ColumnsType } from "lib/columns/columnsList";
 import { NavigateFunction } from "react-router-dom";
 
 const SpecListBlock = styled(Responsive)``;
@@ -16,11 +16,18 @@ const SpecListBlock = styled(Responsive)``;
 type SpecProps = {
   productList: response;
   specList: response;
+  specColunms: ColumnsType[];
   onSelect: (id: string) => void;
   navigate: NavigateFunction;
 };
 
-const SpecList = ({ productList, specList, onSelect, navigate }: SpecProps) => {
+const SpecList = ({
+  productList,
+  specList,
+  specColunms,
+  onSelect,
+  navigate,
+}: SpecProps) => {
   return (
     <>
       <SpecListBlock>

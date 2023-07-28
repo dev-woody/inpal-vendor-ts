@@ -30,6 +30,7 @@ type registerProps = {
   categoryList: { [key: string]: any }[];
   manufacturerList: response;
   goodsSpecList: response;
+  groupRegister: response;
   setNewCategory: React.Dispatch<
     React.SetStateAction<
       {
@@ -93,6 +94,7 @@ const GoodsGroupRregister = ({
   categoryList,
   manufacturerList,
   goodsSpecList,
+  groupRegister,
   setNewCategory,
   onSelectProduct,
   onSubmit,
@@ -456,6 +458,7 @@ const GoodsGroupRregister = ({
               }
             />
           </Description>
+          <ErrorMsg>{groupRegister.message}</ErrorMsg>
           <Button type="submit" status="primary" withInput needMarginTop>
             등록
           </Button>

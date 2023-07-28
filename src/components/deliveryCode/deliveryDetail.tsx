@@ -4,6 +4,7 @@ import {
   Button,
   Description,
   DescriptionContent,
+  ErrorMsg,
   Modal,
   Responsive,
   StyledForm,
@@ -20,7 +21,7 @@ import { response } from "types/globalTypes";
 const DeliveryDetailBlock = styled(Responsive)``;
 
 type detailProps = {
-  update: boolean;
+  update: response;
   dcode: { [key: string]: any };
   productId: response;
   onSubmit: (data: any) => void;
@@ -127,6 +128,7 @@ const DeliveryDetail = ({
               content={changeDays(dcode?.base?.updatedAt)}
             />
           </Description>
+          <ErrorMsg>{update.message}</ErrorMsg>
           <Button
             disabled={isSubmitting}
             type="submit"

@@ -5,17 +5,18 @@ import { vendorDeliveryCodeActions } from "reducers/deliveryCode/vendorDeliveryC
 import { vendorGoodsSpecActions } from "reducers/goodsGroup/vendorGoodsSpec";
 import { vendorProductActions } from "reducers/product/vendorProduct";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
+import { checkStatus } from "types/globalTypes";
 
 const SpecRegisterContainer = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const { user, productList, deliveryCode, unitCode } = useAppSelector(
-    (state) => ({
+  const { user, productList, deliveryCode, unitCode, specRegisterResult } =
+    useAppSelector((state) => ({
       user: state.user,
       productList: state.vendorProduct.findAll,
       deliveryCode: state.vendorDeliveryCode.findAllByProductId,
       unitCode: state.vendorProduct.findUnitByProductId,
-    })
-  );
+      specRegisterResult: state.vendorGoodsSpec.register,
+    }));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -39,7 +40,17 @@ const SpecRegisterContainer = () => {
   };
 
   useEffect(() => {
+    if (checkStatus(specRegisterResult.status)) {
+      setModalVisible(true);
+      dispatch(vendorGoodsSpecActions.reset("register"));
+    }
+  }, [specRegisterResult]);
+
+  useEffect(() => {
     dispatch(vendorProductActions.findAll(false));
+    return () => {
+      dispatch(vendorProductActions.reset("findAll"));
+    };
   }, []);
 
   return (

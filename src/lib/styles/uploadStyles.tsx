@@ -5,6 +5,8 @@ import { propsTypes } from "types/globalTypes";
 import { AlignBox, ErrorMsg } from "./globalStyles";
 import { BiTrash } from "react-icons/bi";
 import { ErrorMessage } from "@hookform/error-message";
+import ImgPath from "logo-row.png";
+import { object } from "yup";
 
 type formProps = {
   fullWidth?: boolean;
@@ -22,7 +24,6 @@ export const Label = styled.label`
   text-align: center;
   font-size: 0.75rem;
   font-weight: 600;
-  height: 100%;
   overflow: hidden !important;
 
   ${(props: { status?: string }) =>
@@ -224,7 +225,6 @@ const ImageArray = ({
 
 export const StyledUpload = (props: propsTypes) => {
   const [isSrc, setIsSrc] = useState<{ imageId: string }[]>([]);
-  const [fileName, setFileName] = useState<string>("");
   const {
     fullWidth,
     label,
@@ -264,20 +264,31 @@ export const StyledUpload = (props: propsTypes) => {
         }
       )
       .then((res) => {
-        if (typeof files !== "string") {
-          setFileName(files[0]?.name);
-        }
         e.target.value = "";
-        if (maxLength > 1) {
-          let newSrcList = [...isSrc];
-          newSrcList?.push({ imageId: res.data.data.base.id });
-          setIsSrc(newSrcList);
-        } else {
-          setIsSrc([{ imageId: res.data.data.base.id }]);
-        }
+        let newSrcList = [...isSrc];
+        newSrcList?.push({ imageId: res.data.data.base.id });
+        setIsSrc(newSrcList);
+        // client
+        //   .post(`/common/image/display`, null, {
+        //     params: {
+        //       id: res.data.base.id,
+        //       isThumbnail: false,
+        //     },
+        //     responseType: "blob",
+        //   })
+        //   .then((uploadRes) => {
+        //     const url = window.URL.createObjectURL(
+        //       new Blob([uploadRes.data], {
+        //         type: uploadRes.headers["content-type"],
+        //       })
+        //     );
+        //     let newSrcList = [...isSrc];
+        //     newSrcList?.push({ url, imageId: res.data.base.id });
+        //     setIsSrc(newSrcList);
+        // });
       });
   };
-  //todo 박스가 아닌 이미지 파일명 보여주기, 미리보기 만들기.
+  //todo 이미지 썸네일 방식 변경할것.
   useEffect(() => {
     if (isThumbnailImage) {
       setIsSrc(isThumbnailImage);
@@ -292,8 +303,8 @@ export const StyledUpload = (props: propsTypes) => {
 
   return (
     <>
-      {isBox ? (
-        isSrc?.length < maxLength ? (
+      {isSrc?.length < maxLength ? (
+        isBox ? (
           <BoxBlock align={align} style={{ padding: "0", border: "0" }}>
             <FormItem
               fullWidth={fullWidth}
@@ -346,46 +357,43 @@ export const StyledUpload = (props: propsTypes) => {
               />
             )}
           </BoxBlock>
-        ) : null
-      ) : (
-        <BoxBlock align={align}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              margin: "0.25rem 0",
-            }}
-          >
-            <FormItem fullWidth status={status}>
-              <StyledInputBlock
-                style={{ width: "100%" }}
-                disabled={disable}
-                {...rest}
-                value={fileName}
-              />
-            </FormItem>
-            <input
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              disabled={disable}
-              id={type}
-              {...rest}
-              autoComplete="off"
-              onChange={(e) => {
-                onImageUpload(e, subject, type);
+        ) : (
+          <BoxBlock align={align}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                margin: "0.25rem 0",
               }}
-            />
-            <Label
-              status="primary"
-              htmlFor={type}
-              style={{ marginLeft: "0.25rem", minWidth: "60px" }}
             >
-              등록
-            </Label>
-          </div>
-          {errors && (
+              <FormItem fullWidth>
+                <StyledInputBlock
+                  disabled={disable}
+                  {...rest}
+                  value={isSrc[0].imageId}
+                />
+              </FormItem>
+              <input
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                disabled={disable}
+                id={type}
+                {...rest}
+                autoComplete="off"
+                onChange={(e) => {
+                  action(e, subject, type);
+                }}
+              />
+              <Label
+                status="primary"
+                htmlFor={type}
+                style={{ marginLeft: "0.25rem", minWidth: "60px" }}
+              >
+                등록
+              </Label>
+            </div>
             <ErrorMessage
               errors={errors}
               name={label}
@@ -395,10 +403,10 @@ export const StyledUpload = (props: propsTypes) => {
                 </ErrorMsg>
               )}
             />
-          )}
-        </BoxBlock>
-      )}
-      {isBox && <ImageArray isSrc={isSrc} align={align} setIsSrc={setIsSrc} />}
+          </BoxBlock>
+        )
+      ) : null}
+      <ImageArray isSrc={isSrc} align={align} setIsSrc={setIsSrc} />
     </>
   );
 };

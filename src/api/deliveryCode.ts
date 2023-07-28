@@ -10,7 +10,7 @@ export const register = async (data: any) => {
       freeCondition: Number(freeCondition),
     })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -20,7 +20,7 @@ export const update = async (data: object) => {
       ...data,
     })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -30,7 +30,7 @@ export const findAll = async (data: any) => {
       ...data,
     },
   }).then((res) => {
-    return res.data;
+    return res;
   });
 };
 
@@ -42,7 +42,7 @@ export const findById = async (data: object) => {
       },
     })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -54,6 +54,6 @@ export const findAllByProductId = async (data: object) => {
       },
     })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };

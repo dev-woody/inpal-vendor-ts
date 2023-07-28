@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 import { userActions } from "reducers/user";
 import LoginForm from "components/auth/signInForm";
+import { checkStatus } from "types/globalTypes";
 
 function SignInContainer() {
   const navigate = useNavigate();
@@ -26,18 +27,15 @@ function SignInContainer() {
   };
 
   useEffect(() => {
-    if (userInfo.success) {
+    if (checkStatus(userInfo.status)) {
       dispatch(userActions.saveUser(userInfo.data));
+      localStorage.setItem("access_token", userInfo.data.tokenInfo.token);
+      localStorage.setItem(
+        "refresh_token",
+        userInfo.data.tokenInfo.refreshToken
+      );
+      localStorage.setItem("user", JSON.stringify(userInfo.data));
       navigate("/");
-    } else {
-      switch (userInfo.message) {
-        case "관리자 사용자 아이디가 존재 하지 않습니다.\n로그인 또는 아이디를 확인해 주세요.!":
-          setErrorMsg("존재하지않는 아이디입니다.");
-          break;
-        case "관리자 비밀번호가 다릅니다.\n비밀번호를 확인해 주세요.!":
-          setErrorMsg("잘못된 비밀번호입니다.");
-          break;
-      }
     }
   }, [userInfo, dispatch, navigate]);
 

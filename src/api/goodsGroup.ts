@@ -4,7 +4,7 @@ export const findAll = async (isDesc: boolean) => {
   return accessClient
     .get(`/store/construction/good/group/findAll/${isDesc}`)
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -14,7 +14,7 @@ export const register = async (data: object) => {
       ...data,
     })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -26,7 +26,7 @@ export const uploadImage = async (formData: FormData) => {
       },
     })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -38,7 +38,7 @@ export const detailPage = async (formData: FormData) => {
       },
     })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -46,7 +46,7 @@ export const findById = async (id: string) => {
   return accessClient
     .get(`/store/construction/good/group/findById/${id}`)
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -54,7 +54,7 @@ export const basicUpdate = async (data: object) => {
   return accessClient
     .post(`/vendor/good/group/update/basicInfo`, { ...data })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -62,7 +62,7 @@ export const detailUpdate = async (data: object) => {
   return accessClient
     .post(`/vendor/good/group/update/detailPage`, { ...data })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -70,7 +70,7 @@ export const goodsImageUpdate = async (data: object) => {
   return accessClient
     .post(`/vendor/good/group/update/goodImage`, { ...data })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -82,7 +82,7 @@ export const setOpenStatus = async (data: object) => {
       },
     })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -95,7 +95,7 @@ export const optionFindByGroupId = async (data: object) => {
       },
     })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -103,7 +103,7 @@ export const optionRegister = async (data: object) => {
   return accessClient
     .post(`/construction/vendor/good/group/option/register`, { ...data })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -111,7 +111,7 @@ export const optionFindById = async (id: string) => {
   return accessClient
     .get(`/construction/common/good/group/option/findById/${id}`)
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -119,7 +119,7 @@ export const optionUpdate = async (data: object) => {
   return accessClient
     .post(`/construction/vendor/good/group/option/update`, { ...data })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -131,7 +131,7 @@ export const optionSellStatus = async (data: object) => {
       },
     })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -140,7 +140,7 @@ export const itemRegister = async (data: object) => {
   return accessClient
     .post(`/vendor/good/item/register`, { ...data })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -152,7 +152,7 @@ export const itemFindByGroupId = async (data: object) => {
       },
     })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -160,33 +160,33 @@ export const itemFindById = async (id: string) => {
   return client
     .get(`/store/construction/good/item/findById/${id}`)
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
 export const itemBasicUpdate = async (data: object) => {
   return accessClient
     .post(`/vendor/good/item/update/basicInfo`, { ...data })
-    .then((res) => res.data);
+    .then((res) => res);
 };
 
 export const itemDsInfoUpdate = async (data: object) => {
   return accessClient
     .post(`/vendor/good/item/update/dsInfo`, { ...data })
-    .then((res) => res.data);
+    .then((res) => res);
 };
 
 export const itemPriceUpdate = async (data: object) => {
   return accessClient
     .post(`/vendor/good/item/update/priceInfo`, { ...data })
-    .then((res) => res.data);
+    .then((res) => res);
 };
 
 export const itemUpdate = async (data: object) => {
   return accessClient
     .post(`/construction/vendor/good/item/update`, { ...data })
     .then((res) => {
-      return res.data;
+      return res;
     });
 };
 
@@ -202,6 +202,6 @@ export const itemSetSellStatus = async (data: object) => {
       }
     )
     .then((res) => {
-      return res.data;
+      return res;
     });
 };

@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { vendorProductActions } from "reducers/product/vendorProduct";
 import { vendorDeliveryCodeActions } from "reducers/deliveryCode/vendorDeliveryCode";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
+import { checkStatus } from "types/globalTypes";
+import { useNavigate } from "react-router-dom";
 
 const DeliveryRegisterContainer = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -12,6 +14,7 @@ const DeliveryRegisterContainer = () => {
     user: state.user,
   }));
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onSubmit = (data: any) => {
     const newData = { ...data, vendorId: user.vendorId };
@@ -20,7 +23,7 @@ const DeliveryRegisterContainer = () => {
   };
 
   useEffect(() => {
-    if (register.success) {
+    if (checkStatus(register.status)) {
       setModalVisible(true);
       dispatch(vendorDeliveryCodeActions.reset("register"));
     }
@@ -37,6 +40,7 @@ const DeliveryRegisterContainer = () => {
   return (
     <DcodeRegister
       productList={productList.data}
+      registerResult={register}
       onSubmit={onSubmit}
       modalVisible={modalVisible}
       setModalVisible={setModalVisible}

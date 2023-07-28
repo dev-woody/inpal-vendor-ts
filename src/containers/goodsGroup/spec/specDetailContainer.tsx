@@ -5,17 +5,18 @@ import { vendorDeliveryCodeActions } from "reducers/deliveryCode/vendorDeliveryC
 import { vendorGoodsSpecActions } from "reducers/goodsGroup/vendorGoodsSpec";
 import { vendorProductActions } from "reducers/product/vendorProduct";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
+import { checkStatus } from "types/globalTypes";
 
 const SpecDetailContainer = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const { user, specDetail, deliveryCode, unitCode } = useAppSelector(
-    (state) => ({
+  const { user, specDetail, deliveryCode, unitCode, specUpdate } =
+    useAppSelector((state) => ({
       user: state.user,
       specDetail: state.vendorGoodsSpec.findById,
       deliveryCode: state.vendorDeliveryCode.findAllByProductId,
       unitCode: state.vendorProduct.findUnitByProductId,
-    })
-  );
+      specUpdate: state.vendorGoodsSpec.update,
+    }));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -31,7 +32,12 @@ const SpecDetailContainer = () => {
     dispatch(vendorGoodsSpecActions.findById({ vendorId: user.vendorId, id }));
   }, []);
 
-  // useEffect(() => )
+  useEffect(() => {
+    if (checkStatus(specUpdate.statsu)) {
+      setModalVisible(true);
+      dispatch(vendorGoodsSpecActions.reset("update"));
+    }
+  }, [specUpdate]);
 
   useEffect(() => {
     if (specDetail.success) {
@@ -54,6 +60,7 @@ const SpecDetailContainer = () => {
   return (
     <SpecDetail
       specDetail={specDetail}
+      specUpdate={specUpdate}
       deliveryCode={deliveryCode}
       unitCode={unitCode}
       onSubmit={onSubmit}

@@ -58,7 +58,7 @@ const DeliveryDetailContainer = () => {
 
   return (
     <DeliveryDetail
-      update={update.success}
+      update={update}
       dcode={dcode.data}
       productId={productId}
       onSubmit={onSubmit}

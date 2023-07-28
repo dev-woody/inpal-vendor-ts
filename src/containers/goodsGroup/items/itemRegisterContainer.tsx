@@ -1,24 +1,22 @@
 import GoodsGroupItemRegister from "components/goodsGroup/items/itemRegister";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { findAllUnitActions } from "reducers/admin/findAllUnit";
 import { vendorDeliveryCodeActions } from "reducers/deliveryCode/vendorDeliveryCode";
-import { itemRegisterActions } from "reducers/goodsGroup/items/register";
 import { vendorGoodsGroupActions } from "reducers/goodsGroup/vendorGoodsGroup";
 import { vendorGoodsItemsActions } from "reducers/goodsGroup/vendorGoodsItems";
-import { vendorGoodsSpecActions } from "reducers/goodsGroup/vendorGoodsSpec";
 import { vendorProductActions } from "reducers/product/vendorProduct";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
+import { checkStatus } from "types/globalTypes";
 
 const GoodsGroupItemRegisterContainer = () => {
-  const { user, goodsGroup, colorCode, registerResult, specInfo } =
-    useAppSelector((state) => ({
+  const { user, goodsGroup, colorCode, registerResult } = useAppSelector(
+    (state) => ({
       user: state.user,
       goodsGroup: state.vendorGoodsGroup.findById,
       colorCode: state.vendorProduct.findAllColorCode,
-      specInfo: state.vendorGoodsSpec.findAllByProductId,
       registerResult: state.vendorGoodsItems.register,
-    }));
+    })
+  );
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -34,27 +32,27 @@ const GoodsGroupItemRegisterContainer = () => {
     );
   };
 
-  useEffect(() => {
-    if (goodsGroup.success) {
-      dispatch(
-        vendorGoodsSpecActions.findAllByProductId({
-          vendorId: user.vendorId,
-          productId: goodsGroup.data.info.basic.info.product.id,
-          isDesc: false,
-        })
-      );
-      // dispatch(
-      //   vendorDeliveryCodeActions.findAllByProductId({
-      //     vendorId: user.vendorId,
-      //     // productId: goodsGroup.data.product.id,
-      //     isDesc: false,
-      //   })
-      // );
-    }
-  }, [goodsGroup]);
+  // useEffect(() => {
+  //   if (checkStatus(goodsGroup.status)) {
+  //     dispatch(
+  //       vendorGoodsSpecActions.findAllByProductId({
+  //         vendorId: user.vendorId,
+  //         productId: goodsGroup.data.info.basic.info.product.id,
+  //         isDesc: false,
+  //       })
+  //     );
+  //     // dispatch(
+  //     //   vendorDeliveryCodeActions.findAllByProductId({
+  //     //     vendorId: user.vendorId,
+  //     //     // productId: goodsGroup.data.product.id,
+  //     //     isDesc: false,
+  //     //   })
+  //     // );
+  //   }
+  // }, [goodsGroup]);
 
   useEffect(() => {
-    if (registerResult.success) {
+    if (checkStatus(registerResult.status)) {
       setModalVisible(true);
     }
   }, [registerResult]);
@@ -76,7 +74,6 @@ const GoodsGroupItemRegisterContainer = () => {
       isColorItem={goodsGroup.data?.info?.dsType}
       colorCode={colorCode}
       goodsGroup={goodsGroup}
-      specInfo={specInfo}
       onSubmit={onSubmit}
       modalVisible={modalVisible}
       setModalVisible={setModalVisible}

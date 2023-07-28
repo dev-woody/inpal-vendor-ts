@@ -11,12 +11,7 @@ const DeliveryFindAllContainer = () => {
     deliveryCodeList: state.vendorDeliveryCode.findAllByProductId,
     productList: state.vendorProduct.findAll.data,
   }));
-  // const arrayProductList = productList?.reduce(function (
-  //   acc: object[],
-  //   cur: object
-  // ) {
-  //   return acc.concat(cur);
-  // });
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 

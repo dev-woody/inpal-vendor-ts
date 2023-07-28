@@ -4,6 +4,7 @@ import { vendorProductActions } from "reducers/product/vendorProduct";
 import { vendorGoodsGroupActions } from "reducers/goodsGroup/vendorGoodsGroup";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 import { vendorGoodsSpecActions } from "reducers/goodsGroup/vendorGoodsSpec";
+import { checkStatus } from "types/globalTypes";
 
 const GoodsGroupRegisterContainer = () => {
   const {
@@ -54,23 +55,23 @@ const GoodsGroupRegisterContainer = () => {
 
   useEffect(() => {
     let category: { [key: string]: any }[] = [];
-    if (categoryList.success) {
+    if (checkStatus(categoryList.status)) {
       categoryList.data.category1sts.map((list1st: any) => {
         category.push({
           id: list1st.category1st.id,
-          description: list1st.category1st.description,
+          description: list1st.category1st.info.description,
           checked: false,
           category2nd: list1st.category2nds.map((list2nd: any) => {
             return {
               category1stId: list2nd.category2nd.ownerId,
               id: list2nd.category2nd.id,
-              description: list2nd.category2nd.description,
+              description: list2nd.category2nd.info.description,
               checked: false,
               category3rd: list2nd.category3rds.map((list3rd: any) => {
                 return {
                   category2ndId: list3rd.category3rd.ownerId,
                   id: list3rd.category3rd.id,
-                  description: list3rd.category3rd.description,
+                  description: list3rd.category3rd.info.description,
                   checked: false,
                 };
               }),
@@ -83,7 +84,7 @@ const GoodsGroupRegisterContainer = () => {
   }, [categoryList]);
 
   useEffect(() => {
-    if (groupRegister.success) {
+    if (checkStatus(groupRegister.status)) {
       dispatch(vendorGoodsGroupActions.reset("register"));
       setModalVisible(true);
     }
@@ -110,6 +111,7 @@ const GoodsGroupRegisterContainer = () => {
       categoryList={newCategory}
       manufacturerList={manufacturerList}
       goodsSpecList={goodsSpecList}
+      groupRegister={groupRegister}
       setNewCategory={setNewCategory}
       onSubmit={onSubmit}
       onSelectProduct={onSelectProduct}

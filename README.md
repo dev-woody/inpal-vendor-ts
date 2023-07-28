@@ -17,12 +17,16 @@ yarn start
 
 ## 패치노트
 
-### `07.27 Update`
+### `07.28 Update`
 
-### 1. modal enter bug fix
+### 1. edit reducer
 
-엔터 클릭시 창 이탈 버그 수정
+리듀서 전체 수정
 
-### 2. add filter optional parameter
+### 2. sideBar
 
-필터에 검색기능 컨트롤 추가함
+선택된 메뉴 클릭시 초기화
+
+### 3. etc
+
+기타 버그 수정

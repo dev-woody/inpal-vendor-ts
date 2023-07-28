@@ -4,6 +4,7 @@ import {
   Button,
   Description,
   DescriptionContent,
+  ErrorMsg,
   Modal,
   Responsive,
   StyledForm,
@@ -22,6 +23,7 @@ const SpecDetailBlock = styled(Responsive)``;
 
 type specDetailProps = {
   specDetail: response;
+  specUpdate: response;
   deliveryCode: response;
   unitCode: response;
   onSubmit: (data: any) => void;
@@ -38,6 +40,7 @@ const schema = yup.object({
 
 const SpecDetail = ({
   specDetail,
+  specUpdate,
   deliveryCode,
   unitCode,
   onSubmit,
@@ -61,9 +64,9 @@ const SpecDetail = ({
   });
 
   useEffect(() => {
-    setValue("quantity", specDetail?.data?.info?.quantity);
-    setValue("unitId", specDetail?.data?.info?.unit?.id);
-    setValue("deliveryId", specDetail?.data?.info?.delivery?.id);
+    setValue("quantity", specDetail?.data?.info.quantity);
+    setValue("unitId", specDetail?.data?.info.unit.id);
+    setValue("deliveryId", specDetail?.data?.info.delivery.id);
   }, []);
   return (
     <>
@@ -107,7 +110,7 @@ const SpecDetail = ({
               label="단위"
               content={
                 <StyledSelect
-                  placeholder={specDetail?.data?.info?.unit?.nameKr}
+                  placeholder={specDetail?.data?.info?.unit?.info?.nameKr}
                   label="unitId"
                   optionList={unitCode.data}
                   register={register}
@@ -123,7 +126,12 @@ const SpecDetail = ({
               label="배송코드"
               content={
                 <StyledSelect
-                  placeholder={specDetail?.data?.info?.delivery?.code}
+                  placeholder={
+                    specDetail?.data?.info?.delivery.info.basicFee +
+                    "원 /" +
+                    specDetail?.data?.info?.delivery.info.freeCondition +
+                    "원"
+                  }
                   label="deliveryId"
                   optionList={deliveryCode.data}
                   register={register}
@@ -135,6 +143,7 @@ const SpecDetail = ({
               }
             />
           </Description>
+          <ErrorMsg>{specUpdate.message}</ErrorMsg>
           <Button
             disabled={isSubmitting}
             type="submit"

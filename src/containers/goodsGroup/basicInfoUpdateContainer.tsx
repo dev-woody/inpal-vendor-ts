@@ -5,6 +5,7 @@ import { vendorGoodsGroupActions } from "reducers/goodsGroup/vendorGoodsGroup";
 import { vendorGoodsSpecActions } from "reducers/goodsGroup/vendorGoodsSpec";
 import { vendorProductActions } from "reducers/product/vendorProduct";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
+import { checkStatus } from "types/globalTypes";
 
 const BasicInfoUpdateContainer = ({ basicInfo }: { basicInfo: any }) => {
   const {
@@ -32,7 +33,7 @@ const BasicInfoUpdateContainer = ({ basicInfo }: { basicInfo: any }) => {
   };
 
   useEffect(() => {
-    if (goodsGroupInfo.success) {
+    if (checkStatus(goodsGroupInfo.status)) {
       const data = {
         productId: goodsGroupInfo.data.info.basic.info.product.id,
         isDesc: false,

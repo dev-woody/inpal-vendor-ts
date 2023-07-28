@@ -4,6 +4,7 @@ import {
   Button,
   Description,
   DescriptionContent,
+  ErrorMsg,
   Modal,
   Responsive,
   StyledForm,
@@ -16,11 +17,13 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { response } from "types/globalTypes";
 
 const DcodeRegisterBlock = styled(Responsive)``;
 
 type registerProps = {
   productList: any;
+  registerResult: response;
   onSubmit: (data: any) => void;
   modalVisible: boolean;
   setModalVisible: (status: boolean) => void;
@@ -34,6 +37,7 @@ const schema = yup.object({
 
 const DcodeRegister = ({
   productList,
+  registerResult,
   onSubmit,
   modalVisible,
   setModalVisible,
@@ -129,6 +133,7 @@ const DcodeRegister = ({
               }
             />
           </Description>
+          <ErrorMsg>{registerResult.message}</ErrorMsg>
           <Button
             disabled={isSubmitting}
             type="submit"

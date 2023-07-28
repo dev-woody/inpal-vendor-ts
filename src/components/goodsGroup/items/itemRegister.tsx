@@ -27,7 +27,6 @@ type ItemProps = {
   isColorItem: "COLOR" | "IMAGE" | "MATERIAL";
   colorCode: response;
   goodsGroup: response;
-  specInfo: response;
   onSubmit: (data: any) => void;
   modalVisible: boolean;
   setModalVisible: (status: boolean) => void;
@@ -217,7 +216,6 @@ const GoodsGroupItemRegister = ({
   isColorItem,
   colorCode,
   goodsGroup,
-  specInfo,
   onSubmit,
   modalVisible,
   setModalVisible,
