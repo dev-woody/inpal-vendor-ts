@@ -54,7 +54,7 @@ const BasicUpdate = ({ basicInfo, colorCode, onSubmit }: BasicUpdateProps) => {
     setValue("name", basicInfo?.info?.name);
     setValue("isOrderMade", basicInfo?.info?.isOrderMade);
     setValue("colorCodeId", basicInfo?.info?.colorCode.id);
-  }, []);
+  }, [basicInfo]);
 
   return (
     <BasicUpdateBlock>

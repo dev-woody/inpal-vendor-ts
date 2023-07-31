@@ -22,7 +22,14 @@ type basicType = {
   basicInfo: any;
   productList: response;
   propertyList: response;
-  // categoryList: { [key: string]: any }[];
+  categoryList: { [key: string]: any }[];
+  setNewCategory: React.Dispatch<
+    React.SetStateAction<
+      {
+        [key: string]: any;
+      }[]
+    >
+  >;
   manufacturerList: response;
   onSubmit: (data: any) => void;
 };
@@ -42,7 +49,8 @@ const BasicInfoUpdate = ({
   basicInfo,
   productList,
   propertyList,
-  // categoryList,
+  categoryList,
+  setNewCategory,
   manufacturerList,
   onSubmit,
 }: basicType) => {
@@ -65,6 +73,28 @@ const BasicInfoUpdate = ({
       },
     },
   });
+
+  const newCategory = JSON.parse(JSON.stringify(categoryList));
+
+  useEffect(() => {
+    let categoryIds: string[] = [];
+    categoryList.map(
+      (list1st) => list1st.checked && categoryIds.push(list1st.id)
+    );
+    categoryList.map((list1st) =>
+      list1st.category2nd.map(
+        (list2nd: any) => list2nd.checked && categoryIds.push(list2nd.id)
+      )
+    );
+    categoryList.map((list1st) =>
+      list1st.category2nd.map((list2nd: any) =>
+        list2nd.category3rd.map(
+          (list3rd: any) => list3rd.checked && categoryIds.push(list3rd.id)
+        )
+      )
+    );
+    setValue("handleCategoryInfos.categoryIds", categoryIds);
+  }, [categoryList]);
 
   useEffect(() => {
     if (basicInfo) {
@@ -129,6 +159,21 @@ const BasicInfoUpdate = ({
                 align="vertical"
                 // actions={onSelectProduct}
                 index="4"
+              />
+            }
+          />
+          <DescriptionContent
+            span="12"
+            label="품목 분류"
+            content={
+              <StyledCategory
+                disable={categoryList.length > 0 ? false : true}
+                label="handleCategoryInfos"
+                register={register}
+                status={errors.handleCategoryInfos}
+                errors={errors}
+                newCategory={newCategory}
+                setNewCategory={setNewCategory}
               />
             }
           />

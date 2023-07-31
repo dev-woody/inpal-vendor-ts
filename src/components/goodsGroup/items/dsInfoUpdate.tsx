@@ -39,7 +39,7 @@ const DsInfoUpdate = ({ dsInfo, onSubmit }: DsInfoUpdateProps) => {
 
   useEffect(() => {
     setValue("rgb", dsInfo?.info?.rgb);
-  }, []);
+  }, [dsInfo]);
 
   return (
     <DsInfoUpdateBlock>

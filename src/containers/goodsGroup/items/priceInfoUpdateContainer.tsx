@@ -13,20 +13,21 @@ const PriceInfoUpdateContainer = ({ priceInfo }: { priceInfo: any }) => {
   const navigate = useNavigate();
   const { id, itemId } = useParams();
 
-  const onSubmit = (data: object) => {
+  const onSubmit = (data: any) => {
     dispatch(
-      vendorGoodsItemsActions.basicUpdate({
+      vendorGoodsItemsActions.priceUpdate({
         vendorId: user.vendorId,
         id: itemId,
         goodGroupId: id,
-        ...data,
+        priceInfo: {
+          priceNumId: data.priceInfo.priceNumId,
+          price: Number(data.priceInfo.price),
+          salePrice: Number(data.priceInfo.salePrice),
+          deliveryId: data.priceInfo.deliveryId,
+        },
       })
     );
   };
-
-  useEffect(() => {
-    dispatch(vendorProductActions.findAllColorCode(false));
-  }, []);
 
   return <PriceUpdate priceInfo={priceInfo} onSubmit={onSubmit} />;
 };

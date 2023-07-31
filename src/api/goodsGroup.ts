@@ -76,11 +76,15 @@ export const goodsImageUpdate = async (data: object) => {
 
 export const setOpenStatus = async (data: object) => {
   return accessClient
-    .get(`/vendor/good/group/setOpenStatus`, {
-      params: {
-        ...data,
-      },
-    })
+    .post(
+      `/vendor/good/group/setOpenStatus`,
+      {},
+      {
+        params: {
+          ...data,
+        },
+      }
+    )
     .then((res) => {
       return res;
     });

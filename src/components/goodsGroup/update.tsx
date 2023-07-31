@@ -24,35 +24,6 @@ const GoodsGroupDetail = ({
 }: DetailProps) => {
   const data = goodsGroup.data;
 
-  useEffect(() => {
-    let productCategory1sts: { id: string }[] = [];
-    let productCategory2nds: { id: string }[] = [];
-    let productCategory3rds: { id: string }[] = [];
-    categoryList.map(
-      (list1st) =>
-        list1st.checked && productCategory1sts.push({ id: list1st.id })
-    );
-    categoryList.map((list1st) =>
-      list1st.category2nd.map(
-        (list2nd: any) =>
-          list2nd.checked && productCategory2nds.push({ id: list2nd.id })
-      )
-    );
-    categoryList.map((list1st) =>
-      list1st.category2nd.map((list2nd: any) =>
-        list2nd.category3rd.map(
-          (list3rd: any) =>
-            list3rd.checked && productCategory3rds.push({ id: list3rd.id })
-        )
-      )
-    );
-    // setValue("productCategoryInfo", {
-    //   productCategory1sts,
-    //   productCategory2nds,
-    //   productCategory3rds,
-    // });
-  }, [categoryList]);
-
   return (
     <>
       <BasicInfoUpdateContainer basicInfo={data?.info?.basic} />
