@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { vendorDeliveryCodeActions } from "reducers/deliveryCode/vendorDeliveryCode";
 import { vendorProductActions } from "reducers/product/vendorProduct";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
+import { checkStatus } from "types/globalTypes";
 
 const DeliveryDetailContainer = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -29,7 +30,7 @@ const DeliveryDetailContainer = () => {
   };
 
   useEffect(() => {
-    if (update.success) {
+    if (checkStatus(update.status)) {
       setModalVisible(true);
       dispatch(vendorDeliveryCodeActions.findById(id));
       dispatch(vendorDeliveryCodeActions.reset("update"));
@@ -37,7 +38,7 @@ const DeliveryDetailContainer = () => {
   }, [dispatch, update]);
 
   useEffect(() => {
-    if (dcode.success) {
+    if (checkStatus(dcode.status)) {
       dispatch(vendorProductActions.findById(dcode.data.info.productId));
     }
   }, [dcode]);
