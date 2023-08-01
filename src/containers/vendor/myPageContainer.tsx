@@ -51,8 +51,8 @@ const MyPageContainer = () => {
   useEffect(() => {
     dispatch(
       vendorAdminActions.findByUserId({
-        vendorId: user.vendorId,
-        userId: user.signInfo.userId,
+        vendorId: user?.vendorId,
+        userId: user?.signInfo?.userId,
       })
     );
     dispatch(

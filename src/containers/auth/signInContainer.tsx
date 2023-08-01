@@ -27,8 +27,8 @@ function SignInContainer() {
   };
 
   useEffect(() => {
-    if (userInfo.status === "success") {
-      dispatch(userActions.saveUser(userInfo.data));
+    if (checkStatus(userInfo.status)) {
+      dispatch(userActions.saveUser(userInfo.data.adminInfo));
       localStorage.setItem("access_token", userInfo.data.tokenInfo.token);
       localStorage.setItem(
         "refresh_token",
@@ -46,7 +46,7 @@ function SignInContainer() {
     };
   }, []);
 
-  return <LoginForm onSubmit={onSubmit} errorMsg={errors} />;
+  return <LoginForm onSubmit={onSubmit} signInResult={userInfo} />;
 }
 
 export default SignInContainer;

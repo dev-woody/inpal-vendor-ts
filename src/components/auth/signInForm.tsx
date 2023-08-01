@@ -1,6 +1,12 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { Button, StyledForm, StyledInput, PassShowBlock } from "lib/styles";
+import {
+  Button,
+  StyledForm,
+  StyledInput,
+  PassShowBlock,
+  ErrorMsg,
+} from "lib/styles";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,6 +15,7 @@ import { Link } from "react-router-dom";
 import LogoTypo from "logo-typo.png";
 
 import { BiBarcode, BiUser, BiLock } from "react-icons/bi";
+import { response } from "types/globalTypes";
 
 const SignInBlock = styled.div`
   width: 100%;
@@ -29,7 +36,7 @@ const SignInFormBlock = styled.div`
 `;
 
 type SignInProps = {
-  errorMsg: string;
+  signInResult: response;
   onSubmit: (data: any) => void;
 };
 
@@ -39,7 +46,7 @@ const schema = yup.object({
   password: yup.string().required("비밀번호를 입력해주세요."),
 });
 
-function SignInForm({ errorMsg, onSubmit }: SignInProps) {
+function SignInForm({ signInResult, onSubmit }: SignInProps) {
   const [isPassShow, setIsPassShow] = useState<boolean>(false);
   const {
     register,
@@ -103,6 +110,7 @@ function SignInForm({ errorMsg, onSubmit }: SignInProps) {
             errors={errors}
             status={errors.password}
           />
+          <ErrorMsg>{signInResult.message}</ErrorMsg>
           <Button
             type="submit"
             status="primary"

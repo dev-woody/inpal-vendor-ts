@@ -161,7 +161,7 @@ const MyPage = ({
             >
               뒤로가기
             </Button>
-            {user.signInfo.userId === data?.info?.signInfo.userId && (
+            {user?.signInfo?.userId === data?.info?.signInfo.userId && (
               <Button type="submit" status="primary" needMarginTop withInput>
                 수정
               </Button>
