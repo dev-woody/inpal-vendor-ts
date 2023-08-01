@@ -157,7 +157,7 @@ const MyPage = ({
               needMarginTop
               withInput
               disabled={isSubmitting}
-              onClick={() => navigate(`/mypage/${user.vendorId}`)}
+              onClick={() => navigate(`/mypage/${user?.vendorId}`)}
             >
               뒤로가기
             </Button>
