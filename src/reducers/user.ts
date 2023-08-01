@@ -5,22 +5,25 @@ const user = createSlice({
   name: "user",
   initialState: {
     vendorId: "",
-    userId: "",
-    name: "",
-    token: "",
-    refreshToken: "",
     loginAt: "",
-    topLevel: false,
+    name: "",
+    isTopLevel: false,
+    email: "",
+    phone: "",
+    signInfo: {
+      userId: "",
+      password: null,
+    },
   },
   reducers: {
     saveUser(state, action) {
-      state.vendorId = action.payload.adminInfo.vendorId;
-      state.userId = action.payload.adminInfo.signInfo.userId;
+      state.vendorId = action.payload.vendorId;
+      state.signInfo = action.payload.signInfo;
       state.name = action.payload.name;
-      state.token = action.payload.tokenInfo.token;
-      state.refreshToken = action.payload.tokenInfo.refreshToken;
+      state.phone = action.payload.phone;
+      state.email = action.payload.email;
       state.loginAt = action.payload.loginAt;
-      state.topLevel = action.payload.isTopLevel;
+      state.isTopLevel = action.payload.isTopLevel;
     },
     reset(state, action) {
       Object.assign(state, {

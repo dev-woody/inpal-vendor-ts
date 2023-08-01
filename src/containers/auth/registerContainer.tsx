@@ -5,31 +5,17 @@ import { userActions } from "reducers/user";
 import { vendorAdminActions } from "reducers/admin/vendorAdmin";
 import { vendorProductActions } from "reducers/product/vendorProduct";
 import RegisterForm from "components/auth/registerForm";
-import { uploadImgActions } from "reducers/common/uploadImg";
+import { checkStatus } from "types/globalTypes";
 
 function RegisterContainer() {
-  const navigate = useNavigate();
-  const { productList, isRegister, imageUpload } = useAppSelector((state) => ({
+  const { productList, isRegister } = useAppSelector((state) => ({
     productList: state.vendorProduct.findAll,
     isRegister: state.vendorAdmin.signUp,
-    imageUpload: state.uploadImg,
   }));
 
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [errors, setErrorMsg] = useState<string>("");
-
-  const onUpload = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    subject: string,
-    type: string
-  ) => {
-    const files = e.target.files ? e.target.files : "";
-    const formData = new FormData();
-    formData.append("image", files[0]);
-    formData.append("subject", subject);
-    formData.append("type", type);
-    dispatch(uploadImgActions.postUpload({ formData }));
-  };
 
   const onSubmit = (data: any) => {
     console.log(data);
@@ -46,8 +32,9 @@ function RegisterContainer() {
   }, []);
 
   useEffect(() => {
-    if (isRegister.success) {
-      navigate("/auth/signIn");
+    if (checkStatus(isRegister.status)) {
+      setModalVisible(true);
+      dispatch(vendorAdminActions.reset("signUp"));
     }
   }, [isRegister]);
 
@@ -55,9 +42,10 @@ function RegisterContainer() {
     <RegisterForm
       productList={productList.data}
       isRegister={isRegister}
-      imageUpload={imageUpload}
-      onUpload={onUpload}
       onSubmit={onSubmit}
+      modalVisible={modalVisible}
+      setModalVisible={setModalVisible}
+      navigate={navigate}
     />
   );
 }

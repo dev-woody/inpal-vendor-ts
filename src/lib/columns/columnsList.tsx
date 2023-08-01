@@ -76,51 +76,61 @@ export const sidebarList: sideListType[] = [
         icon: <FaClipboardList />,
         menuName: "전체주문조회",
         url: "/allList",
+        disable: true,
       },
       {
         icon: <FaDonate />,
         menuName: "입금전 관리",
         url: "/beforePayment",
+        disable: true,
       },
       {
         icon: <FaDollyFlatbed />,
         menuName: "배송대기 관리",
         url: "/beforeDelivery",
+        disable: true,
       },
       {
         icon: <FaShippingFast />,
         menuName: "배송중 조회",
         url: "/delivery",
+        disable: true,
       },
       {
         icon: <FaUserCheck />,
         menuName: "배송완료 조회",
         url: "/afterDelivery",
+        disable: true,
       },
       {
         icon: <FaUserTimes />,
         menuName: "취소 관리",
         url: "/cancel",
+        disable: true,
       },
       {
         icon: <FaBox />,
         menuName: "반품 관리",
         url: "/return",
+        disable: true,
       },
       {
         icon: <FaExchangeAlt />,
         menuName: "교환 관리",
         url: "/exchange",
+        disable: true,
       },
       {
         icon: <FaHandHoldingUsd />,
         menuName: "환불 관리",
         url: "/refund",
+        disable: true,
       },
       {
         icon: <FaBoxOpen />,
         menuName: "구매확정",
         url: "/confirmation",
+        disable: true,
       },
     ],
   },
@@ -205,6 +215,44 @@ export const sidebarList: sideListType[] = [
         disable: true,
       },
     ],
+  },
+];
+
+export const masterAllListColumns = [
+  {
+    title: "아이디",
+    dataIndex: "info",
+    render: (info: any) => info.signInfo.userId,
+  },
+  {
+    title: "이름",
+    dataIndex: "info",
+    render: (info: any) => info.name,
+  },
+  {
+    title: "이메일",
+    dataIndex: "info",
+    render: (info: any) => info.email,
+  },
+  {
+    title: "휴대폰",
+    dataIndex: "info",
+    render: (info: any) => changePhone(info.phone),
+  },
+  {
+    title: "생성일",
+    dataIndex: "base",
+    render: (base: any) => changeDays(base.createdAt),
+  },
+  {
+    title: "수정일",
+    dataIndex: "base",
+    render: (base: any) => changeDays(base.updatedAt),
+  },
+  {
+    title: "권한",
+    dataIndex: "info",
+    render: (info: any) => (info.isTopLevel ? "최고권한" : "하위권한"),
   },
 ];
 

@@ -80,7 +80,7 @@ const PageHeader = ({
   undo?: boolean;
   url?: string;
   breadCrumb?: JSX.Element;
-  extra?: JSX.Element;
+  extra?: JSX.Element | boolean;
 }) => {
   const navigate = useNavigate();
   return (

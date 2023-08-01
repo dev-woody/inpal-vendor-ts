@@ -17,6 +17,8 @@ import PaymentIndex from "components/payment";
 import NoticeIndex from "components/notice";
 import PromotionIndex from "components/promotion";
 import StatisticsIndex from "components/statistics";
+import MyPageContainer from "containers/vendor/myPageContainer";
+import VendorIndex from "components/vendor";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -29,6 +31,8 @@ const App = () => {
         {/* //* 인증해야하는 페이지 */}
         <Route element={<PrivateRouter authentication={true} />}>
           <Route path="/" element={<Dashboard />} />
+          <Route path="vendor/*" element={<VendorIndex />} />
+          <Route path="/mypage/:id" element={<MyPageContainer />} />
           <Route path="dcode/*" element={<DeliveryCodeIndex />} />
           <Route path="order/*" element={<OrderIndex />} />
           <Route path="goods/*" element={<GoodsGroupIndex />} />

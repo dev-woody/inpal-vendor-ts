@@ -27,14 +27,14 @@ function SignInContainer() {
   };
 
   useEffect(() => {
-    if (checkStatus(userInfo.status)) {
+    if (userInfo.status === "success") {
       dispatch(userActions.saveUser(userInfo.data));
       localStorage.setItem("access_token", userInfo.data.tokenInfo.token);
       localStorage.setItem(
         "refresh_token",
         userInfo.data.tokenInfo.refreshToken
       );
-      localStorage.setItem("user", JSON.stringify(userInfo.data));
+      localStorage.setItem("user", JSON.stringify(userInfo.data.adminInfo));
       navigate("/");
     }
   }, [userInfo, dispatch, navigate]);

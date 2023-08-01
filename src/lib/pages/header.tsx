@@ -89,11 +89,11 @@ const Header = ({ visible, setVisible }: headerProps) => {
           />
           <img src={LogoTypo} style={{ maxWidth: "100px", height: "auto" }} />
         </Link>
-        {localData ? (
+        {localData && (
           <SidebarBtn onClick={() => setVisible(!visible)}>
             <FaBars />
           </SidebarBtn>
-        ) : null}
+        )}
       </LogoBlock>
       <UserSection>
         {localData && (
@@ -104,20 +104,24 @@ const Header = ({ visible, setVisible }: headerProps) => {
               alignItems: "center",
             }}
           >
-            {localData?.adminInfo.isTopLevel ? (
+            {localData?.isTopLevel ? (
               <div style={{ display: "flex" }}>
                 <HeaderText style={{ fontWeight: "800", color: "#faad14" }}>
                   최고관리자
                 </HeaderText>
                 <HeaderText style={{ marginLeft: "0.5rem" }}>
-                  {localData.adminInfo.signInfo.userId}님 환영합니다.
+                  {localData.signInfo.userId}님 환영합니다.
                 </HeaderText>
               </div>
             ) : (
-              <HeaderText>
-                {localData.adminInfo.signInfo.userId}님 환영합니다.
-              </HeaderText>
+              <HeaderText>{localData.userId}님 환영합니다.</HeaderText>
             )}
+            <Button
+              style={{ marginLeft: "1rem" }}
+              onClick={() => navigate(`/mypage/${localData.vendorId}`)}
+            >
+              마이페이지
+            </Button>
             <Button style={{ marginLeft: "1rem" }} onClick={logout}>
               로그아웃
             </Button>

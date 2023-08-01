@@ -63,13 +63,13 @@ const GoodsGroupRegisterContainer = () => {
           checked: false,
           category2nd: list1st.category2nds.map((list2nd: any) => {
             return {
-              category1stId: list2nd.category2nd.ownerId,
+              category1stId: list2nd.category2nd.info.ownerId,
               id: list2nd.category2nd.id,
               description: list2nd.category2nd.info.description,
               checked: false,
               category3rd: list2nd.category3rds.map((list3rd: any) => {
                 return {
-                  category2ndId: list3rd.category3rd.ownerId,
+                  category2ndId: list3rd.category3rd.info.ownerId,
                   id: list3rd.category3rd.id,
                   description: list3rd.category3rd.info.description,
                   checked: false,

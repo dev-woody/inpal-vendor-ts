@@ -33,15 +33,15 @@ const BasicInfoUpdateContainer = ({ basicInfo }: { basicInfo: any }) => {
     );
   };
 
-  console.log(categoryList);
-
   useEffect(() => {
     let category: { [key: string]: any }[] = [];
     if (
       checkStatus(categoryList.status) &&
       checkStatus(goodsGroupInfo.status)
     ) {
-      const categoryInfo = goodsGroupInfo?.data?.info?.handleCategorys?.info;
+      console.log(goodsGroupInfo);
+      const categoryInfo =
+        goodsGroupInfo?.data?.info?.basic?.info?.handleCategorys?.info;
       const selectCategory1st = categoryInfo?.handleCategory1sts.map(
         (list: any) => {
           return {

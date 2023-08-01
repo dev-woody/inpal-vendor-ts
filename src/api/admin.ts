@@ -1,13 +1,5 @@
 import { accessClient, client } from "./createAPI";
 
-export const vendorRegister = async (data: any) => {
-  return client
-    .post(`/construction/vendor/register/request`, { ...data })
-    .then((res) => {
-      return res;
-    });
-};
-
 export const vendorLogin = async (data: object) => {
   return client.post(`/vendor/admin/signIn`, { ...data }).then((res) => {
     return res;
@@ -22,12 +14,18 @@ export const checkPassword = async (userId: string, password: string) => {
     });
 };
 
-export const update = async (userId: string, email: string, phone: string) => {
+export const changePass = async (data: object) => {
   return accessClient
-    .post(`/vendor/admin/update`, { userId, email, phone })
+    .post(`/vendor/admin/passwordChange`, { ...data })
     .then((res) => {
       return res;
     });
+};
+
+export const update = async (data: object) => {
+  return accessClient.post(`/vendor/admin/update`, { ...data }).then((res) => {
+    return res;
+  });
 };
 
 export const signUp = async (data: object) => {
@@ -38,16 +36,30 @@ export const signUp = async (data: object) => {
     });
 };
 
-export const signInUpload = async (formData: FormData) => {
-  return client
-    .post(`/construction/vendor/register/info/image/upload`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-    .then((res) => {
-      return res;
-    });
+export const register = async (data: object) => {
+  return accessClient.post(`/vendor/admin/signUp`, { ...data }).then((res) => {
+    return res;
+  });
+};
+
+export const findAll = async (data: object) => {
+  return accessClient
+    .get(`/vendor/admin/findAllByVendorId`, { params: { ...data } })
+    .then((res) => res);
+};
+
+export const findByUserId = async (data: object) => {
+  return accessClient
+    .get(`/vendor/admin/findByVendorIdAndUserId`, { params: { ...data } })
+    .then((res) => res);
+};
+
+export const mypage = async () => {
+  return accessClient.get(`/vendor/admin/myPage`).then((res) => res);
+};
+
+export const findCompany = async (id: string) => {
+  return client.get(`/store/biz/vendor/findById/${id}`).then((res) => res);
 };
 
 export const findAllUnit = async (data: object) => {
@@ -58,4 +70,34 @@ export const findAllUnit = async (data: object) => {
     .then((res) => {
       return res;
     });
+};
+
+export const basicInfo = async (data: object) => {
+  return accessClient
+    .post(`/vendor/update/basicInfo`, { ...data })
+    .then((res) => res);
+};
+
+export const registrationInfo = async (data: object) => {
+  return accessClient
+    .post(`/vendor/update/registrationInfo`, { ...data })
+    .then((res) => res);
+};
+
+export const accountInfo = async (data: object) => {
+  return accessClient
+    .post(`/vendor/update/accountInfo`, { ...data })
+    .then((res) => res);
+};
+
+export const serviceInfo = async (data: object) => {
+  return accessClient
+    .post(`/vendor/update/serviceInfo`, { ...data })
+    .then((res) => res);
+};
+
+export const addressInfo = async (data: object) => {
+  return accessClient
+    .post(`/vendor/update/addressInfo`, { ...data })
+    .then((res) => res);
 };

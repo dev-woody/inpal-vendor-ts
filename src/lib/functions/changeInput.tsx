@@ -90,3 +90,7 @@ export const predictDelivery = (inputDays: string) => {
   const fulldays = year + "." + month + "." + days;
   return inputDays ? fulldays : "";
 };
+
+export function changePostPhone(phone: string) {
+  return phone.replace(/\-/g, "");
+}

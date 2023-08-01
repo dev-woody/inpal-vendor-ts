@@ -19,6 +19,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import PageHeader from "lib/pages/pageHeader";
 import ModalPostCode from "lib/functions/postCode";
 import { response } from "types/globalTypes";
+import { NavigateFunction } from "react-router-dom";
 
 const RegisterBlock = styled.div`
   min-width: 100%;
@@ -32,14 +33,11 @@ const RegiSection = styled(Responsive)`
 
 type RegisterProps = {
   productList: object[] | null;
-  isRegister: any;
-  imageUpload: response;
-  onUpload: (
-    e: React.ChangeEvent<HTMLInputElement>,
-    subject: string,
-    type: string
-  ) => void;
+  isRegister: response;
   onSubmit: (data: any) => void;
+  modalVisible: boolean;
+  setModalVisible: (status: boolean) => void;
+  navigate: NavigateFunction;
 };
 
 const schema = yup.object({
@@ -107,12 +105,13 @@ const schema = yup.object({
 function RegisterForm({
   productList,
   isRegister,
-  imageUpload,
-  onUpload,
   onSubmit,
+  modalVisible,
+  setModalVisible,
+  navigate,
 }: RegisterProps) {
   const [isPassShow, setIsPassShow] = useState<boolean>(false);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [postCodeVisible, setPostCodeVisible] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -199,7 +198,7 @@ function RegisterForm({
           />
           <StyledInput
             placeholder="대표명"
-            label=".bizInfo.basicInfo.ceo"
+            label="bizInfo.basicInfo.ceo"
             fullWidth
             register={register}
             errors={errors}
@@ -227,6 +226,7 @@ function RegisterForm({
             placeholder="로고이미지"
             label="bizInfo.basicInfo.logoImageInfo.id"
             fullWidth
+            isBox
             maxLength={1}
             register={register}
             errors={errors}
@@ -235,7 +235,7 @@ function RegisterForm({
             type="logo"
             successAction={(result: any) => {
               const imageArray = result.map((image: any) => {
-                return { id: image.imageId };
+                return { id: image?.imageId };
               });
               setValue("bizInfo.basicInfo.logoImageInfo.id", imageArray[0].id);
               clearErrors("bizInfo.basicInfo.logoImageInfo.id");
@@ -281,16 +281,16 @@ function RegisterForm({
             placeholder="사업자등록증"
             label="bizInfo.registrationInfo.registrationImageInfo.id"
             fullWidth
+            isBox
             maxLength={1}
             register={register}
             errors={errors}
             status={errors.bizInfo?.registrationInfo?.registrationImageInfo?.id}
-            action={onUpload}
             subject="vendor"
             type="registration"
             successAction={(result: any) => {
               const imageArray = result.map((image: any) => {
-                return { id: image.imageId };
+                return { id: image?.imageId };
               });
               setValue(
                 "bizInfo.registrationInfo.registrationImageInfo.id",
@@ -331,6 +331,7 @@ function RegisterForm({
             placeholder="통장사본"
             label="bizInfo.accountInfo.accountImageInfo.id"
             fullWidth
+            isBox
             maxLength={1}
             register={register}
             errors={errors}
@@ -339,7 +340,7 @@ function RegisterForm({
             type="account"
             successAction={(result: any) => {
               const imageArray = result.map((image: any) => {
-                return { id: image.imageId };
+                return { id: image?.imageId };
               });
               setValue(
                 "bizInfo.accountInfo.accountImageInfo.id",
@@ -396,13 +397,13 @@ function RegisterForm({
             disable={true}
             // errors={errors}
             status={errors.bizInfo?.addressInfo?.zipCode}
-            action={() => setModalVisible(true)}
+            action={() => setPostCodeVisible(true)}
           />
           <Modal
             title="우편번호 조회"
             msg={
               <ModalPostCode
-                setIsModalVisible={setModalVisible}
+                setIsModalVisible={setPostCodeVisible}
                 action={(zipCode: any, address: any) => {
                   setValue("bizInfo.addressInfo.zipCode", `${zipCode}`);
                   setValue("bizInfo.addressInfo.basic", `${address}`);
@@ -411,8 +412,8 @@ function RegisterForm({
                 }}
               />
             }
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
+            modalVisible={postCodeVisible}
+            setModalVisible={setPostCodeVisible}
             submitMsg="닫기"
           />
           <StyledInput
@@ -506,6 +507,7 @@ function RegisterForm({
             errors={errors}
             status={errors.adminInfo?.phone}
           />
+          <ErrorMsg>{isRegister.message}</ErrorMsg>
           <Button
             type="submit"
             fullWidth
@@ -517,6 +519,14 @@ function RegisterForm({
           </Button>
         </RegiSection>
       </StyledForm>
+      <Modal
+        title="회원가입 요청"
+        msg="회원가입 요청을 완료하였습니다. 승인완료 후 로그인가능합니다."
+        submitMsg="확인"
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        action={() => navigate(`/auth/signIn`)}
+      />
     </RegisterBlock>
   );
 }
