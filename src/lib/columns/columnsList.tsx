@@ -76,19 +76,21 @@ export const sidebarList: sideListType[] = [
         icon: <FaClipboardList />,
         menuName: "전체주문조회",
         url: "/allList",
-        disable: true,
       },
       {
         icon: <FaDonate />,
         menuName: "입금전 관리",
         url: "/beforePayment",
-        disable: true,
+      },
+      {
+        icon: <FaBoxes />,
+        menuName: "상품준비중",
+        url: "/paymentComplete",
       },
       {
         icon: <FaDollyFlatbed />,
-        menuName: "배송대기 관리",
+        menuName: "배송대기(배송처리)",
         url: "/beforeDelivery",
-        disable: true,
       },
       {
         icon: <FaShippingFast />,
@@ -330,59 +332,56 @@ export const deliveryCodeColumns: ColumnsType[] = [
   {
     title: "생성일",
     dataIndex: "base",
-    isDesc: true,
     render: (base) => changeDays(base.createdAt),
   },
   {
     title: "수정일",
     dataIndex: "base",
-    isDesc: true,
     render: (base) => changeDays(base.updatedAt),
   },
 ];
 
 //* vendorOrder
-export const vendorOrderColumns = [
+export const vendorOrderColumns: ColumnsType[] = [
   {
-    title: "코드",
-    dataIndex: "code",
+    title: "구매자명",
+    dataIndex: "info",
+    render: (info) => info.clientInfo.clientName,
   },
   {
-    title: "주문시간",
-    dataIndex: "paymentAt",
-    render: (paymentAt: string) => changeDays(paymentAt),
+    title: "주문자명",
+    dataIndex: "info",
+    render: (info) => info.address.info.application,
   },
   {
-    title: "생성일",
-    dataIndex: "createdAt",
-    isDesc: true,
-    render: (createdAt: string) => changeDays(createdAt),
+    title: "주문자 연락처",
+    dataIndex: "info",
+    render: (info) => info.address.info.mobile,
   },
   {
-    title: "수정일",
-    dataIndex: "updatedAt",
-    isDesc: true,
-    render: (updatedAt: string) => changeDays(updatedAt),
+    title: "모델명",
+    dataIndex: "info",
+    render: (info) => info.item.info.basic.info.model,
+  },
+  {
+    title: "상품명",
+    dataIndex: "info",
+    render: (info) => info.item.info.basic.info.name,
+  },
+  {
+    title: "주문수량",
+    dataIndex: "info",
+    render: (info) => info.count + "개",
   },
   {
     title: "주문금액",
-    dataIndex: "dealerOrderItem",
-    isDesc: true,
-    render: (dealerOrderItem: any) => dealerOrderItem?.countedTotalPrice + "원",
+    dataIndex: "info",
+    render: (info) => info.payTotal + "원",
   },
-  {
-    title: "송장번호",
-    dataIndex: "deliveryNum",
-  },
-  // {
-  //   title: "배송 예정일",
-  //   dataIndex: "paymentAt",
-  //   render: (paymentAt: string, _: any) => predictDelivery(paymentAt),
-  // },
   {
     title: "주문상태",
-    dataIndex: "orderStatus",
-    render: (orderStatus: string) => changeDeliveryStatus(orderStatus),
+    dataIndex: "info",
+    render: (info) => changeDeliveryStatus(info.orderStatus),
   },
 ];
 

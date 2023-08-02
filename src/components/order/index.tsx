@@ -9,12 +9,14 @@ import ReturnIndex from "./return";
 import ExchangeIndex from "./exchange";
 import RefundIndex from "./refund";
 import ConfirmationIndex from "./confirmation";
+import PaymentCompleteIndex from "./paymentComplete";
 
 const OrderIndex = () => {
   return (
     <Routes>
       <Route path="/allList/*" element={<AllListIndex />} />
       <Route path="/beforePayment/*" element={<BeforePaymentIndex />} />
+      <Route path="/paymentComplete/*" element={<PaymentCompleteIndex />} />
       <Route path="/beforeDelivery/*" element={<BeforeDeliveryIndex />} />
       <Route path="/delivery/*" element={<DeliveryIndex />} />
       <Route path="/afterDelivery/*" element={<AfterDeliveryIndex />} />

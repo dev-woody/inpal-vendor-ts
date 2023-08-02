@@ -2,11 +2,12 @@ import styled from "styled-components";
 import { BreadCrumb, Responsive, Table } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
 import { ColumnsType } from "lib/columns/columnsList";
+import { response } from "types/globalTypes";
 
 const ConfirmationListBlock = styled(Responsive)``;
 
 type listProps = {
-  confirmationList?: any;
+  confirmationList: response;
   confirmationColumns: ColumnsType[];
 };
 
@@ -35,8 +36,8 @@ const ConfirmationList = ({
         <Table
           columns={confirmationColumns}
           // content={confirmationList}
-          content={confirmationList.filter(
-            (list: any) => list.orderStatus === "CONFIRM"
+          content={confirmationList?.data?.filter(
+            (list: any) => list.info.orderStatus === "CONFIRM"
           )}
           url="/order/confirmation/detail"
           moveKey="id"

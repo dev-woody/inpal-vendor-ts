@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import ConfirmationDetail from "./confirmationDetail";
-import ConfirmationListContainer from "containers/order/confirmation/confirmationListContainer";
+import ConfirmationListContainer from "containers/order/confirmationListContainer";
 
 const ConfirmationIndex = () => {
   return (

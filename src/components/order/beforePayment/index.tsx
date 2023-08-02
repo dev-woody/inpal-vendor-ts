@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import BeforePaymentDetail from "./beforePaymentDetail";
-import BeforePaymentContainer from "containers/order/beforePayment/beforePaymentContainer";
+import BeforePaymentContainer from "containers/order/beforePaymentContainer";
 
 const BeforePaymentIndex = () => {
   return (

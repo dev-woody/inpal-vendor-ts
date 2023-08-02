@@ -17,16 +17,12 @@ yarn start
 
 ## 패치노트
 
-### `07.28 Update`
+### `08.02 Update`
 
-### 1. edit reducer
+### 1. order page
 
-리듀서 전체 수정
+오더 페이지 생성
 
-### 2. sideBar
-
-선택된 메뉴 클릭시 초기화
-
-### 3. etc
+### .etc
 
 기타 버그 수정

@@ -3,15 +3,13 @@ import { BreadCrumb, Responsive, Table } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
 import { vendorOrderColumns } from "lib/columns/columnsList";
 import { response } from "types/globalTypes";
-import { testVendorOrderData } from "types/data.test";
 
 const OrderListBlock = styled(Responsive)``;
 
 type listProps = {
-  orderList?: response;
+  orderList: response;
 };
 
-// const OrderList = ({ orderList }: listProps) => {
 const OrderList = ({ orderList }: listProps) => {
   return (
     <>
@@ -21,7 +19,7 @@ const OrderList = ({ orderList }: listProps) => {
             <BreadCrumb
               indicator={[
                 {
-                  name: "주문관리",
+                  name: "주문 조회",
                   url: "/order/allList",
                 },
               ]}
@@ -32,10 +30,9 @@ const OrderList = ({ orderList }: listProps) => {
       <OrderListBlock>
         <Table
           columns={vendorOrderColumns}
-          // content={orderList}
-          content={testVendorOrderData}
+          content={orderList.data}
           url="/order/allList/detail"
-          moveKey="id"
+          moveKey={["base", "id"]}
           pagenation
           filter
         />

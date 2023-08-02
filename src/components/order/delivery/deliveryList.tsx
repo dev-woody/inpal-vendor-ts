@@ -2,11 +2,12 @@ import styled from "styled-components";
 import { BreadCrumb, Responsive, Table } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
 import { ColumnsType } from "lib/columns/columnsList";
+import { response } from "types/globalTypes";
 
 const DeliveryListBlock = styled(Responsive)``;
 
 type listProps = {
-  deliveryList?: any;
+  deliveryList: response;
   deliveryColumns: ColumnsType[];
 };
 
@@ -32,8 +33,8 @@ const DeliveryList = ({ deliveryList, deliveryColumns }: listProps) => {
         <Table
           columns={deliveryColumns}
           // content={deliveryList}
-          content={deliveryList.filter(
-            (list: any) => list.orderStatus === "DELIVERY_START"
+          content={deliveryList?.data?.filter(
+            (list: any) => list.info.orderStatus === "DELIVERY_START"
           )}
           url="/order/delivery/detail"
           moveKey="id"

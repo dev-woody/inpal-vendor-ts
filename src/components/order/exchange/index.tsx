@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import ExchangeDetail from "./exchangeDetail";
-import ExchangeListContainer from "containers/order/exchange/exchangeListContainer";
+import ExchangeListContainer from "containers/order/exchangeListContainer";
 
 const ExchangeIndex = () => {
   return (

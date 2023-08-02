@@ -2,11 +2,12 @@ import styled from "styled-components";
 import { BreadCrumb, Responsive, Table } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
 import { ColumnsType } from "lib/columns/columnsList";
+import { response } from "types/globalTypes";
 
 const ExchangeListBlock = styled(Responsive)``;
 
 type listProps = {
-  exchangeList?: any;
+  exchangeList: response;
   exchangeOrderColumns: ColumnsType[];
 };
 
@@ -31,8 +32,8 @@ const ExchangeList = ({ exchangeList, exchangeOrderColumns }: listProps) => {
         <Table
           columns={exchangeOrderColumns}
           // content={exchangeList}
-          content={exchangeList.filter(
-            (list: any) => list.orderStatus === "EXCHANGE_REQUEST"
+          content={exchangeList?.data?.filter(
+            (list: any) => list.info.orderStatus === "EXCHANGE_REQUEST"
           )}
           url="/order/exchange/detail"
           moveKey="id"

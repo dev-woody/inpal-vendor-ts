@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import OrderList from "./orderList";
-import OrderDetail from "./orderDetail";
+import OrderAllListContainer from "containers/order/findallOrderContainer";
+import OrderDetailContainer from "containers/order/orderDetailContainer";
 
 const AllListIndex = () => {
   return (
     <Routes>
-      <Route path="/" element={<OrderList />} />
-      <Route path="/detail/:id" element={<OrderDetail />} />
+      <Route path="/" element={<OrderAllListContainer />} />
+      <Route path="/detail/:id" element={<OrderDetailContainer />} />
     </Routes>
   );
 };

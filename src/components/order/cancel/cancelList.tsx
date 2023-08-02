@@ -2,11 +2,12 @@ import styled from "styled-components";
 import { BreadCrumb, Responsive, Table } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
 import { ColumnsType } from "lib/columns/columnsList";
+import { response } from "types/globalTypes";
 
 const CancelListBlock = styled(Responsive)``;
 
 type listProps = {
-  cancelList?: any;
+  cancelList: response;
   cancelOrderColumns: ColumnsType[];
 };
 
@@ -31,8 +32,8 @@ const CancelList = ({ cancelList, cancelOrderColumns }: listProps) => {
         <Table
           columns={cancelOrderColumns}
           // content={cancelList}
-          content={cancelList.filter(
-            (list: any) => list.orderStatus === "CANCEL_REQUEST"
+          content={cancelList?.data?.filter(
+            (list: any) => list.info.orderStatus === "CANCEL_REQUEST"
           )}
           url="/order/cancel/detail"
           moveKey="id"

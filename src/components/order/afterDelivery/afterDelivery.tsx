@@ -2,11 +2,12 @@ import styled from "styled-components";
 import { BreadCrumb, Responsive, Table } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
 import { ColumnsType } from "lib/columns/columnsList";
+import { response } from "types/globalTypes";
 
 const AfterDeliveryBlock = styled(Responsive)``;
 
 type listProps = {
-  afterDelivery?: any;
+  afterDelivery: response;
   afterDeliveryColumns: ColumnsType[];
 };
 
@@ -32,8 +33,8 @@ const AfterDelivery = ({ afterDelivery, afterDeliveryColumns }: listProps) => {
         <Table
           columns={afterDeliveryColumns}
           // content={afterDelivery}
-          content={afterDelivery.filter(
-            (list: any) => list.orderStatus === "DELIVERY_END"
+          content={afterDelivery?.data?.filter(
+            (list: any) => list.info.orderStatus === "DELIVERY_END"
           )}
           url="/order/afterDelivery/detail"
           moveKey="id"

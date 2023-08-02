@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import BeforeDeliveryDetail from "./beforeDeliveryDetail";
-import BeforeDeliveryContainer from "containers/order/beforeDelivery/beforeDeliveryContainer";
+import BeforeDeliveryContainer from "containers/order/beforeDeliveryContainer";
 
 const BeforeDeliveryIndex = () => {
   return (

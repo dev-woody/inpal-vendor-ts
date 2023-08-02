@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import RefundDetail from "./refundDetail";
-import RefundListContainer from "containers/order/refund/refundListContainer";
+import RefundListContainer from "containers/order/refundListContainer";
 
 const RefundIndex = () => {
   return (

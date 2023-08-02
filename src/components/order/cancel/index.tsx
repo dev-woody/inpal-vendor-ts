@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import CancelDetail from "./cancelDetail";
-import CancelListContainer from "containers/order/cancel/cancelListContainer";
+import CancelListContainer from "containers/order/cancelListContainer";
 
 const CancelIndex = () => {
   return (

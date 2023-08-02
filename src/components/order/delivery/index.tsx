@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import DeliveryDetail from "./deliveryDetail";
-import DeliveryListContainer from "containers/order/delivery/deliveryListContainer";
+import DeliveryListContainer from "containers/order/deliveryListContainer";
 
 const DeliveryIndex = () => {
   return (

@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import ReturnDetail from "./returnDetail";
-import ReturnListContainer from "containers/order/return/returnListContainer";
+import ReturnListContainer from "containers/order/returnListContainer";
 
 const ReturnIndex = () => {
   return (
