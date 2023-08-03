@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import DeliveryDetail from "./deliveryDetail";
 import DeliveryListContainer from "containers/order/deliveryListContainer";
+import OrderDetailContainer from "containers/order/detailPage/orderDetailContainer";
 
 const DeliveryIndex = () => {
   return (
     <Routes>
       <Route path="/" element={<DeliveryListContainer />} />
-      <Route path="/detail/:id" element={<DeliveryDetail />} />
+      <Route path="/detail/:id" element={<OrderDetailContainer />} />
     </Routes>
   );
 };

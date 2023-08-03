@@ -29,9 +29,12 @@ const OrderDetailContainer = () => {
         id,
       })
     );
+    return () => {
+      dispatch(vendorOrderActions.reset("itemFindById"));
+    };
   }, []);
 
-  return <OrderDetail orderInfo={orderInfo} />;
+  return <OrderDetail orderInfo={orderInfo} navigate={navigate} />;
 };
 
 export default OrderDetailContainer;

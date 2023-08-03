@@ -37,7 +37,7 @@ const RefundList = ({ refundList, refundOrderColumns }: listProps) => {
             (list: any) => list.info.orderStatus === "REFUND_REQUEST"
           )}
           url="/order/refund/detail"
-          moveKey="id"
+          moveKey={["base", "id"]}
           pagenation
           filter
         />

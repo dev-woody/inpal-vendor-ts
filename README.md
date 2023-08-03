@@ -19,9 +19,9 @@ yarn start
 
 ### `08.02 Update`
 
-### 1. order page
+### 1. order page add function
 
-오더 페이지 생성
+오더 페이지의 기능을 추가하였음.
 
 ### .etc
 

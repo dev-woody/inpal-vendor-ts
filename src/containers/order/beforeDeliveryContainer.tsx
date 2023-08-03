@@ -16,14 +16,14 @@ import { testVendorOrderData } from "types/data.test";
 const BeforeDeliveryContainer = () => {
   const { user, orderList } = useAppSelector((store) => ({
     user: store.user,
-    orderList: store.vendorOrder.itemFindAll,
+    orderList: store.vendorOrder.findByDelivery,
   }));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(
-      vendorOrderActions.itemFindAll({
+      vendorOrderActions.findByDelivery({
         vendorId: user.vendorId,
         isDesc: false,
       })
@@ -33,9 +33,9 @@ const BeforeDeliveryContainer = () => {
   //* beforedelivery
   const beforedeliveryColumns: ColumnsType[] = [
     {
-      title: "코드",
+      title: "구매자명",
       dataIndex: "info",
-      render: (info) => info.code,
+      render: (info) => info.clientInfo.clientName,
     },
     {
       title: "주문자명",
@@ -48,44 +48,26 @@ const BeforeDeliveryContainer = () => {
       render: (info) => info.address.info.mobile,
     },
     {
-      title: "모델명",
+      title: "택배사",
       dataIndex: "info",
-      render: (info) => info.item.info.basic.info.model,
+      render: (info) =>
+        info?.deliveryCompany ? info?.deliveryCompany : "배송처리 전 상품",
     },
     {
-      title: "상품명",
+      title: "송장번호",
       dataIndex: "info",
-      render: (info) => info.item.info.basic.info.name,
+      render: (info) =>
+        info?.deliveryNum
+          ? info?.deliveryNum
+          : //! 수정 할 것
+            "서버에서 데이터 미수신 *수정사항",
     },
     {
-      title: "주문수량",
+      title: "주문상품",
       dataIndex: "info",
-      render: (info) => info.count + "개",
-    },
-    {
-      title: "주문금액",
-      dataIndex: "info",
-      render: (info) => info.payTotal + "원",
-    },
-    {
-      title: "주문상태",
-      dataIndex: "info",
-      render: (info) => {
-        return (
-          <Button
-            onClick={() =>
-              dispatch(
-                vendorOrderActions.setStatus({
-                  url: "setOrderItemReady",
-                  // client,
-                })
-              )
-            }
-          >
-            배송처리
-          </Button>
-        );
-      },
+      render: (info) =>
+        info.orderItems[0]?.info?.item?.info?.basic?.info?.name +
+        ` 외 ${info.orderItems.length - 1}개`,
     },
   ];
 

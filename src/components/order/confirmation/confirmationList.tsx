@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { BreadCrumb, Responsive, Table } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
-import { ColumnsType } from "lib/columns/columnsList";
+import { ColumnsType, vendorOrderColumns } from "lib/columns/columnsList";
 import { response } from "types/globalTypes";
 
 const ConfirmationListBlock = styled(Responsive)``;
@@ -34,13 +34,13 @@ const ConfirmationList = ({
       </ConfirmationListBlock>
       <ConfirmationListBlock>
         <Table
-          columns={confirmationColumns}
+          columns={vendorOrderColumns}
           // content={confirmationList}
           content={confirmationList?.data?.filter(
             (list: any) => list.info.orderStatus === "CONFIRM"
           )}
           url="/order/confirmation/detail"
-          moveKey="id"
+          moveKey={["base", "id"]}
           pagenation
           filter
         />

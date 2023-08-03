@@ -36,7 +36,7 @@ const CancelList = ({ cancelList, cancelOrderColumns }: listProps) => {
             (list: any) => list.info.orderStatus === "CANCEL_REQUEST"
           )}
           url="/order/cancel/detail"
-          moveKey="id"
+          moveKey={["base", "id"]}
           pagenation
           filter
         />

@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import OrderAllListContainer from "containers/order/findallOrderContainer";
-import OrderDetailContainer from "containers/order/orderDetailContainer";
+import OrderDetailContainer from "containers/order/detailPage/orderDetailContainer";
 
 const AllListIndex = () => {
   return (

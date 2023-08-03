@@ -79,29 +79,29 @@ export const sidebarList: sideListType[] = [
       },
       {
         icon: <FaDonate />,
-        menuName: "입금전 관리",
+        menuName: "무통장입금 조회",
         url: "/beforePayment",
       },
       {
         icon: <FaBoxes />,
-        menuName: "상품준비중",
+        menuName: "결제완료 조회",
         url: "/paymentComplete",
       },
       {
         icon: <FaDollyFlatbed />,
-        menuName: "배송대기(배송처리)",
+        menuName: "배송처리",
         url: "/beforeDelivery",
       },
-      {
-        icon: <FaShippingFast />,
-        menuName: "배송중 조회",
-        url: "/delivery",
-      },
-      {
-        icon: <FaUserCheck />,
-        menuName: "배송완료 조회",
-        url: "/afterDelivery",
-      },
+      // {
+      //   icon: <FaShippingFast />,
+      //   menuName: "배송중 조회",
+      //   url: "/delivery",
+      // },
+      // {
+      //   icon: <FaUserCheck />,
+      //   menuName: "배송완료 조회",
+      //   url: "/afterDelivery",
+      // },
       {
         icon: <FaUserTimes />,
         menuName: "취소 관리",
@@ -254,7 +254,7 @@ export const masterAllListColumns = [
 //* todo list
 export const todoColumns: ColumnsType[] = [
   {
-    title: "입금전",
+    title: "무통장입금",
     dataIndex: "beforePayment",
   },
   {
@@ -538,19 +538,24 @@ export const eventColumns = [
 //* vendorOrderColumns
 export const vendorOrderItemColumns = [
   {
-    title: "옵션명",
-    dataIndex: "goodsGroupOption",
-    render: (goodsGroupOption: any) => goodsGroupOption.name,
+    title: "모델명",
+    dataIndex: "item",
+    render: (item: any) => item?.info?.basic?.info?.model,
   },
   {
-    title: "사양",
-    dataIndex: "goodsGroupOption",
-    render: (goodsGroupOption: any) => goodsGroupOption.spec,
+    title: "아이템명",
+    dataIndex: "item",
+    render: (item: any) => item?.info?.basic?.info?.name,
   },
   {
-    title: "가격",
-    dataIndex: "goodsGroupOption",
-    render: (goodsGroupOption: any) => goodsGroupOption.price,
+    title: "수량",
+    dataIndex: "count",
+    render: (count: number) => count + "개",
+  },
+  {
+    title: "배송상태",
+    dataIndex: "orderStatus",
+    render: (orderStatus: any) => changeDeliveryStatus(orderStatus),
   },
 ];
 

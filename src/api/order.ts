@@ -50,6 +50,26 @@ export const itemFindById = async (data: object) => {
     .then((res) => res);
 };
 
+export const findByDelivery = async (data: object) => {
+  return await accessClient
+    .get(`/vendor/order/byDelivery/findAll`, {
+      params: {
+        ...data,
+      },
+    })
+    .then((res) => res);
+};
+
+export const deliveryFindById = async (data: object) => {
+  return await accessClient
+    .get(`/vendor/order/byDelivery/findById`, {
+      params: {
+        ...data,
+      },
+    })
+    .then((res) => res);
+};
+
 export const setStatus = async (data: any) => {
   return await accessClient
     .post(`/vendor/order/status/${data.url}`, { ...data })

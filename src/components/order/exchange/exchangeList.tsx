@@ -36,7 +36,7 @@ const ExchangeList = ({ exchangeList, exchangeOrderColumns }: listProps) => {
             (list: any) => list.info.orderStatus === "EXCHANGE_REQUEST"
           )}
           url="/order/exchange/detail"
-          moveKey="id"
+          moveKey={["base", "id"]}
           pagenation
           filter
         />

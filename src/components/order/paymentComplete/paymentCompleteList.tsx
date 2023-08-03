@@ -1,19 +1,26 @@
 import styled from "styled-components";
-import { BreadCrumb, Responsive, Table } from "lib/styles";
+import { BreadCrumb, Modal, Responsive, Table } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
 import { ColumnsType } from "lib/columns/columnsList";
 import { response } from "types/globalTypes";
+import { NavigateFunction } from "react-router-dom";
 
 const PaymentCompleteListBlock = styled(Responsive)``;
 
 type listProps = {
   paymentComplete: response;
   paymentCompleteOrderColumns: ColumnsType[];
+  modalVisible: boolean;
+  setModalVisible: (status: boolean) => void;
+  navigate: NavigateFunction;
 };
 
 const PaymentCompleteList = ({
   paymentComplete,
   paymentCompleteOrderColumns,
+  modalVisible,
+  setModalVisible,
+  navigate,
 }: listProps) => {
   return (
     <>
@@ -38,14 +45,20 @@ const PaymentCompleteList = ({
           content={paymentComplete?.data?.filter(
             (list: any) => list?.info?.orderStatus === "PAYMENT_COMPLETE"
           )}
-          //! 원상복구해야함
-          url="/order/allList/detail"
-          // url="/order/paymentComplete/detail"
+          url="/order/paymentComplete/detail"
           moveKey={["base", "id"]}
           pagenation
           filter
         />
       </PaymentCompleteListBlock>
+      <Modal
+        title="배송상태 변경"
+        msg="상품준비중으로 변경되었습니다."
+        submitMsg="확인"
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        // action={() => navigate(`/admin/cupon`)}
+      />
     </>
   );
 };

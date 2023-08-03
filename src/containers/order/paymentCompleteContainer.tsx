@@ -5,20 +5,36 @@ import {
   changeDeliveryStatus,
   changePhone,
 } from "lib/functions/changeInput";
-import { Button, StyledSelect } from "lib/styles";
+import { Button } from "lib/styles";
 import { CheckBox } from "lib/styles/checkBoxStyled";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { vendorOrderActions } from "reducers/order/vendorOrder";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
+import { checkStatus } from "types/globalTypes";
 
 const PaymentCompleteContainer = () => {
-  const { user, orderList } = useAppSelector((store) => ({
+  const { user, orderList, setStatus } = useAppSelector((store) => ({
     user: store.user,
     orderList: store.vendorOrder.itemFindAll,
+    setStatus: store.vendorOrder.setStatus,
   }));
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (checkStatus(setStatus.status)) {
+      setModalVisible(true);
+      dispatch(vendorOrderActions.reset("setStatus"));
+      dispatch(
+        vendorOrderActions.itemFindAll({
+          vendorId: user.vendorId,
+          isDesc: false,
+        })
+      );
+    }
+  }, [dispatch, setStatus]);
 
   useEffect(() => {
     dispatch(
@@ -77,10 +93,7 @@ const PaymentCompleteContainer = () => {
               dispatch(
                 vendorOrderActions.setStatus({
                   url: "setOrderItemReady",
-                  clientId: info.clientInfo.clientId,
                   orderItemIds: [itemInfo.base.id],
-                  usePoint: 0,
-                  useCouponIds: [],
                 })
               );
             }}
@@ -96,6 +109,9 @@ const PaymentCompleteContainer = () => {
     <PaymentCompleteList
       paymentComplete={orderList}
       paymentCompleteOrderColumns={paymentCompleteOrderColumns}
+      modalVisible={modalVisible}
+      setModalVisible={setModalVisible}
+      navigate={navigate}
     />
   );
 };

@@ -35,12 +35,12 @@ const BeforeDelivery = ({
       <BeforeDeliveryBlock>
         <Table
           columns={beforedeliveryColumns}
-          // content={beforeDelivery}
-          content={beforeDelivery?.data?.filter(
-            (list: any) => list.info.orderStatus === "ITEM_READY"
-          )}
+          content={beforeDelivery?.data}
+          // content={beforeDelivery?.data?.filter(
+          //   (list: any) => list.info.deliveryCompany === null
+          // )}
           url="/order/beforeDelivery/detail"
-          moveKey="id"
+          moveKey={["base", "id"]}
           pagenation
           filter
         />

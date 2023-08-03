@@ -36,7 +36,7 @@ const ReturnList = ({ returnList, returnOrderColumns }: listProps) => {
             (list: any) => list.info.orderStatus === "RETURN_REQUEST"
           )}
           url="/order/return/detail"
-          moveKey="id"
+          moveKey={["base", "id"]}
           pagenation
           filter
         />
