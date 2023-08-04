@@ -21,11 +21,21 @@ const GoodsGroupListContainer = () => {
   };
 
   useEffect(() => {
-    dispatch(vendorGoodsGroupActions.findAll(false));
+    dispatch(
+      vendorGoodsGroupActions.findAll({
+        vendorId: user.vendorId,
+        isDesc: false,
+      })
+    );
   }, [setOpenStatus]);
 
   useEffect(() => {
-    dispatch(vendorGoodsGroupActions.findAll(false));
+    dispatch(
+      vendorGoodsGroupActions.findAll({
+        vendorId: user.vendorId,
+        isDesc: false,
+      })
+    );
     return () => {
       dispatch(vendorGoodsGroupActions.reset("findAll"));
     };

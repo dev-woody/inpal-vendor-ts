@@ -1,8 +1,10 @@
 import { accessClient, client } from "./createAPI";
 
-export const findAll = async (isDesc: boolean) => {
+export const findAll = async (data: object) => {
   return accessClient
-    .get(`/store/construction/good/group/findAll/${isDesc}`)
+    .get(`/store/construction/good/group/findByVendorId`, {
+      params: { ...data },
+    })
     .then((res) => {
       return res;
     });
