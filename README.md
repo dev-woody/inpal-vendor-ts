@@ -19,9 +19,13 @@ yarn start
 
 ### `08.02 Update`
 
-### 1. order page add function
+### 1. order exception
 
-오더 페이지의 기능을 추가하였음.
+주문 예외사항처리 추가하였음
+
+### 2. orderLog
+
+주문기록 확인 모듈 제작하였음
 
 ### .etc
 

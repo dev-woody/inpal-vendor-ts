@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { BreadCrumb, Responsive, Table } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
-import { ColumnsType } from "lib/columns/columnsList";
+import { ColumnsType, vendorOrderColumns } from "lib/columns/columnsList";
 import { response } from "types/globalTypes";
 
 const RefundListBlock = styled(Responsive)``;
@@ -31,7 +31,7 @@ const RefundList = ({ refundList, refundOrderColumns }: listProps) => {
       </RefundListBlock>
       <RefundListBlock>
         <Table
-          columns={refundOrderColumns}
+          columns={vendorOrderColumns}
           // content={refundList}
           content={refundList?.data?.filter(
             (list: any) => list.info.orderStatus === "REFUND_REQUEST"

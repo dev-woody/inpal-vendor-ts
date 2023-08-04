@@ -3,25 +3,24 @@ import PageHeader from "lib/pages/pageHeader";
 import { BreadCrumb, Button, Responsive, Table } from "lib/styles";
 import styled from "styled-components";
 import { Description, DescriptionContent } from "lib/styles/descriptionStyles";
-import { testVendorOrderData } from "types/data.test";
 import {
   changeDays,
   changeDeliveryStatus,
   changePhone,
 } from "lib/functions/changeInput";
-import { vendorOrderItemColumns } from "lib/columns/columnsList";
 import { response } from "types/globalTypes";
 import { NavigateFunction } from "react-router-dom";
+import { vendorOrderLogColumns } from "lib/columns/columnsList";
 
 const OrderDetailBlock = styled(Responsive)``;
 
 type orderDetailProps = {
   orderInfo: response;
+  orderLog: response;
   navigate: NavigateFunction;
 };
 
-// const OrderDetail = ({ data }: orderDetailProps) => {
-const OrderDetail = ({ orderInfo, navigate }: orderDetailProps) => {
+const OrderDetail = ({ orderInfo, orderLog, navigate }: orderDetailProps) => {
   const data = orderInfo?.data?.info;
   const path = window.location.pathname.split("/");
   const rollbackPath = "/" + path[1] + "/" + path[2];
@@ -46,26 +45,16 @@ const OrderDetail = ({ orderInfo, navigate }: orderDetailProps) => {
         />
       </OrderDetailBlock>
       <OrderDetailBlock>
-        <PageHeader title="주문상세정보" />
-        <Description>
+        <PageHeader title="주문 상세정보" />
+        <Description style={{ marginBottom: "1rem" }}>
           <DescriptionContent label="코드" content={data?.code} />
           <DescriptionContent
             label="주문상태"
             content={changeDeliveryStatus(data?.orderStatus)}
           />
-          <DescriptionContent
-            label="주문자"
-            content={data?.clientInfo?.clientName}
-          />
-          <DescriptionContent
-            label="주문자타입"
-            content={data?.clientInfo?.clientType}
-          />
-          <DescriptionContent label="주문수량" content={data?.count + "개"} />
-          <DescriptionContent
-            label="판매수수료"
-            content={data?.masterCharge + "%"}
-          />
+        </Description>
+        <PageHeader title="상품정보" />
+        <Description style={{ marginBottom: "1rem" }}>
           <DescriptionContent
             label="모델명"
             content={data?.item?.info?.basic?.info?.model}
@@ -116,6 +105,22 @@ const OrderDetail = ({ orderInfo, navigate }: orderDetailProps) => {
               ")"
             }
           />
+        </Description>
+        <PageHeader title="주문정보" />
+        <Description style={{ marginBottom: "1rem" }}>
+          <DescriptionContent
+            label="주문자"
+            content={data?.clientInfo?.clientName}
+          />
+          <DescriptionContent
+            label="주문자타입"
+            content={data?.clientInfo?.clientType}
+          />
+          <DescriptionContent label="주문수량" content={data?.count + "개"} />
+          <DescriptionContent
+            label="판매수수료"
+            content={data?.masterCharge + "%"}
+          />
           <DescriptionContent
             label="결제금액"
             content={data?.payAmount + "원"}
@@ -153,6 +158,12 @@ const OrderDetail = ({ orderInfo, navigate }: orderDetailProps) => {
             content={data?.address?.info?.application}
           />
         </Description>
+        <PageHeader title="배송상태 기록" />
+        <Table
+          columns={vendorOrderLogColumns}
+          content={orderLog.data}
+          doNothing
+        />
         <Button
           onClick={() => navigate(`${rollbackPath}`)}
           type="button"

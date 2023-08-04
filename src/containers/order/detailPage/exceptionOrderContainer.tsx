@@ -23,13 +23,10 @@ const OrderExceptionContainer = ({ url, nextStatus }: ExceptionType) => {
   const { id } = useParams();
 
   const onSubmit = (data: object) => {
-    const itemData = orderInfo?.data?.info;
     dispatch(
       vendorOrderActions.setStatus({
         url: url,
-        clientId: itemData?.clientInfo?.clientId,
-        orderByVendorId: "",
-        orderItemId: itemData?.item?.id,
+        orderItemId: orderInfo?.data?.base?.id,
         orderStatus: nextStatus,
         ...data,
       })

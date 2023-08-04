@@ -11,11 +11,13 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { vendorOrderActions } from "reducers/order/vendorOrder";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
+import { checkStatus } from "types/globalTypes";
 
 const OrderDetailContainer = () => {
-  const { user, orderInfo } = useAppSelector((store) => ({
+  const { user, orderInfo, orderLog } = useAppSelector((store) => ({
     user: store.user,
     orderInfo: store.vendorOrder.itemFindById,
+    orderLog: store.vendorOrder.orderLog,
   }));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -34,7 +36,25 @@ const OrderDetailContainer = () => {
     };
   }, []);
 
-  return <OrderDetail orderInfo={orderInfo} navigate={navigate} />;
+  useEffect(() => {
+    if (checkStatus(orderInfo.status)) {
+      dispatch(
+        vendorOrderActions.orderLog({
+          vendorId: user.vendorId,
+          orderItemId: orderInfo.data.base.id,
+          isDesc: true,
+        })
+      );
+    }
+  }, [orderInfo]);
+
+  return (
+    <OrderDetail
+      orderInfo={orderInfo}
+      orderLog={orderLog}
+      navigate={navigate}
+    />
+  );
 };
 
 export default OrderDetailContainer;

@@ -385,6 +385,29 @@ export const vendorOrderColumns: ColumnsType[] = [
   },
 ];
 
+export const vendorOrderLogColumns: ColumnsType[] = [
+  {
+    title: "상태",
+    dataIndex: "info",
+    render: (info) => changeDeliveryStatus(info.status),
+  },
+  {
+    title: "관리자",
+    dataIndex: "info",
+    render: (info) => info.userId,
+  },
+  {
+    title: "메모",
+    dataIndex: "info",
+    render: (info) => (info.description ? info.description : "-"),
+  },
+  {
+    title: "수정일",
+    dataIndex: "base",
+    render: (base) => changeDays(base.updatedAt),
+  },
+];
+
 export const calculateColumns = [
   {
     title: "년",

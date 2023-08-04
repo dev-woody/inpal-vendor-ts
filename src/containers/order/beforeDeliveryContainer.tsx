@@ -57,10 +57,7 @@ const BeforeDeliveryContainer = () => {
       title: "송장번호",
       dataIndex: "info",
       render: (info) =>
-        info?.deliveryNum
-          ? info?.deliveryNum
-          : //! 수정 할 것
-            "서버에서 데이터 미수신 *수정사항",
+        info?.deliveryNum ? info?.deliveryNum : "배송처리 전 상품",
     },
     {
       title: "주문상품",

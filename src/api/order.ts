@@ -75,3 +75,11 @@ export const setStatus = async (data: any) => {
     .post(`/vendor/order/status/${data.url}`, { ...data })
     .then((res) => res);
 };
+
+export const orderLog = async (data: object) => {
+  return await accessClient
+    .get(`/vendor/order/status/findAll`, {
+      params: { ...data },
+    })
+    .then((res) => res);
+};

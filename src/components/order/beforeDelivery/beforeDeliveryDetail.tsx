@@ -140,11 +140,8 @@ const BeforeDeliveryDetail = ({
               span="12"
               label="송장번호"
               content={
-                // data?.info?.deliveryNum ? (
-                data?.info?.deliveryCompany ? (
-                  // data?.info?.deliveryNum
-                  //! 수정 할 것
-                  "서버에서 데이터 미수신 *수정사항"
+                data?.info?.deliveryNum ? (
+                  data?.info?.deliveryNum
                 ) : (
                   <StyledInput
                     align="vertical"
@@ -159,13 +156,10 @@ const BeforeDeliveryDetail = ({
             />
             <DescriptionContent
               span="12"
-              label="메모택배사"
+              label="메모"
               content={
-                // data?.info?.description ? (
-                data?.info?.deliveryCompany ? (
-                  // data?.info?.description
-                  //! 수정 할 것
-                  "서버에서 데이터 미수신 *수정사항"
+                data?.info?.description ? (
+                  data?.info?.description
                 ) : (
                   <StyledInput
                     align="vertical"

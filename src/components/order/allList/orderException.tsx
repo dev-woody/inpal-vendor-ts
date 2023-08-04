@@ -32,7 +32,7 @@ type orderExceptionProps = {
 };
 
 const schema = yup.object({
-  description: yup.string().required("택배사를 입력해주세요."),
+  description: yup.string(),
 });
 
 const OrderException = ({
@@ -52,7 +52,7 @@ const OrderException = ({
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      desctiption: "",
+      description: "",
     },
   });
 
@@ -82,9 +82,10 @@ const OrderException = ({
       <OrderExceptionBlock>
         <PageHeader title="주문상세정보" />
         <StyledForm
-          onSubmit={handleSubmit((data) => {
-            onSubmit(data);
-          })}
+          onSubmit={handleSubmit(
+            (data) => onSubmit(data),
+            (errors) => console.log(errors)
+          )}
         >
           <Description>
             <DescriptionContent label="코드" content={data?.code} />
@@ -198,10 +199,10 @@ const OrderException = ({
                 <StyledInput
                   align="vertical"
                   placeholder="메모"
-                  label="desctiption"
+                  label="description"
                   register={register}
                   errors={errors}
-                  status={errors.desctiption}
+                  status={errors.description}
                 />
               }
             />
