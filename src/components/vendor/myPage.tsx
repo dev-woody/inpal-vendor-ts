@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {
+  BreadCrumb,
   Button,
   Description,
   DescriptionContent,
@@ -12,7 +13,7 @@ import {
 import PageHeader from "lib/pages/pageHeader";
 import { response } from "types/globalTypes";
 import { changeDays, changePhone } from "lib/functions/changeInput";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -65,6 +66,7 @@ const MyPage = ({
 
   const [editPass, setEditPass] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { id } = useParams();
 
   useEffect(() => {
     setValue("email", data?.info.email);
@@ -74,7 +76,16 @@ const MyPage = ({
     <>
       <MyPageBlock>
         <PageHeader
-          title="마이페이지"
+          breadCrumb={
+            <BreadCrumb
+              indicator={[
+                {
+                  name: "마이페이지",
+                  url: `/mypage/${id}`,
+                },
+              ]}
+            />
+          }
           extra={
             user?.isTopLevel ? (
               <>

@@ -1,6 +1,6 @@
 import BasicInfoUpdate from "components/goodsGroup/basicInfoUpdate";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { vendorGoodsGroupActions } from "reducers/goodsGroup/vendorGoodsGroup";
 import { vendorGoodsSpecActions } from "reducers/goodsGroup/vendorGoodsSpec";
 import { vendorProductActions } from "reducers/product/vendorProduct";
@@ -11,25 +11,31 @@ const BasicInfoUpdateContainer = ({ basicInfo }: { basicInfo: any }) => {
   const [newCategory, setNewCategory] = useState<{ [key: string]: any }[]>([]);
   const {
     user,
+    updateResult,
     goodsGroupInfo,
-    productList,
     propertyList,
     categoryList,
     manufacturerList,
   } = useAppSelector((store) => ({
     user: store.user,
+    updateResult: store.vendorGoodsGroup.basicUpdate,
     goodsGroupInfo: store.vendorGoodsGroup.findById,
-    productList: store.vendorProduct.findAll,
     propertyList: store.vendorProduct.findAllProperty,
     categoryList: store.vendorProduct.findAllCategory,
     manufacturerList: store.vendorProduct.findManufacturerByProductId,
   }));
 
   const dispatch = useAppDispatch();
+  const { id } = useParams();
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const onSubmit = (data: any) => {
     dispatch(
-      vendorGoodsGroupActions.basicUpdate({ vendorId: user.vendorId, ...data })
+      vendorGoodsGroupActions.basicUpdate({
+        vendorId: user.vendorId,
+        id: basicInfo.id,
+        basicInfo: { ...data },
+      })
     );
   };
 
@@ -118,6 +124,14 @@ const BasicInfoUpdateContainer = ({ basicInfo }: { basicInfo: any }) => {
   }, [categoryList, goodsGroupInfo]);
 
   useEffect(() => {
+    if (checkStatus(updateResult.status)) {
+      setModalVisible(true);
+      dispatch(vendorGoodsGroupActions.findById(id));
+      dispatch(vendorGoodsGroupActions.reset("basicUpdate"));
+    }
+  }, [dispatch, updateResult]);
+
+  useEffect(() => {
     if (checkStatus(goodsGroupInfo.status)) {
       const data = {
         productId: goodsGroupInfo.data.info.basic.info.product.id,
@@ -137,13 +151,15 @@ const BasicInfoUpdateContainer = ({ basicInfo }: { basicInfo: any }) => {
 
   return (
     <BasicInfoUpdate
+      updateResult={updateResult}
       basicInfo={basicInfo}
-      productList={productList}
       propertyList={propertyList}
       categoryList={newCategory}
       setNewCategory={setNewCategory}
       manufacturerList={manufacturerList}
       onSubmit={onSubmit}
+      modalVisible={modalVisible}
+      setModalVisible={setModalVisible}
     />
   );
 };

@@ -3,6 +3,8 @@ import {
   Button,
   Description,
   DescriptionContent,
+  ErrorMsg,
+  Modal,
   Responsive,
   StyledCategory,
   StyledForm,
@@ -20,7 +22,10 @@ const DetailPageUpdateBlock = styled(Responsive)``;
 
 type basicType = {
   detailPage: any;
+  detailUpdate: response;
   onSubmit: (data: any) => void;
+  modalVisible: boolean;
+  setModalVisible: (status: boolean) => void;
 };
 
 const schema = yup.object({
@@ -36,7 +41,13 @@ const schema = yup.object({
   }),
 });
 
-const DetailPageUpdate = ({ detailPage, onSubmit }: basicType) => {
+const DetailPageUpdate = ({
+  detailPage,
+  detailUpdate,
+  onSubmit,
+  modalVisible,
+  setModalVisible,
+}: basicType) => {
   const {
     register,
     handleSubmit,
@@ -92,10 +103,18 @@ const DetailPageUpdate = ({ detailPage, onSubmit }: basicType) => {
             }
           />
         </Description>
+        <ErrorMsg>{detailUpdate.message}</ErrorMsg>
         <Button type="submit" status="primary" withInput needMarginTop>
           수정
         </Button>
       </StyledForm>
+      <Modal
+        title="상세페이지 수정"
+        msg="수정을 완료하였습니다."
+        submitMsg="확인"
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </DetailPageUpdateBlock>
   );
 };

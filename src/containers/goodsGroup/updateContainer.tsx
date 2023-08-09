@@ -6,8 +6,7 @@ import { vendorProductActions } from "reducers/product/vendorProduct";
 import { vendorGoodsGroupActions } from "reducers/goodsGroup/vendorGoodsGroup";
 
 const GoodsGroupUpdateContainer = () => {
-  const { user, goodsGroup, categoryList } = useAppSelector((state) => ({
-    user: state.user,
+  const { goodsGroup, categoryList } = useAppSelector((state) => ({
     goodsGroup: state.vendorGoodsGroup.findById,
     categoryList: state.vendorProduct.findAllCategory,
   }));

@@ -20,6 +20,7 @@ import PageHeader from "lib/pages/pageHeader";
 import ModalPostCode from "lib/functions/postCode";
 import { response } from "types/globalTypes";
 import { NavigateFunction } from "react-router-dom";
+import { regexEmail, regexId, regexPasswd } from "lib/functions/changeInput";
 
 const RegisterBlock = styled.div`
   min-width: 100%;
@@ -93,11 +94,23 @@ const schema = yup.object({
   }),
   adminInfo: yup.object({
     signInfo: yup.object({
-      userId: yup.string().required("아이디를 입력해주세요."),
-      password: yup.string().required("비밀번호를 입력해주세요."),
+      userId: yup
+        .string()
+        .matches(regexId, "소문자, 숫자 하나씩 포함해야합니다.")
+        .required("아이디를 입력해주세요."),
+      password: yup
+        .string()
+        .matches(
+          regexPasswd,
+          "대소문자, 숫자, 특수문자를 하나씩 포함해야합니다."
+        )
+        .required("비밀번호를 입력해주세요."),
     }),
     name: yup.string().required("이름을 입력해주세요."),
-    email: yup.string().required("이메일를 입력해주세요."),
+    email: yup
+      .string()
+      .matches(regexEmail, "이메일 형식에 맞지않습니다.")
+      .required("이메일를 입력해주세요."),
     phone: yup.string().required("전화번호를 입력해주세요."),
   }),
 });

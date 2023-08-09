@@ -94,3 +94,12 @@ export const predictDelivery = (inputDays: string) => {
 export function changePostPhone(phone: string) {
   return phone.replace(/\-/g, "");
 }
+
+export const regexId =
+  /^(?=.*[a-z])(?=.*\d)(?!.*[^a-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]])/;
+
+export const regexPasswd =
+  /^(?=.*[A-z])(?=.*[a-z])(?=.*\d)(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+])/;
+
+export const regexEmail =
+  /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;

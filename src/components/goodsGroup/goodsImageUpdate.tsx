@@ -3,6 +3,8 @@ import {
   Button,
   Description,
   DescriptionContent,
+  ErrorMsg,
+  Modal,
   Responsive,
   StyledCategory,
   StyledForm,
@@ -15,13 +17,15 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { response } from "types/globalTypes";
-import { useEffect } from "react";
 
 const GoodsImageUpdateBlock = styled(Responsive)``;
 
 type basicType = {
+  goodsImageUpdate: response;
   goodsIamge: any;
   onSubmit: (data: any) => void;
+  modalVisible: boolean;
+  setModalVisible: (status: boolean) => void;
 };
 
 const schema = yup.object({
@@ -37,7 +41,13 @@ const schema = yup.object({
   }),
 });
 
-const GoodsImageUpdate = ({ goodsIamge, onSubmit }: basicType) => {
+const GoodsImageUpdate = ({
+  goodsImageUpdate,
+  goodsIamge,
+  onSubmit,
+  modalVisible,
+  setModalVisible,
+}: basicType) => {
   const {
     register,
     handleSubmit,
@@ -93,10 +103,18 @@ const GoodsImageUpdate = ({ goodsIamge, onSubmit }: basicType) => {
             }
           />
         </Description>
+        <ErrorMsg>{goodsImageUpdate.message}</ErrorMsg>
         <Button type="submit" status="primary" withInput needMarginTop>
           수정
         </Button>
       </StyledForm>
+      <Modal
+        title="상품이미지 수정"
+        msg="수정을 완료하였습니다."
+        submitMsg="확인"
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </GoodsImageUpdateBlock>
   );
 };

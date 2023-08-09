@@ -1,8 +1,9 @@
 import DetailPageUpdate from "components/goodsGroup/detailPageUpdate";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { vendorGoodsGroupActions } from "reducers/goodsGroup/vendorGoodsGroup";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
+import { checkStatus } from "types/globalTypes";
 
 const DetailUpdateContainer = ({ detailPage }: { detailPage: any }) => {
   const { user, goodsGroupInfo, detailUpdate } = useAppSelector((store) => ({
@@ -13,6 +14,7 @@ const DetailUpdateContainer = ({ detailPage }: { detailPage: any }) => {
 
   const dispatch = useAppDispatch();
   const { id } = useParams();
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const onSubmit = (data: any) => {
     dispatch(
@@ -25,12 +27,22 @@ const DetailUpdateContainer = ({ detailPage }: { detailPage: any }) => {
   };
 
   useEffect(() => {
-    if (detailUpdate.success) {
+    if (checkStatus(detailUpdate.status)) {
+      setModalVisible(true);
       dispatch(vendorGoodsGroupActions.findById(id));
+      dispatch(vendorGoodsGroupActions.reset("detailUpdate"));
     }
   }, [detailUpdate]);
 
-  return <DetailPageUpdate detailPage={detailPage} onSubmit={onSubmit} />;
+  return (
+    <DetailPageUpdate
+      detailPage={detailPage}
+      detailUpdate={detailUpdate}
+      onSubmit={onSubmit}
+      modalVisible={modalVisible}
+      setModalVisible={setModalVisible}
+    />
+  );
 };
 
 export default DetailUpdateContainer;

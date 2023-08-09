@@ -11,10 +11,11 @@ type ExceptionType = {
 };
 
 const OrderExceptionContainer = ({ url, nextStatus }: ExceptionType) => {
-  const { user, orderInfo, setStatus } = useAppSelector((store) => ({
+  const { user, orderInfo, setStatus, orderLog } = useAppSelector((store) => ({
     user: store.user,
     orderInfo: store.vendorOrder.itemFindById,
     setStatus: store.vendorOrder.setStatus,
+    orderLog: store.vendorOrder.orderLog,
   }));
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const dispatch = useAppDispatch();
@@ -47,6 +48,18 @@ const OrderExceptionContainer = ({ url, nextStatus }: ExceptionType) => {
   }, [setStatus]);
 
   useEffect(() => {
+    if (checkStatus(orderInfo.status)) {
+      dispatch(
+        vendorOrderActions.orderLog({
+          vendorId: user.vendorId,
+          orderItemId: orderInfo.data.base.id,
+          isDesc: true,
+        })
+      );
+    }
+  }, [orderInfo]);
+
+  useEffect(() => {
     dispatch(
       vendorOrderActions.itemFindById({
         vendorId: user.vendorId,
@@ -62,6 +75,7 @@ const OrderExceptionContainer = ({ url, nextStatus }: ExceptionType) => {
     <OrderException
       orderInfo={orderInfo}
       setStatusResult={setStatus}
+      orderLog={orderLog}
       navigate={navigate}
       nextStatus={nextStatus}
       onSubmit={onSubmit}

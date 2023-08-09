@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {
+  BreadCrumb,
   Button,
   Description,
   DescriptionContent,
@@ -15,8 +16,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { NavigateFunction } from "react-router-dom";
+import { NavigateFunction, useParams } from "react-router-dom";
 import { response } from "types/globalTypes";
+import { regexEmail, regexId, regexPasswd } from "lib/functions/changeInput";
 
 const SignUpBlock = styled(Responsive)``;
 
@@ -31,14 +33,20 @@ type addProps = {
 
 const schema = yup.object({
   signInfo: yup.object({
-    userId: yup.string().required("아이디를 입력해주세요."),
-    password: yup.string().required("비밀번호를 입력해주세요."),
+    userId: yup
+      .string()
+      .matches(regexId, "소문자, 숫자 하나씩 포함해야합니다.")
+      .required("아이디를 입력해주세요."),
+    password: yup
+      .string()
+      .matches(regexPasswd, "대소문자, 숫자, 특수문자를 하나씩 포함해야합니다.")
+      .required("비밀번호를 입력해주세요."),
   }),
   name: yup.string().required("이름을 입력해주세요."),
   email: yup
     .string()
-    .required("이메일을 입력해주세요.")
-    .email("이메일 형식으로 입력해주세요."),
+    .matches(regexEmail, "이메일 형식에 맞지않습니다.")
+    .required("이메일을 입력해주세요."),
   phone: yup.string().required("전화번호를 입력해주세요."),
 });
 
@@ -78,7 +86,22 @@ const SignUp = ({
   return (
     <>
       <SignUpBlock>
-        <PageHeader title="관리자 추가" />
+        <PageHeader
+          breadCrumb={
+            <BreadCrumb
+              indicator={[
+                {
+                  name: "마이페이지 /",
+                  url: `/mypage/${user.vendorId}`,
+                },
+                {
+                  name: "관리자 추가",
+                  url: `/vendor/signUp`,
+                },
+              ]}
+            />
+          }
+        />
       </SignUpBlock>
       <SignUpBlock>
         <StyledForm

@@ -3,6 +3,8 @@ import {
   Button,
   Description,
   DescriptionContent,
+  ErrorMsg,
+  Modal,
   Responsive,
   StyledCategory,
   StyledForm,
@@ -19,8 +21,8 @@ import { useEffect } from "react";
 const BasicInfoUpdateBlock = styled(Responsive)``;
 
 type basicType = {
+  updateResult: response;
   basicInfo: any;
-  productList: response;
   propertyList: response;
   categoryList: { [key: string]: any }[];
   setNewCategory: React.Dispatch<
@@ -32,6 +34,8 @@ type basicType = {
   >;
   manufacturerList: response;
   onSubmit: (data: any) => void;
+  modalVisible: boolean;
+  setModalVisible: (status: boolean) => void;
 };
 
 const schema = yup.object({
@@ -46,13 +50,15 @@ const schema = yup.object({
 });
 
 const BasicInfoUpdate = ({
+  updateResult,
   basicInfo,
-  productList,
   propertyList,
   categoryList,
   setNewCategory,
   manufacturerList,
   onSubmit,
+  modalVisible,
+  setModalVisible,
 }: basicType) => {
   const {
     register,
@@ -102,7 +108,7 @@ const BasicInfoUpdate = ({
       setValue("description", basicInfo?.info.description);
       setValue("productId", basicInfo?.info.product?.id);
       setValue("propertyId", basicInfo?.info.property?.id);
-      setValue("manufacturerId", basicInfo?.manufacturer?.id);
+      setValue("manufacturerId", basicInfo?.info?.manufacturer?.id);
     }
   }, [basicInfo]);
 
@@ -147,20 +153,7 @@ const BasicInfoUpdate = ({
           <DescriptionContent
             span="12"
             label="품목"
-            content={
-              <StyledSelect
-                placeholder={basicInfo?.info.product.info.nameKr}
-                label="productId"
-                optionList={productList.data}
-                register={register}
-                errors={errors}
-                status={errors?.productId}
-                setValue={setValue}
-                align="vertical"
-                // actions={onSelectProduct}
-                index="4"
-              />
-            }
+            content={basicInfo?.info.product.info.nameKr}
           />
           <DescriptionContent
             span="12"
@@ -212,10 +205,18 @@ const BasicInfoUpdate = ({
             }
           />
         </Description>
+        <ErrorMsg>{updateResult.message}</ErrorMsg>
         <Button type="submit" status="primary" withInput needMarginTop>
           수정
         </Button>
       </StyledForm>
+      <Modal
+        title="기본정보 수정"
+        msg="수정을 완료하였습니다."
+        submitMsg="확인"
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </BasicInfoUpdateBlock>
   );
 };

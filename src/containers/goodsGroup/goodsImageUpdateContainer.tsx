@@ -1,10 +1,11 @@
 import GoodsImageUpdate from "components/goodsGroup/goodsImageUpdate";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { vendorGoodsGroupActions } from "reducers/goodsGroup/vendorGoodsGroup";
 import { vendorGoodsSpecActions } from "reducers/goodsGroup/vendorGoodsSpec";
 import { vendorProductActions } from "reducers/product/vendorProduct";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
+import { checkStatus } from "types/globalTypes";
 
 const GoodsImageUpdateContainer = ({ goodsIamge }: { goodsIamge: any }) => {
   const { user, goodsGroupInfo, goodsImageUpdate } = useAppSelector(
@@ -17,6 +18,7 @@ const GoodsImageUpdateContainer = ({ goodsIamge }: { goodsIamge: any }) => {
 
   const dispatch = useAppDispatch();
   const { id } = useParams();
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const onSubmit = (data: any) => {
     console.log(data);
@@ -30,12 +32,22 @@ const GoodsImageUpdateContainer = ({ goodsIamge }: { goodsIamge: any }) => {
   };
 
   useEffect(() => {
-    if (goodsImageUpdate.success) {
+    if (checkStatus(goodsImageUpdate.status)) {
+      setModalVisible(true);
       dispatch(vendorGoodsGroupActions.findById(id));
+      dispatch(vendorGoodsGroupActions.reset("goodsImageUpdate"));
     }
   }, [goodsImageUpdate]);
 
-  return <GoodsImageUpdate goodsIamge={goodsIamge} onSubmit={onSubmit} />;
+  return (
+    <GoodsImageUpdate
+      goodsImageUpdate={goodsImageUpdate}
+      goodsIamge={goodsIamge}
+      onSubmit={onSubmit}
+      modalVisible={modalVisible}
+      setModalVisible={setModalVisible}
+    />
+  );
 };
 
 export default GoodsImageUpdateContainer;

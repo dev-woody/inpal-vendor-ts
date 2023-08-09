@@ -8,6 +8,7 @@ import {
   Responsive,
   StyledForm,
   StyledInput,
+  Table,
 } from "lib/styles";
 import styled from "styled-components";
 import { Description, DescriptionContent } from "lib/styles/descriptionStyles";
@@ -18,12 +19,14 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { response } from "types/globalTypes";
 import { NavigateFunction } from "react-router-dom";
+import { vendorOrderLogColumns } from "lib/columns/columnsList";
 
 const OrderExceptionBlock = styled(Responsive)``;
 
 type orderExceptionProps = {
   orderInfo: response;
   setStatusResult: response;
+  orderLog: response;
   navigate: NavigateFunction;
   nextStatus: string;
   onSubmit: (data: object) => void;
@@ -38,6 +41,7 @@ const schema = yup.object({
 const OrderException = ({
   orderInfo,
   setStatusResult,
+  orderLog,
   navigate,
   nextStatus,
   onSubmit,
@@ -80,32 +84,22 @@ const OrderException = ({
         />
       </OrderExceptionBlock>
       <OrderExceptionBlock>
-        <PageHeader title="주문상세정보" />
         <StyledForm
           onSubmit={handleSubmit(
             (data) => onSubmit(data),
             (errors) => console.log(errors)
           )}
         >
-          <Description>
+          <PageHeader title="주문 상세정보" />
+          <Description style={{ marginBottom: "1rem" }}>
             <DescriptionContent label="코드" content={data?.code} />
             <DescriptionContent
               label="주문상태"
               content={changeDeliveryStatus(data?.orderStatus)}
             />
-            <DescriptionContent
-              label="주문자"
-              content={data?.clientInfo?.clientName}
-            />
-            <DescriptionContent
-              label="주문자타입"
-              content={data?.clientInfo?.clientType}
-            />
-            <DescriptionContent label="주문수량" content={data?.count + "개"} />
-            <DescriptionContent
-              label="판매수수료"
-              content={data?.masterCharge + "%"}
-            />
+          </Description>
+          <PageHeader title="상품정보" />
+          <Description style={{ marginBottom: "1rem" }}>
             <DescriptionContent
               label="모델명"
               content={data?.item?.info?.basic?.info?.model}
@@ -155,6 +149,22 @@ const OrderException = ({
                   ?.nameKr +
                 ")"
               }
+            />
+          </Description>
+          <PageHeader title="주문정보" />
+          <Description style={{ marginBottom: "1rem" }}>
+            <DescriptionContent
+              label="주문자"
+              content={data?.clientInfo?.clientName}
+            />
+            <DescriptionContent
+              label="주문자타입"
+              content={data?.clientInfo?.clientType}
+            />
+            <DescriptionContent label="주문수량" content={data?.count + "개"} />
+            <DescriptionContent
+              label="판매수수료"
+              content={data?.masterCharge + "%"}
             />
             <DescriptionContent
               label="결제금액"
@@ -207,6 +217,12 @@ const OrderException = ({
               }
             />
           </Description>
+          <PageHeader title="배송상태 기록" />
+          <Table
+            columns={vendorOrderLogColumns}
+            content={orderLog.data}
+            doNothing
+          />
           <ErrorMsg>{setStatusResult.message}</ErrorMsg>
           <div>
             <Button
