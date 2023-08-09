@@ -149,6 +149,10 @@ const BasicInfoUpdateContainer = ({ basicInfo }: { basicInfo: any }) => {
     }
   }, [goodsGroupInfo]);
 
+  // useEffect(() => {
+  //   dispatch(vendorGoodsGroupActions.reset("basicUpdate"));
+  // }, []);
+
   return (
     <BasicInfoUpdate
       updateResult={updateResult}

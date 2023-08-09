@@ -47,6 +47,7 @@ const createAsyncReducers =
           (state[reducerName] as AsyncEntity<Success, Failure>).data = null;
         }
         (state[reducerName] as AsyncEntity<Success, Failure>).status = "idle";
+        (state[reducerName] as AsyncEntity<Success, Failure>).message = null;
       },
       // success reducer 함수
       [`${actionName}Success`]: (
