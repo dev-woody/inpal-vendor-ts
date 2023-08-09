@@ -33,7 +33,7 @@ const BasicInfoUpdateContainer = ({ basicInfo }: { basicInfo: any }) => {
     dispatch(
       vendorGoodsGroupActions.basicUpdate({
         vendorId: user.vendorId,
-        id: basicInfo.id,
+        id,
         basicInfo: { ...data },
       })
     );

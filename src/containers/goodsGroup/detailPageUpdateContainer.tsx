@@ -20,7 +20,7 @@ const DetailUpdateContainer = ({ detailPage }: { detailPage: any }) => {
     dispatch(
       vendorGoodsGroupActions.detailUpdate({
         vendorId: user.vendorId,
-        id: goodsGroupInfo.data.base.id,
+        id: id,
         ...data,
       })
     );
