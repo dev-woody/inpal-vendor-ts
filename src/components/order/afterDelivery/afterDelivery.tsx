@@ -39,7 +39,7 @@ const AfterDelivery = ({ afterDelivery, afterDeliveryColumns }: listProps) => {
           url="/order/afterDelivery/detail"
           moveKey={["base", "id"]}
           pagenation
-          filter
+          // filter
         />
       </AfterDeliveryBlock>
     </>

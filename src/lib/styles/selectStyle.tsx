@@ -351,14 +351,14 @@ export const StyledSelect = (props: propsTypes) => {
                           keyName={
                             list?.info?.spec?.info.quantity +
                               list?.info?.spec?.info.unit.info.nameEn ||
+                            list?.info?.basic?.info?.nameKr ||
                             list.id ||
                             list.name ||
                             list.desc ||
                             list.info.property ||
                             list.info.nameKr ||
                             list.info.name ||
-                            list.info.code ||
-                            list.info.basic.info.nameKr
+                            list.info.code
                           }
                           id={list.id || list.base.id}
                         />

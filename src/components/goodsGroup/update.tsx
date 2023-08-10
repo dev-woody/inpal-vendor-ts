@@ -27,8 +27,8 @@ const GoodsGroupDetail = ({
   return (
     <>
       <BasicInfoUpdateContainer basicInfo={data?.info?.basic} />
-      <DetailUpdateContainer detailPage={data?.info?.detailPage} />
       <GoodsImageUpdateContainer goodsIamge={data?.info?.goodImages} />
+      <DetailUpdateContainer detailPage={data?.info?.detailPage} />
       <GoodsGroupItemsContainer />
     </>
   );

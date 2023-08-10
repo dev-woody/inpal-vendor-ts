@@ -33,6 +33,11 @@ const BeforeDeliveryContainer = () => {
   //* beforedelivery
   const beforedeliveryColumns: ColumnsType[] = [
     {
+      title: "번호",
+      dataIndex: "",
+      render: (_, __, index) => index,
+    },
+    {
       title: "구매자명",
       dataIndex: "info",
       render: (info) => info.clientInfo.clientName,

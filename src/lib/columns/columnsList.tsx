@@ -52,7 +52,11 @@ export type ColumnsType = {
   dataIndex: string;
   isCheck?: boolean;
   isDesc?: boolean;
-  render?: (data?: any, list?: any) => JSX.Element | string | undefined;
+  render?: (
+    data?: any,
+    list?: any,
+    index?: number
+  ) => JSX.Element | string | number | undefined;
 };
 
 //* sidebarList
@@ -74,22 +78,22 @@ export const sidebarList: sideListType[] = [
     children: [
       {
         icon: <FaClipboardList />,
-        menuName: "전체주문조회",
+        menuName: "주문조회",
         url: "/allList",
       },
       {
         icon: <FaDonate />,
-        menuName: "무통장입금 조회",
+        menuName: "무통장입금 현황",
         url: "/beforePayment",
       },
       {
         icon: <FaBoxes />,
-        menuName: "결제완료 조회",
+        menuName: "결제상태",
         url: "/paymentComplete",
       },
       {
         icon: <FaDollyFlatbed />,
-        menuName: "배송처리",
+        menuName: "배송상태",
         url: "/beforeDelivery",
       },
       // {
@@ -258,7 +262,11 @@ export const todoColumns: ColumnsType[] = [
     dataIndex: "beforePayment",
   },
   {
-    title: "배송대기",
+    title: "결제완료",
+    dataIndex: "beforePayment",
+  },
+  {
+    title: "배송준비중",
     dataIndex: "beforeDelivery",
   },
   {
@@ -294,6 +302,11 @@ export const todoColumns: ColumnsType[] = [
 //* dailySales
 export const dailySalesColumns: ColumnsType[] = [
   {
+    title: "번호",
+    dataIndex: "",
+    render: (_, __, index) => index,
+  },
+  {
     title: "날짜",
     dataIndex: "date",
     render: (date: string) => changeDays(date),
@@ -314,6 +327,11 @@ export const dailySalesColumns: ColumnsType[] = [
 
 //* deliveryCode
 export const deliveryCodeColumns: ColumnsType[] = [
+  {
+    title: "번호",
+    dataIndex: "",
+    render: (_, __, index) => index,
+  },
   {
     title: "코드",
     dataIndex: "info",
@@ -343,6 +361,11 @@ export const deliveryCodeColumns: ColumnsType[] = [
 
 //* vendorOrder
 export const vendorOrderColumns: ColumnsType[] = [
+  {
+    title: "번호",
+    dataIndex: "",
+    render: (_, __, index) => index,
+  },
   {
     title: "구매자명",
     dataIndex: "info",
@@ -386,6 +409,11 @@ export const vendorOrderColumns: ColumnsType[] = [
 ];
 
 export const vendorOrderLogColumns: ColumnsType[] = [
+  {
+    title: "번호",
+    dataIndex: "",
+    render: (_, __, index) => index,
+  },
   {
     title: "상태",
     dataIndex: "info",

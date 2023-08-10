@@ -48,6 +48,11 @@ const PaymentCompleteContainer = () => {
   //* paymentComplete
   const paymentCompleteOrderColumns: ColumnsType[] = [
     {
+      title: "번호",
+      dataIndex: "",
+      render: (_, __, index) => index,
+    },
+    {
       title: "구매자명",
       dataIndex: "info",
       render: (info) => info.clientInfo.clientName,

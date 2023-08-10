@@ -4,6 +4,7 @@ import GoodsGroupRegisterContainer from "containers/goodsGroup/registerContainer
 import GoodsGroupUpdateContainer from "containers/goodsGroup/updateContainer";
 import GoodsGroupItemRegisterContainer from "containers/goodsGroup/items/itemRegisterContainer";
 import GoodsGroupItemDetailContainer from "containers/goodsGroup/items/itemDetailContainer";
+import EvaluationDetailContainer from "containers/goodsGroup/items/evaluationDetailContainer";
 import SpecIndex from "./spec";
 
 const GoodsGroupIndex = () => {
@@ -28,6 +29,10 @@ const GoodsGroupIndex = () => {
       <Route
         path="/groups/detail/:id/items/:itemId"
         element={<GoodsGroupItemDetailContainer />}
+      />
+      <Route
+        path="/groups/detail/:id/items/:itemId/:evaluationId"
+        element={<EvaluationDetailContainer />}
       />
     </Routes>
   );

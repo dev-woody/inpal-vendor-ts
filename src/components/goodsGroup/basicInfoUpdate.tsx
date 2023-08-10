@@ -194,7 +194,7 @@ const BasicInfoUpdate = ({
               <StyledSelect
                 placeholder={basicInfo?.info.manufacturer.info.nameKr}
                 label="manufacturerId"
-                optionList={manufacturerList.data}
+                optionList={manufacturerList?.data}
                 register={register}
                 errors={errors}
                 status={errors?.manufacturerId}

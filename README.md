@@ -17,15 +17,11 @@ yarn start
 
 ## 패치노트
 
-### `08.02 Update`
+### `08.10 Update`
 
-### 1. order exception
+### 1. valuation
 
-주문 예외사항처리 추가하였음
-
-### 2. orderLog
-
-주문기록 확인 모듈 제작하였음
+상품평 관리 추가
 
 ### .etc
 

@@ -44,6 +44,11 @@ const GoodsGroupItemsContainer = () => {
 
   const goodsGroupItemsColumns: ColumnsType[] = [
     {
+      title: "번호",
+      dataIndex: "",
+      render: (_, __, index) => index,
+    },
+    {
       title: "모델명",
       dataIndex: "info",
       render: (info) => info.basic.info.model,

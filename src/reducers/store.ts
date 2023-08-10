@@ -16,6 +16,9 @@ import vendorGoodsGroup, {
 import vendorGoodsItems, {
   vendorGoodsItemsSaga,
 } from "./goodsGroup/vendorGoodsItems";
+import vendorGoodsEvaluation, {
+  vendorGoodsEvaluationSaga,
+} from "./goodsGroup/vendorGoodsEvaluation";
 import vendorOrder, { vendorOrderSaga } from "./order/vendorOrder";
 
 //* saga
@@ -29,6 +32,7 @@ function* rootSaga() {
     fork(vendorGoodsSpecSaga),
     fork(vendorGoodsGroupSaga),
     fork(vendorGoodsItemsSaga),
+    fork(vendorGoodsEvaluationSaga),
     fork(vendorOrderSaga),
   ]);
 }
@@ -42,6 +46,7 @@ const rootReducer = combineReducers({
   vendorGoodsSpec: vendorGoodsSpec.reducer,
   vendorGoodsGroup: vendorGoodsGroup.reducer,
   vendorGoodsItems: vendorGoodsItems.reducer,
+  vendorGoodsEvaluation: vendorGoodsEvaluation.reducer,
   vendorOrder: vendorOrder.reducer,
 });
 

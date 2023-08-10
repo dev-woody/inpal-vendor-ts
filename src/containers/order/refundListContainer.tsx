@@ -33,6 +33,11 @@ const RefundListContainer = () => {
   //* refund
   const refundOrderColumns: ColumnsType[] = [
     {
+      title: "번호",
+      dataIndex: "",
+      render: (_, __, index) => index,
+    },
+    {
       title: "코드",
       dataIndex: "info",
       render: (info) => info.code,
