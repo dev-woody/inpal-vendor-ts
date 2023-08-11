@@ -25,7 +25,7 @@ const BeforeDeliveryContainer = () => {
     dispatch(
       vendorOrderActions.findByDelivery({
         vendorId: user.vendorId,
-        isDesc: false,
+        isDesc: true,
       })
     );
   }, []);

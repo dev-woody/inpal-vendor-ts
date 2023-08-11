@@ -24,7 +24,7 @@ const GoodsGroupListContainer = () => {
     dispatch(
       vendorGoodsGroupActions.findAll({
         vendorId: user.vendorId,
-        isDesc: false,
+        isDesc: true,
       })
     );
   }, [setOpenStatus]);
@@ -33,7 +33,7 @@ const GoodsGroupListContainer = () => {
     dispatch(
       vendorGoodsGroupActions.findAll({
         vendorId: user.vendorId,
-        isDesc: false,
+        isDesc: true,
       })
     );
     return () => {

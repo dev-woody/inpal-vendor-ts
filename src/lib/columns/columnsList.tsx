@@ -73,6 +73,22 @@ export const sidebarList: sideListType[] = [
     ],
   },
   {
+    name: "상품",
+    url: "/goods",
+    children: [
+      {
+        icon: <FaFileAlt />,
+        menuName: "상품사양관리",
+        url: "/spec",
+      },
+      {
+        icon: <FaBoxes />,
+        menuName: "상품그룹관리",
+        url: "/groups",
+      },
+    ],
+  },
+  {
     name: "주문",
     url: "/order",
     children: [
@@ -130,22 +146,6 @@ export const sidebarList: sideListType[] = [
         icon: <FaBoxOpen />,
         menuName: "구매확정",
         url: "/confirmation",
-      },
-    ],
-  },
-  {
-    name: "상품",
-    url: "/goods",
-    children: [
-      {
-        icon: <FaFileAlt />,
-        menuName: "상품사양관리",
-        url: "/spec",
-      },
-      {
-        icon: <FaBoxes />,
-        menuName: "상품그룹관리",
-        url: "/groups",
       },
     ],
   },

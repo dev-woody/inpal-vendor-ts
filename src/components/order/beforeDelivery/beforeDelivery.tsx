@@ -24,7 +24,7 @@ const BeforeDelivery = ({
             <BreadCrumb
               indicator={[
                 {
-                  name: "배송대기 관리",
+                  name: "배송상태 관리",
                   url: "/order/beforeDelivery",
                 },
               ]}

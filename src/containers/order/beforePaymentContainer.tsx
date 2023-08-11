@@ -26,7 +26,7 @@ const BeforePaymentContainer = () => {
     dispatch(
       vendorOrderActions.itemFindAll({
         vendorId: user.vendorId,
-        isDesc: false,
+        isDesc: true,
       })
     );
   }, []);

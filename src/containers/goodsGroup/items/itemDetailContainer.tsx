@@ -24,7 +24,7 @@ const GoodsGroupItemDetailContainer = () => {
   //         data: {
   //           vendorId: user.vendorId,
   //           productId: goodsGroup.data.product.id,
-  //           isDesc: false,
+  //           isDesc: true,
   //         },
   //       })
   //     );

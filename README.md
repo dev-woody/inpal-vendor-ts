@@ -17,11 +17,7 @@ yarn start
 
 ## 패치노트
 
-### `08.10 Update`
-
-### 1. valuation
-
-상품평 관리 추가
+### `08.11 Update`
 
 ### .etc
 

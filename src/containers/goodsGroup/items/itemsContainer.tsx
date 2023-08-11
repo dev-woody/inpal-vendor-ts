@@ -25,7 +25,7 @@ const GoodsGroupItemsContainer = () => {
     dispatch(
       vendorGoodsItemsActions.findByGoodsGroupId({
         goodGroupId: id,
-        isDesc: false,
+        isDesc: true,
       })
     );
   }, [setSellStatus]);
@@ -34,7 +34,7 @@ const GoodsGroupItemsContainer = () => {
     dispatch(
       vendorGoodsItemsActions.findByGoodsGroupId({
         goodGroupId: id,
-        isDesc: false,
+        isDesc: true,
       })
     );
     return () => {

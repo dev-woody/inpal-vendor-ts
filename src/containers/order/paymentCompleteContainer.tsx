@@ -30,7 +30,7 @@ const PaymentCompleteContainer = () => {
       dispatch(
         vendorOrderActions.itemFindAll({
           vendorId: user.vendorId,
-          isDesc: false,
+          isDesc: true,
         })
       );
     }
@@ -40,7 +40,7 @@ const PaymentCompleteContainer = () => {
     dispatch(
       vendorOrderActions.itemFindAll({
         vendorId: user.vendorId,
-        isDesc: false,
+        isDesc: true,
       })
     );
   }, []);

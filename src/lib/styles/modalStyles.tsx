@@ -97,6 +97,7 @@ const Modal = ({
             {submitMsg ? (
               <Button
                 status="primary"
+                type="button"
                 onClick={() => {
                   setModalVisible(false);
                   if (action) {

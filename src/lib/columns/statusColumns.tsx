@@ -34,7 +34,7 @@ export const deliveryStatusOption = [
     id: "CART",
   },
   {
-    name: "사용중지",
+    name: "결제대기중",
     id: "PAYMENT_WAIT",
   },
   {

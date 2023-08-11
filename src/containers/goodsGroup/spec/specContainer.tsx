@@ -21,7 +21,7 @@ const SpecContainer = () => {
       vendorGoodsSpecActions.findAllByProductId({
         vendorId: user.vendorId,
         productId: id,
-        isDesc: false,
+        isDesc: true,
       })
     );
   };

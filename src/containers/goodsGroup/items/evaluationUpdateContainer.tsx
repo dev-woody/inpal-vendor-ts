@@ -3,8 +3,6 @@ import { ColumnsType } from "lib/columns/columnsList";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { vendorGoodsEvaluationActions } from "reducers/goodsGroup/vendorGoodsEvaluation";
-import { vendorGoodsItemsActions } from "reducers/goodsGroup/vendorGoodsItems";
-import { vendorProductActions } from "reducers/product/vendorProduct";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 
 const EvaluationUpdateContainer = ({
@@ -24,7 +22,7 @@ const EvaluationUpdateContainer = ({
     dispatch(
       vendorGoodsEvaluationActions.findByGoodItemId({
         goodItemId: evaluationSummary?.vendorGoodItemId,
-        isDesc: false,
+        isDesc: true,
       })
     );
   }, [evaluationSummary]);

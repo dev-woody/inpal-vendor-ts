@@ -25,7 +25,7 @@ const ReturnListContainer = () => {
     dispatch(
       vendorOrderActions.itemFindAll({
         vendorId: user.vendorId,
-        isDesc: false,
+        isDesc: true,
       })
     );
   }, []);

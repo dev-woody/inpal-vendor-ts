@@ -192,7 +192,9 @@ const BasicInfoUpdate = ({
             label="제조사"
             content={
               <StyledSelect
-                placeholder={basicInfo?.info.manufacturer.info.nameKr}
+                placeholder={
+                  basicInfo?.info.manufacturer.info.basic.info.nameKr
+                }
                 label="manufacturerId"
                 optionList={manufacturerList?.data}
                 register={register}

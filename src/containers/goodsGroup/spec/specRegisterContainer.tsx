@@ -28,7 +28,7 @@ const SpecRegisterContainer = () => {
       vendorDeliveryCodeActions.findAllByProductId({
         vendorId: user.vendorId,
         productId: id,
-        isDesc: false,
+        isDesc: true,
       })
     );
   };

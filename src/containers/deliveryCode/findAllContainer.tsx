@@ -20,7 +20,7 @@ const DeliveryFindAllContainer = () => {
       vendorDeliveryCodeActions.findAllByProductId({
         vendorId: user.vendorId,
         productId: id,
-        isDesc: false,
+        isDesc: true,
       })
     );
   };

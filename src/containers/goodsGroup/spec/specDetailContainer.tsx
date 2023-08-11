@@ -44,14 +44,14 @@ const SpecDetailContainer = () => {
       dispatch(
         vendorProductActions.findUnitByProductId({
           productId: specDetail.data.info.delivery.productId,
-          isDesc: false,
+          isDesc: true,
         })
       );
       dispatch(
         vendorDeliveryCodeActions.findAllByProductId({
           vendorId: user.vendorId,
           productId: specDetail.data.info.delivery.productId,
-          isDesc: false,
+          isDesc: true,
         })
       );
     }
