@@ -35,19 +35,19 @@ const BeforeDelivery = ({
       <BeforeDeliveryBlock>
         <Table
           columns={beforedeliveryColumns}
-          // content={beforeDelivery?.data}
-          content={beforeDelivery?.data?.filter(
-            (list: any) =>
-              list?.info?.orderItems
-                .map((itemList: any) => itemList.info?.orderStatus)
-                .includes("ITEM_READY") ||
-              list?.info?.orderItems
-                .map((itemList: any) => itemList.info?.orderStatus)
-                .includes("DELIVERY_START") ||
-              list?.info?.orderItems
-                .map((itemList: any) => itemList.info?.orderStatus)
-                .includes("DELIVERY_END")
-          )}
+          content={beforeDelivery?.data}
+          // content={beforeDelivery?.data?.filter(
+          //   (list: any) =>
+          //     list?.info?.orderItems
+          //       .map((itemList: any) => itemList.info?.orderStatus)
+          //       .includes("ITEM_READY") ||
+          //     list?.info?.orderItems
+          //       .map((itemList: any) => itemList.info?.orderStatus)
+          //       .includes("DELIVERY_START") ||
+          //     list?.info?.orderItems
+          //       .map((itemList: any) => itemList.info?.orderStatus)
+          //       .includes("DELIVERY_END")
+          // )}
           url="/order/beforeDelivery/detail"
           moveKey={["base", "id"]}
           pagenation

@@ -112,7 +112,7 @@ const BeforeDeliveryDetail = ({
               content={data?.info?.address?.info?.addressInfo?.info?.zipCode}
             />
             <DescriptionContent
-              label="전화번호"
+              label="상세주소"
               content={
                 data?.info?.address?.info?.addressInfo?.info?.basic +
                 data?.info?.address?.info?.addressInfo?.info?.detail
