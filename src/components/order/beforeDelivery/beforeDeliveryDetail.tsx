@@ -63,8 +63,6 @@ const BeforeDeliveryDetail = ({
     return item.orderStatus === "ITEM_READY";
   });
 
-  console.log(isDelevery?.includes(false));
-
   const isDeleveryStart =
     data?.info?.deliveryCompany &&
     data?.info?.deliveryNum &&
@@ -193,7 +191,7 @@ const BeforeDeliveryDetail = ({
             >
               뒤로가기
             </Button>
-            {data?.info?.deliveryCompany ? null : (
+            {isDelevery?.includes(false) ? null : (
               <Button
                 type="submit"
                 status="primary"
