@@ -40,6 +40,12 @@ const BeforeDeliveryDetailContainer = () => {
   useEffect(() => {
     if (checkStatus(setStatus.status)) {
       setModalVisible(true);
+      dispatch(
+        vendorOrderActions.deliveryFindById({
+          vendorId: user.vendorId,
+          id,
+        })
+      );
       dispatch(vendorOrderActions.reset("setStatus"));
     }
   }, [dispatch, setStatus]);

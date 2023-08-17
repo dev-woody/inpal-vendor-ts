@@ -30,11 +30,7 @@ export const sellStatusOption = [
 
 export const deliveryStatusOption = [
   {
-    name: "카트등록",
-    id: "CART",
-  },
-  {
-    name: "결제대기중",
+    name: "입금대기중",
     id: "PAYMENT_WAIT",
   },
   {
@@ -42,7 +38,7 @@ export const deliveryStatusOption = [
     id: "PAYMENT_COMPLETE",
   },
   {
-    name: "상품준비중",
+    name: "배송대기중",
     id: "ITEM_READY",
   },
   {
@@ -63,11 +59,19 @@ export const deliveryStatusOption = [
   },
   {
     name: "교환요청",
-    id: "EXCAHNGE_REQUEST",
+    id: "EXCHANGE_REQUEST",
   },
   {
     name: "교환요청완료",
-    id: "EXCAHNGE_COMPLETE",
+    id: "EXCHANGE_COMPLETE",
+  },
+  {
+    name: "반품요청",
+    id: "RETURN_REQUEST",
+  },
+  {
+    name: "반품요청완료",
+    id: "RETURN_COMPLETE",
   },
   {
     name: "환불요청",

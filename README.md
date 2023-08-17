@@ -17,7 +17,7 @@ yarn start
 
 ## 패치노트
 
-### `08.11 Update`
+### `08.17 Update`
 
 ### .etc
 

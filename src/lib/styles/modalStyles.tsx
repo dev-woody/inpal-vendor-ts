@@ -71,8 +71,8 @@ const Modal = ({
   action,
 }: modalProps) => {
   const onEnterPress = useCallback((e: KeyboardEvent) => {
+    e.preventDefault();
     if (e.keyCode === 13) {
-      e.preventDefault();
       setModalVisible(false);
       if (action) {
         action();
@@ -81,9 +81,9 @@ const Modal = ({
   }, []);
 
   useEffect(() => {
-    modalVisible && document.addEventListener("keyup", onEnterPress);
+    modalVisible && document.addEventListener("keydown", onEnterPress);
     return () => {
-      document.removeEventListener("keyup", onEnterPress);
+      document.removeEventListener("keydown", onEnterPress);
     };
   }, [modalVisible]);
 

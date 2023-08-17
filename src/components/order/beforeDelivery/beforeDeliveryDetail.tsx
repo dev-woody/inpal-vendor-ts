@@ -59,6 +59,12 @@ const BeforeDeliveryDetail = ({
   });
   const data = orderDetail.data;
 
+  const isDelevery = data?.info?.orderItems.map((item: any) => {
+    return item.orderStatus === "ITEM_READY";
+  });
+
+  console.log(isDelevery?.includes(false));
+
   const isDeleveryStart =
     data?.info?.deliveryCompany &&
     data?.info?.deliveryNum &&
@@ -122,7 +128,7 @@ const BeforeDeliveryDetail = ({
               span="12"
               label="택배사"
               content={
-                data?.info?.deliveryCompany ? (
+                isDelevery?.includes(false) ? (
                   data?.info?.deliveryCompany
                 ) : (
                   <StyledInput
@@ -140,7 +146,7 @@ const BeforeDeliveryDetail = ({
               span="12"
               label="송장번호"
               content={
-                data?.info?.deliveryNum ? (
+                isDelevery?.includes(false) ? (
                   data?.info?.deliveryNum
                 ) : (
                   <StyledInput
@@ -154,13 +160,11 @@ const BeforeDeliveryDetail = ({
                 )
               }
             />
-            <DescriptionContent
-              span="12"
-              label="메모"
-              content={
-                data?.info?.description ? (
-                  data?.info?.description
-                ) : (
+            {isDelevery?.includes(false) ? null : (
+              <DescriptionContent
+                span="12"
+                label="메모"
+                content={
                   <StyledInput
                     align="vertical"
                     placeholder="메모"
@@ -169,9 +173,9 @@ const BeforeDeliveryDetail = ({
                     errors={errors}
                     status={errors.description}
                   />
-                )
-              }
-            />
+                }
+              />
+            )}
           </Description>
           <PageHeader title="아이템 정보" />
           <Table
