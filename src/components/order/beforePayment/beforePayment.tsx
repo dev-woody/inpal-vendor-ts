@@ -21,7 +21,7 @@ const BeforePayment = ({ beforePayment, beforePaymentColumns }: listProps) => {
             <BreadCrumb
               indicator={[
                 {
-                  name: "입금전 관리",
+                  name: "무통장입금 현황",
                   url: "/order/beforePayment",
                 },
               ]}

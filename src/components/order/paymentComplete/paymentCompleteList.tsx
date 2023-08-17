@@ -30,7 +30,7 @@ const PaymentCompleteList = ({
             <BreadCrumb
               indicator={[
                 {
-                  name: "상품준비중",
+                  name: "결제완료",
                   url: "/order/paymentComplete",
                 },
               ]}
@@ -53,7 +53,7 @@ const PaymentCompleteList = ({
       </PaymentCompleteListBlock>
       <Modal
         title="배송상태 변경"
-        msg="상품준비중으로 변경되었습니다."
+        msg="배송대기중으로 변경되었습니다."
         submitMsg="확인"
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}

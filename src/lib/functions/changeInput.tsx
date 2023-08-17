@@ -55,7 +55,7 @@ export function changeDeliveryStatus(status: string | undefined) {
     case "PAYMENT_COMPLETE":
       return "결제완료";
     case "ITEM_READY":
-      return "상품준비중";
+      return "배송대기중";
     case "DELIVERY_START":
       return "배송처리";
     case "DELIVERY_END":

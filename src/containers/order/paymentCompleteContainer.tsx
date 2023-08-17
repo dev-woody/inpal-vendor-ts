@@ -1,12 +1,6 @@
 import PaymentCompleteList from "components/order/paymentComplete/paymentCompleteList";
 import { ColumnsType } from "lib/columns/columnsList";
-import {
-  changeDays,
-  changeDeliveryStatus,
-  changePhone,
-} from "lib/functions/changeInput";
 import { Button } from "lib/styles";
-import { CheckBox } from "lib/styles/checkBoxStyled";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { vendorOrderActions } from "reducers/order/vendorOrder";
@@ -88,7 +82,7 @@ const PaymentCompleteContainer = () => {
       render: (info) => info.payTotal + "원",
     },
     {
-      title: "주문상태",
+      title: "배송준비",
       dataIndex: "info",
       render: (info, itemInfo) => {
         return (
@@ -103,7 +97,7 @@ const PaymentCompleteContainer = () => {
               );
             }}
           >
-            배송처리
+            배송준비
           </Button>
         );
       },

@@ -104,7 +104,7 @@ export const sidebarList: sideListType[] = [
       },
       {
         icon: <FaBoxes />,
-        menuName: "결제상태",
+        menuName: "결제완료",
         url: "/paymentComplete",
       },
       {

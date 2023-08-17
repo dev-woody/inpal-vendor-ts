@@ -90,7 +90,7 @@ const BeforeDeliveryDetail = ({
       <BeforeDeliveryDetailBlock>
         <PageHeader
           title="배송상품 정보"
-          subTitle="배송처리는 모든 아이템이 상품준비중일 경우에 가능합니다."
+          subTitle="배송처리는 모든 아이템이 배송대기중일 경우에 가능합니다."
         />
         <StyledForm
           onSubmit={handleSubmit((data) => {
