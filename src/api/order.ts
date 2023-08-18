@@ -1,4 +1,4 @@
-import { accessClient } from "./createAPI";
+import { accessClient, client } from "./createAPI";
 
 export const findAll = async (data: object) => {
   return await accessClient
@@ -80,6 +80,17 @@ export const orderLog = async (data: object) => {
   return await accessClient
     .get(`/vendor/order/status/findAll`, {
       params: { ...data },
+    })
+    .then((res) => res);
+};
+
+//! 이거 잘 못 들어감
+export const pageOrder = async (data: object) => {
+  return await client
+    .get(`/master/order/byVendor/getPageByAll`, {
+      params: {
+        ...data,
+      },
     })
     .then((res) => res);
 };

@@ -211,3 +211,13 @@ export const itemSetSellStatus = async (data: object) => {
       return res;
     });
 };
+
+export const pageGoodsGroup = async (data: object) => {
+  return await client
+    .get(`/store/construction/good/group/getPageByAll`, {
+      params: {
+        ...data,
+      },
+    })
+    .then((res) => res);
+};

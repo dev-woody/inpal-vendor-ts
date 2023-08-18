@@ -17,6 +17,7 @@ const initialState: ResponseData = {
   deliveryFindById: {},
   setStatus: {},
   orderLog: {},
+  pageOrder: {},
 };
 
 export function* vendorOrderSaga() {
@@ -51,6 +52,10 @@ export function* vendorOrderSaga() {
   yield takeLatest(
     vendorOrderActions.orderLog,
     createRequestSaga("vendorOrder/orderLog", orderAPI.orderLog)
+  );
+  yield takeLatest(
+    vendorOrderActions.pageOrder,
+    createRequestSaga("vendorOrder/pageOrder", orderAPI.pageOrder)
   );
 }
 
@@ -90,6 +95,10 @@ const vendorOrder = createSlice({
     ...createAsyncReducers({
       actionName: "setStatus",
       reducerName: "setStatus",
+    })<any, DataForm, string>(),
+    ...createAsyncReducers({
+      actionName: "pageOrder",
+      reducerName: "pageOrder",
     })<any, DataForm, string>(),
     ...createSingleReducers({
       actionName: "reset",
