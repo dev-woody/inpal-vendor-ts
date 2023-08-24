@@ -58,7 +58,6 @@ const SpecList = ({
           filter
           columns={specColunms}
           content={specList.data}
-          pagenation
           url="/goods/spec/detail"
           moveKey={["base", "id"]}
           filterInput={

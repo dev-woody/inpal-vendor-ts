@@ -1,25 +1,29 @@
 import styled from "styled-components";
-import {
-  BreadCrumb,
-  Button,
-  Responsive,
-  StyledSelect,
-  Table,
-} from "lib/styles";
+import { BreadCrumb, Button, Responsive, Table } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
 import { ColumnsType } from "lib/columns/columnsList";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { response } from "types/globalTypes";
 
 const GoodsGorupListBlock = styled(Responsive)``;
 
 type listProps = {
   goodsGroupList: response;
+  countGroup: response;
   goodsGroupColumns: ColumnsType[];
 };
 
-const GoodsGorupList = ({ goodsGroupList, goodsGroupColumns }: listProps) => {
+const GoodsGorupList = ({
+  goodsGroupList,
+  countGroup,
+  goodsGroupColumns,
+}: listProps) => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const newPageNum = Number(searchParams.get("pageNum") || "0");
+  const { isDesc } = JSON.parse(
+    sessionStorage.getItem("groupPageInfo") || "{}"
+  );
   return (
     <>
       <GoodsGorupListBlock>
@@ -46,23 +50,16 @@ const GoodsGorupList = ({ goodsGroupList, goodsGroupColumns }: listProps) => {
           columns={goodsGroupColumns}
           content={goodsGroupList.data}
           url="/goods/groups/detail"
+          searchParams={searchParams}
+          setSearchParams={(page: number) =>
+            setSearchParams({
+              pageNum: String(newPageNum + page),
+              isDesc: isDesc,
+            })
+          }
           moveKey={["base", "id"]}
           pagenation
-          // filter
-          // filterInput={
-          //   <>
-          //     <StyledSelect
-          //       placeholder="품목별"
-          //       optionList={[]}
-          //       actions={function () {}}
-          //     />
-          //     <StyledSelect
-          //       placeholder="제조사별"
-          //       optionList={[]}
-          //       actions={function () {}}
-          //     />
-          //   </>
-          // }
+          pageCount={countGroup.data}
         />
       </GoodsGorupListBlock>
     </>

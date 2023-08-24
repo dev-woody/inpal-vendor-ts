@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 type EvaluationUpdateProps = {
   evaluationSummary: any;
   evaluationList: response;
+  countReview: response;
   evaluationColumn: ColumnsType[];
 };
 
@@ -16,6 +17,7 @@ const EvaluationUpdateBlock = styled(Responsive)``;
 const EvaluationUpdate = ({
   evaluationSummary,
   evaluationList,
+  countReview,
   evaluationColumn,
 }: EvaluationUpdateProps) => {
   const { id, itemId } = useParams();
@@ -44,6 +46,7 @@ const EvaluationUpdate = ({
         url={`/goods/groups/detail/${id}/items/${itemId}`}
         moveKey={["base", "id"]}
         pagenation
+        pageCount={countReview.data}
       />
     </EvaluationUpdateBlock>
   );

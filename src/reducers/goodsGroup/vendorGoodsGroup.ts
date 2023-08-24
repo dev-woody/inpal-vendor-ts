@@ -16,6 +16,8 @@ const initialState: ResponseData = {
   findAll: {},
   findById: {},
   setOpenStatus: {},
+  countGroup: {},
+  pageGroup: {},
 };
 
 export function* vendorGoodsGroupSaga() {
@@ -56,6 +58,20 @@ export function* vendorGoodsGroupSaga() {
       goodsGroupAPI.setOpenStatus
     )
   );
+  yield takeLatest(
+    vendorGoodsGroupActions.countGroup,
+    createRequestSaga(
+      "vendorGoodsGroup/countGroup",
+      goodsGroupAPI.countGoodsGroup
+    )
+  );
+  yield takeLatest(
+    vendorGoodsGroupActions.pageGroup,
+    createRequestSaga(
+      "vendorGoodsGroup/pageGroup",
+      goodsGroupAPI.pageGoodsGroup
+    )
+  );
 }
 
 //* reducer
@@ -90,6 +106,14 @@ const vendorGoodsGroup = createSlice({
     ...createAsyncReducers({
       actionName: "setOpenStatus",
       reducerName: "setOpenStatus",
+    })<any, DataForm, string>(),
+    ...createAsyncReducers({
+      actionName: "countGroup",
+      reducerName: "countGroup",
+    })<any, DataForm, string>(),
+    ...createAsyncReducers({
+      actionName: "pageGroup",
+      reducerName: "pageGroup",
     })<any, DataForm, string>(),
     ...createSingleReducers({
       actionName: "reset",

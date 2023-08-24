@@ -1,32 +1,45 @@
 import BeforePayment from "components/order/beforePayment/beforePayment";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
-import {
-  changeDays,
-  changeDeliveryStatus,
-  changePhone,
-} from "lib/functions/changeInput";
-import { Button, StyledSelect } from "lib/styles";
-import { FaCheckSquare, FaRegSquare } from "react-icons/fa";
+import { Button } from "lib/styles";
 import { ColumnsType } from "lib/columns/columnsList";
-import { testVendorOrderData } from "types/data.test";
-import { CheckBox } from "lib/styles/checkBoxStyled";
 import { vendorOrderActions } from "reducers/order/vendorOrder";
 
 const BeforePaymentContainer = () => {
-  const { user, orderList } = useAppSelector((store) => ({
+  const { user, orderList, countOrder } = useAppSelector((store) => ({
     user: store.user,
-    orderList: store.vendorOrder.itemFindAll,
+    orderList: store.vendorOrder.pageOrderStatus,
+    countOrder: store.vendorOrder.countOrderStatus,
   }));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     dispatch(
-      vendorOrderActions.itemFindAll({
+      vendorOrderActions.countOrderStatus({
         vendorId: user.vendorId,
-        isDesc: true,
+        orderStatus: "payment_wait",
+      })
+    );
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem(
+      "orderPageInfo",
+      JSON.stringify({
+        pageNum: searchParams.get("pageNum"),
+        isDesc: searchParams.get("isDesc"),
+      })
+    );
+    dispatch(
+      vendorOrderActions.pageOrderStatus({
+        vendorId: user.vendorId,
+        orderStatus: "payment_wait",
+        page: searchParams.get("pageNum"),
+        isDesc: searchParams.get("isDesc"),
+        size: 10,
       })
     );
   }, []);
@@ -98,6 +111,7 @@ const BeforePaymentContainer = () => {
   return (
     <BeforePayment
       beforePayment={orderList}
+      countOrder={countOrder}
       beforePaymentColumns={beforePaymentColumns}
     />
   );

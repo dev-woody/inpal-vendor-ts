@@ -1,31 +1,44 @@
 import { response } from "types/globalTypes";
-import { useEffect } from "react";
 import GoodsGroupItemsContainer from "containers/goodsGroup/items/itemsContainer";
 import BasicInfoUpdateContainer from "containers/goodsGroup/basicInfoUpdateContainer";
 import DetailUpdateContainer from "containers/goodsGroup/detailPageUpdateContainer";
 import GoodsImageUpdateContainer from "containers/goodsGroup/goodsImageUpdateContainer";
+import { BreadCrumb, Responsive } from "lib/styles";
+import PageHeader from "lib/pages/pageHeader";
+import styled from "styled-components";
 
 type DetailProps = {
   goodsGroup: response;
-  categoryList: { [key: string]: any }[];
-  setNewCategory: React.Dispatch<
-    React.SetStateAction<
-      {
-        [key: string]: any;
-      }[]
-    >
-  >;
+  id: string | undefined;
 };
 
-const GoodsGroupDetail = ({
-  goodsGroup,
-  categoryList,
-  setNewCategory,
-}: DetailProps) => {
-  const data = goodsGroup.data;
+const GoodsGroupDetailBlock = styled(Responsive)``;
 
+const GoodsGroupDetail = ({ goodsGroup, id }: DetailProps) => {
+  const data = goodsGroup.data;
+  const { pageNum, isDesc } = JSON.parse(
+    sessionStorage.getItem("groupPageInfo") || "{}"
+  );
   return (
     <>
+      <GoodsGroupDetailBlock>
+        <PageHeader
+          breadCrumb={
+            <BreadCrumb
+              indicator={[
+                {
+                  name: "상품그룹관리 /",
+                  url: `/goods/groups?pageNum=${pageNum}&isDesc=${isDesc}`,
+                },
+                {
+                  name: "상세정보 및 수정",
+                  url: `/goods/groups/detail/${id}`,
+                },
+              ]}
+            />
+          }
+        />
+      </GoodsGroupDetailBlock>
       <BasicInfoUpdateContainer basicInfo={data?.info?.basic} />
       <GoodsImageUpdateContainer goodsIamge={data?.info?.goodImages} />
       <DetailUpdateContainer detailPage={data?.info?.detailPage} />

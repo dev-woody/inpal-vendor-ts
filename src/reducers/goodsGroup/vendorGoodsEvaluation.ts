@@ -11,6 +11,8 @@ import createAsyncReducers, {
 const initialState: ResponseData = {
   findById: {},
   findByGoodItemId: {},
+  countReview: {},
+  pageReview: {},
 };
 
 export function* vendorGoodsEvaluationSaga() {
@@ -28,6 +30,20 @@ export function* vendorGoodsEvaluationSaga() {
       goodsEvaluationAPI.findByGoodItemId
     )
   );
+  yield takeLatest(
+    vendorGoodsEvaluationActions.countReview,
+    createRequestSaga(
+      "vendorGoodsEvaluation/countReview",
+      goodsEvaluationAPI.countReview
+    )
+  );
+  yield takeLatest(
+    vendorGoodsEvaluationActions.pageReview,
+    createRequestSaga(
+      "vendorGoodsEvaluation/pageReview",
+      goodsEvaluationAPI.pageReview
+    )
+  );
 }
 
 //* reducer
@@ -42,6 +58,14 @@ const vendorGoodsEvaluation = createSlice({
     ...createAsyncReducers({
       actionName: "findByGoodItemId",
       reducerName: "findByGoodItemId",
+    })<any, DataForm, string>(),
+    ...createAsyncReducers({
+      actionName: "countReview",
+      reducerName: "countReview",
+    })<any, DataForm, string>(),
+    ...createAsyncReducers({
+      actionName: "pageReview",
+      reducerName: "pageReview",
     })<any, DataForm, string>(),
     ...createSingleReducers({
       actionName: "reset",

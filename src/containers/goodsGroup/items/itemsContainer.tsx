@@ -3,44 +3,64 @@ import { ColumnsType } from "lib/columns/columnsList";
 import { changeDays } from "lib/functions/changeInput";
 import { StyledToggle } from "lib/styles";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { vendorGoodsItemsActions } from "reducers/goodsGroup/vendorGoodsItems";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 
 const GoodsGroupItemsContainer = () => {
-  const { user, itemList, setSellStatus } = useAppSelector((state) => ({
-    user: state.user,
-    itemList: state.vendorGoodsItems.findByGoodsGroupId,
-    setSellStatus: state.vendorGoodsItems.setSellStatus,
-  }));
+  const { user, itemList, countItem, setSellStatus } = useAppSelector(
+    (store) => ({
+      user: store.user,
+      itemList: store.vendorGoodsItems.findByGoodsGroupId,
+      countItem: store.vendorGoodsItems.countItem,
+      setSellStatus: store.vendorGoodsItems.setSellStatus,
+    })
+  );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
 
   const onSetStatus = (data: object) => {
     dispatch(vendorGoodsItemsActions.setSellStatus({ ...data }));
   };
 
   useEffect(() => {
-    dispatch(
-      vendorGoodsItemsActions.findByGoodsGroupId({
-        goodGroupId: id,
-        isDesc: true,
-      })
-    );
-  }, [setSellStatus]);
+    dispatch(vendorGoodsItemsActions.countItem({ goodGroupId: id }));
+  }, []);
 
   useEffect(() => {
     dispatch(
       vendorGoodsItemsActions.findByGoodsGroupId({
         goodGroupId: id,
-        isDesc: true,
+        page: searchParams.get("pageNum"),
+        isDesc: searchParams.get("isDesc"),
+        size: 10,
+      })
+    );
+  }, [setSellStatus]);
+
+  useEffect(() => {
+    navigate("?pageNum=0&isDesc=false");
+    sessionStorage.setItem(
+      "itemPageInfo",
+      JSON.stringify({
+        pageNum: searchParams.get("pageNum"),
+        isDesc: searchParams.get("isDesc"),
+      })
+    );
+    dispatch(
+      vendorGoodsItemsActions.findByGoodsGroupId({
+        goodGroupId: id,
+        page: searchParams.get("pageNum"),
+        isDesc: searchParams.get("isDesc"),
+        size: 10,
       })
     );
     return () => {
       dispatch(vendorGoodsItemsActions.reset("findByGoodsGroupId"));
     };
-  }, [dispatch, id]);
+  }, [dispatch, id, searchParams.get("pageNum"), searchParams.get("isDesc")]);
 
   const goodsGroupItemsColumns: ColumnsType[] = [
     {
@@ -106,6 +126,7 @@ const GoodsGroupItemsContainer = () => {
   return (
     <GoodsGroupItems
       itemList={itemList}
+      countItem={countItem}
       navigate={navigate}
       goodsGroupItemsColumns={goodsGroupItemsColumns}
     />

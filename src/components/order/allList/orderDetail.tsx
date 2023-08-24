@@ -24,6 +24,9 @@ const OrderDetail = ({ orderInfo, orderLog, navigate }: orderDetailProps) => {
   const data = orderInfo?.data?.info;
   const path = window.location.pathname.split("/");
   const rollbackPath = "/" + path[1] + "/" + path[2];
+  const { pageNum, isDesc } = JSON.parse(
+    sessionStorage.getItem("orderPageInfo") || "{}"
+  );
   return (
     <Fragment>
       <OrderDetailBlock>
@@ -33,7 +36,7 @@ const OrderDetail = ({ orderInfo, orderLog, navigate }: orderDetailProps) => {
               indicator={[
                 {
                   name: "주문 조회 /",
-                  url: "/order/allList",
+                  url: `/order/allList?pageNum=${pageNum}&isDesc=${isDesc}`,
                 },
                 {
                   name: "상세정보",

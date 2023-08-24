@@ -1,7 +1,7 @@
 import EvaluationUpdate from "components/goodsGroup/items/evaluationUpdata";
 import { ColumnsType } from "lib/columns/columnsList";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { vendorGoodsEvaluationActions } from "reducers/goodsGroup/vendorGoodsEvaluation";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 
@@ -10,22 +10,42 @@ const EvaluationUpdateContainer = ({
 }: {
   evaluationSummary: any;
 }) => {
-  const { user, evaluationList } = useAppSelector((store) => ({
+  const { user, evaluationList, countReview } = useAppSelector((store) => ({
     user: store.user,
     evaluationList: store.vendorGoodsEvaluation.findByGoodItemId,
+    countReview: store.vendorGoodsEvaluation.countReview,
   }));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { id, itemId } = useParams();
+  const { itemId } = useParams();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
+    dispatch(vendorGoodsEvaluationActions.countReview(itemId));
+  }, []);
+
+  useEffect(() => {
+    navigate(`?pageNum=0&isDesc=false`);
+    sessionStorage.setItem(
+      "reviewPageInfo",
+      JSON.stringify({
+        pageNum: searchParams.get("pageNum"),
+        isDesc: searchParams.get("isDesc"),
+      })
+    );
     dispatch(
       vendorGoodsEvaluationActions.findByGoodItemId({
         goodItemId: evaluationSummary?.vendorGoodItemId,
-        isDesc: true,
+        page: searchParams.get("pageNum"),
+        isDesc: searchParams.get("isDesc"),
+        size: 10,
       })
     );
-  }, [evaluationSummary]);
+  }, [
+    evaluationSummary,
+    searchParams.get("pageNum"),
+    searchParams.get("isDesc"),
+  ]);
 
   const evaluationColumn: ColumnsType[] = [
     {
@@ -59,6 +79,7 @@ const EvaluationUpdateContainer = ({
     <EvaluationUpdate
       evaluationSummary={evaluationSummary}
       evaluationList={evaluationList}
+      countReview={countReview}
       evaluationColumn={evaluationColumn}
     />
   );

@@ -12,11 +12,6 @@ import {
 } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
 import { response } from "types/globalTypes";
-import { changeDays, changeSellStatus } from "lib/functions/changeInput";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { NavigateFunction } from "react-router-dom";
 import BasicInfoUpdateContainer from "containers/goodsGroup/items/basicInfoUpdateContainer";
 import DsInfoUpdateContainer from "containers/goodsGroup/items/dsInfoUpdaeContainer";
 import PriceInfoUpdateContainer from "containers/goodsGroup/items/priceInfoUpdateContainer";
@@ -30,6 +25,9 @@ type ItemProps = {
 };
 
 const GoodsGroupItemDetail = ({ itemData, id }: ItemProps) => {
+  const { pageNum, isDesc } = JSON.parse(
+    sessionStorage.getItem("groupPageInfo") || "{}"
+  );
   return (
     <>
       <GoodsGroupItemDetailBlock>
@@ -39,7 +37,7 @@ const GoodsGroupItemDetail = ({ itemData, id }: ItemProps) => {
               indicator={[
                 {
                   name: "상품그룹관리 /",
-                  url: "/goods/groups",
+                  url: `/goods/groups?pageNum=${pageNum}&isDesc=${isDesc}`,
                 },
                 {
                   name: "상세정보 및 수정 /",

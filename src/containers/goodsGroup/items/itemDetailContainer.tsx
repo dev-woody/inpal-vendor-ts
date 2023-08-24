@@ -12,24 +12,9 @@ const GoodsGroupItemDetailContainer = () => {
     user: state.user,
     itemData: state.vendorGoodsItems.findById,
   }));
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { id, itemId } = useParams();
-
-  // useEffect(() => {
-  //   if (itemData.success) {
-  //     dispatch(
-  //       vendorDeliveryCodeActions.findAllByProductId({
-  //         data: {
-  //           vendorId: user.vendorId,
-  //           productId: goodsGroup.data.product.id,
-  //           isDesc: true,
-  //         },
-  //       })
-  //     );
-  //   }
-  // }, [goodsGroup]);
 
   useEffect(() => {
     dispatch(vendorGoodsGroupActions.findById(id));

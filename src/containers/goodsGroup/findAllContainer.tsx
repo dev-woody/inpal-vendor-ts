@@ -3,43 +3,62 @@ import { ColumnsType } from "lib/columns/columnsList";
 import { changeDays } from "lib/functions/changeInput";
 import { StyledToggle } from "lib/styles";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { vendorGoodsGroupActions } from "reducers/goodsGroup/vendorGoodsGroup";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 
 const GoodsGroupListContainer = () => {
-  const { user, goodsGroup, setOpenStatus } = useAppSelector((state) => ({
-    user: state.user,
-    goodsGroup: state.vendorGoodsGroup.findAll,
-    setOpenStatus: state.vendorGoodsGroup.setOpenStatus,
-  }));
+  const { user, goodsGroup, countGroup, setOpenStatus } = useAppSelector(
+    (store) => ({
+      user: store.user,
+      goodsGroup: store.vendorGoodsGroup.pageGroup,
+      countGroup: store.vendorGoodsGroup.countGroup,
+      setOpenStatus: store.vendorGoodsGroup.setOpenStatus,
+    })
+  );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const onSetStatus = (data: object) => {
     dispatch(vendorGoodsGroupActions.setOpenStatus(data));
   };
 
   useEffect(() => {
+    dispatch(vendorGoodsGroupActions.countGroup({ vendorId: user.vendorId }));
+  }, []);
+
+  useEffect(() => {
     dispatch(
-      vendorGoodsGroupActions.findAll({
+      vendorGoodsGroupActions.pageGroup({
         vendorId: user.vendorId,
-        isDesc: true,
+        page: searchParams.get("pageNum"),
+        isDesc: searchParams.get("isDesc"),
+        size: 10,
       })
     );
   }, [setOpenStatus]);
 
   useEffect(() => {
+    sessionStorage.setItem(
+      "groupPageInfo",
+      JSON.stringify({
+        pageNum: searchParams.get("pageNum"),
+        isDesc: searchParams.get("isDesc"),
+      })
+    );
     dispatch(
-      vendorGoodsGroupActions.findAll({
+      vendorGoodsGroupActions.pageGroup({
         vendorId: user.vendorId,
-        isDesc: true,
+        page: searchParams.get("pageNum"),
+        isDesc: searchParams.get("isDesc"),
+        size: 10,
       })
     );
     return () => {
       dispatch(vendorGoodsGroupActions.reset("findAll"));
     };
-  }, [dispatch]);
+  }, [searchParams.get("pageNum"), searchParams.get("isDesc")]);
 
   const goodsGroupColumns: ColumnsType[] = [
     {
@@ -99,6 +118,7 @@ const GoodsGroupListContainer = () => {
   return (
     <GoodsGorupList
       goodsGroupList={goodsGroup}
+      countGroup={countGroup}
       goodsGroupColumns={goodsGroupColumns}
     />
   );

@@ -172,8 +172,11 @@ export const Table = (props: propsTypes) => {
     columns,
     content,
     url,
+    searchParams,
+    setSearchParams,
     moveKey,
     pagenation,
+    pageCount,
     doNoting,
     action,
     align,
@@ -182,25 +185,25 @@ export const Table = (props: propsTypes) => {
     filterInput,
   } = props;
   const navigate = useNavigate();
+  const nowPage = Number(searchParams?.get("pageNum") || "0");
   const [isDesc, setIsDesc] = useState<boolean>(false);
-  const [page, setPage] = useState(1);
-  const [currPage, setCurrPage] = useState(page);
+  const [currPage, setCurrPage] = useState(nowPage);
   const [selectedRow, setSelectedRow] = useState<string>("");
   const [allcheck, setAllCheck] = useState<boolean>(false);
   let firstNum = currPage - (currPage % 5) + 1;
   let lastNum = currPage - (currPage % 5) + 5;
   const limit = 10;
 
-  const useSliceData = (posts: any) => {
-    const offset = (page - 1) * limit;
-    const result = posts?.slice(offset, offset + limit);
-    return result;
-  };
-  const data = useSliceData(content);
+  // const useSliceData = (posts: any) => {
+  //   const offset = nowPage * limit;
+  //   const result = posts?.slice(offset, offset + limit);
+  //   return result;
+  // };
+  // const data = useSliceData(content);
 
   const onClickCheck = () => {
     if (content.length !== 0) {
-      data.map((dataList: any) => {
+      content.map((dataList: any) => {
         dataList.isChecked = !allcheck;
       });
       setAllCheck(!allcheck);
@@ -208,10 +211,11 @@ export const Table = (props: propsTypes) => {
   };
 
   const Pagenation = ({ data }: { data: any }) => {
-    const numPages = Math.ceil(data?.length / limit) || 1;
-    const dataArray = (dataLength: number) => {
+    // const numPages = Math.ceil(data?.length / limit) || 1;
+    const numPages = Math.ceil(pageCount / limit) || 1;
+    const dataArray = () => {
       let data = [];
-      for (let i = 0; i < dataLength; i++) {
+      for (let i = 0; i < numPages; i++) {
         data.push({ index: i });
       }
       return data;
@@ -220,21 +224,21 @@ export const Table = (props: propsTypes) => {
       <PageNationBlock>
         <PageNationButton
           onClick={() => {
-            setPage(page - 1);
-            setCurrPage(page - 2);
+            setSearchParams(-1);
+            // setCurrPage(nowPage - 2);
           }}
-          disabled={page === 1}
+          disabled={nowPage === 0}
         >
           <FaAngleDoubleLeft />
         </PageNationButton>
         {data ? (
-          dataArray(numPages).map((_, i) => {
+          dataArray().map((_, i) => {
             return (
               <PageNationButton
-                key={i + 1}
-                isFocus={page === i + 1 && content.length > limit}
-                disabled={content.length <= limit}
-                onClick={() => setPage(i + 1)}
+                key={i}
+                isFocus={nowPage === i && pageCount > limit}
+                disabled={pageCount <= limit}
+                onClick={() => setSearchParams(-(nowPage - i))}
               >
                 {i + 1}
               </PageNationButton>
@@ -247,10 +251,10 @@ export const Table = (props: propsTypes) => {
         )}
         <PageNationButton
           onClick={() => {
-            setPage(page + 1);
-            setCurrPage(page);
+            setSearchParams(1);
+            // setCurrPage(nowPage);
           }}
-          disabled={page === numPages}
+          disabled={nowPage + 1 === numPages}
         >
           <FaAngleDoubleRight />
         </PageNationButton>
@@ -262,13 +266,13 @@ export const Table = (props: propsTypes) => {
     const allListChecked =
       content &&
       content.length !== 0 &&
-      data
+      content
         .map((dataList: any) => dataList.isChecked)
         .filter((list: boolean) => list === false);
-    if (data && allListChecked.length === 0) {
+    if (content && allListChecked.length === 0) {
       setAllCheck(true);
     } else setAllCheck(false);
-  }, [data]);
+  }, [content]);
 
   useEffect(() => {
     setSelectedRow("");
@@ -313,8 +317,8 @@ export const Table = (props: propsTypes) => {
             </tr>
           </thead>
           <tbody>
-            {data?.length > 0 ? (
-              data?.map((contentList: any, rowIndex: number) => (
+            {content?.length > 0 ? (
+              content?.map((contentList: any, rowIndex: number) => (
                 <RowTable
                   isHover
                   key={rowIndex}

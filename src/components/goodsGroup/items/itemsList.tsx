@@ -9,12 +9,14 @@ const GoodsGroupItemsBlock = styled(Responsive)``;
 
 type optionProps = {
   itemList: response;
+  countItem: response;
   goodsGroupItemsColumns: ColumnsType[];
   navigate: NavigateFunction;
 };
 
 const GoodsGroupItems = ({
   itemList,
+  countItem,
   goodsGroupItemsColumns,
   navigate,
 }: optionProps) => {
@@ -35,7 +37,7 @@ const GoodsGroupItems = ({
         url={`/goods/groups/detail/${id}/items`}
         moveKey={["base", "id"]}
         pagenation
-        // filter
+        pageCount={countItem.data}
       />
     </GoodsGroupItemsBlock>
   );

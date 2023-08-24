@@ -84,10 +84,35 @@ export const orderLog = async (data: object) => {
     .then((res) => res);
 };
 
-//! 이거 잘 못 들어감
+export const countOrder = async (id: string) => {
+  return await accessClient
+    .get(`/vendor/order/item/getAllCount/${id}`)
+    .then((res) => res);
+};
+
 export const pageOrder = async (data: object) => {
-  return await client
-    .get(`/master/order/byVendor/getPageByAll`, {
+  return await accessClient
+    .get(`/vendor/order/item/getPageByAll`, {
+      params: {
+        ...data,
+      },
+    })
+    .then((res) => res);
+};
+
+export const countOrderStatus = async (data: object) => {
+  return await accessClient
+    .get(`/vendor/order/item/getCountByOrderStatus`, {
+      params: {
+        ...data,
+      },
+    })
+    .then((res) => res);
+};
+
+export const pageOrderStatus = async (data: object) => {
+  return await accessClient
+    .get(`/vendor/order/item/getPageByOrderStatus`, {
       params: {
         ...data,
       },

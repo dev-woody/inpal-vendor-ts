@@ -92,6 +92,26 @@ export const setOpenStatus = async (data: object) => {
     });
 };
 
+export const countGoodsGroup = async (data: object) => {
+  return await client
+    .get(`/store/construction/good/group/getCountByVendorId`, {
+      params: {
+        ...data,
+      },
+    })
+    .then((res) => res);
+};
+
+export const pageGoodsGroup = async (data: object) => {
+  return await client
+    .get(`/store/construction/good/group/getPageByVendorId`, {
+      params: {
+        ...data,
+      },
+    })
+    .then((res) => res);
+};
+
 //* -------------------------- goods group option
 export const optionFindByGroupId = async (data: object) => {
   return client
@@ -212,9 +232,19 @@ export const itemSetSellStatus = async (data: object) => {
     });
 };
 
-export const pageGoodsGroup = async (data: object) => {
+export const countGoodsItem = async (data: object) => {
   return await client
-    .get(`/store/construction/good/group/getPageByAll`, {
+    .get(`/store/construction/good/item/getCountByGoodGroupId`, {
+      params: {
+        ...data,
+      },
+    })
+    .then((res) => res);
+};
+
+export const pageGoodsItem = async (data: object) => {
+  return await client
+    .get(`/store/construction/good/item/getPageByGoodGroupId`, {
       params: {
         ...data,
       },

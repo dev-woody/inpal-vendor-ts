@@ -2,15 +2,7 @@ import {
   changeDeliveryStatus,
   changeDays,
   changePhone,
-  changeStatus,
-  changeTextCut,
-  changeSellStatus,
-  predictDelivery,
 } from "lib/functions/changeInput";
-import { Button } from "lib/styles";
-import { ReactElement } from "react";
-import { Link } from "react-router-dom";
-import { StyledComponent } from "styled-components";
 
 import {
   FaBalanceScale,
@@ -29,8 +21,6 @@ import {
   FaGift,
   FaHandHoldingUsd,
   FaQuestionCircle,
-  FaShippingFast,
-  FaUserCheck,
   FaUserTimes,
   FaFileAlt,
 } from "react-icons/fa";
@@ -84,7 +74,7 @@ export const sidebarList: sideListType[] = [
       {
         icon: <FaBoxes />,
         menuName: "상품그룹관리",
-        url: "/groups",
+        url: "/groups?pageNum=0&isDesc=false",
       },
     ],
   },
@@ -95,22 +85,22 @@ export const sidebarList: sideListType[] = [
       {
         icon: <FaClipboardList />,
         menuName: "주문조회",
-        url: "/allList",
+        url: "/allList?pageNum=0&isDesc=false",
       },
       {
         icon: <FaDonate />,
         menuName: "무통장입금 현황",
-        url: "/beforePayment",
+        url: "/beforePayment?pageNum=0&isDesc=false",
       },
       {
         icon: <FaBoxes />,
         menuName: "결제완료",
-        url: "/paymentComplete",
+        url: "/paymentComplete?pageNum=0&isDesc=false",
       },
       {
         icon: <FaDollyFlatbed />,
         menuName: "배송상태",
-        url: "/beforeDelivery",
+        url: "/beforeDelivery?pageNum=0&isDesc=false",
       },
       // {
       //   icon: <FaShippingFast />,
@@ -125,27 +115,27 @@ export const sidebarList: sideListType[] = [
       {
         icon: <FaUserTimes />,
         menuName: "취소 관리",
-        url: "/cancel",
+        url: "/cancel?pageNum=0&isDesc=false",
       },
       {
         icon: <FaBox />,
         menuName: "반품 관리",
-        url: "/return",
+        url: "/return?pageNum=0&isDesc=false",
       },
       {
         icon: <FaExchangeAlt />,
         menuName: "교환 관리",
-        url: "/exchange",
+        url: "/exchange?pageNum=0&isDesc=false",
       },
       {
         icon: <FaHandHoldingUsd />,
         menuName: "환불 관리",
-        url: "/refund",
+        url: "/refund?pageNum=0&isDesc=false",
       },
       {
         icon: <FaBoxOpen />,
         menuName: "구매확정",
-        url: "/confirmation",
+        url: "/confirmation?pageNum=0&isDesc=false",
       },
     ],
   },
@@ -266,7 +256,7 @@ export const todoColumns: ColumnsType[] = [
     dataIndex: "beforePayment",
   },
   {
-    title: "배송준비중",
+    title: "배송대기중",
     dataIndex: "beforeDelivery",
   },
   {

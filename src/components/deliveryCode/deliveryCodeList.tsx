@@ -51,7 +51,6 @@ const DeliveryCodeList = ({
           filter
           columns={deliveryCodeColumns}
           content={deliveryCodeList}
-          pagenation
           url="/dcode/dcode/detail"
           moveKey={["base", "id"]}
           filterInput={

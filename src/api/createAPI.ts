@@ -54,6 +54,7 @@ accessClient.interceptors.response.use(
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         console.log(error);
+        window.location.reload();
       }
       return Promise.reject(error);
     }

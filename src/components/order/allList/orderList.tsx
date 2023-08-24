@@ -3,14 +3,21 @@ import { BreadCrumb, Responsive, Table } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
 import { vendorOrderColumns } from "lib/columns/columnsList";
 import { response } from "types/globalTypes";
+import { useSearchParams } from "react-router-dom";
 
 const OrderListBlock = styled(Responsive)``;
 
 type listProps = {
   orderList: response;
+  countOrder: response;
 };
 
-const OrderList = ({ orderList }: listProps) => {
+const OrderList = ({ orderList, countOrder }: listProps) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const newPageNum = Number(searchParams.get("pageNum") || "0");
+  const { isDesc } = JSON.parse(
+    sessionStorage.getItem("orderPageInfo") || "{}"
+  );
   return (
     <>
       <OrderListBlock>
@@ -32,9 +39,16 @@ const OrderList = ({ orderList }: listProps) => {
           columns={vendorOrderColumns}
           content={orderList.data}
           url="/order/allList/detail"
+          searchParams={searchParams}
+          setSearchParams={(page: number) =>
+            setSearchParams({
+              pageNum: String(newPageNum + page),
+              isDesc: isDesc,
+            })
+          }
           moveKey={["base", "id"]}
           pagenation
-          filter
+          pageCount={countOrder.data}
         />
       </OrderListBlock>
     </>

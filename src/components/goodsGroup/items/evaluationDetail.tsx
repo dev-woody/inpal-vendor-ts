@@ -22,6 +22,10 @@ const EvaluationDetail = ({
   navigate,
 }: EvaluationDetailProps) => {
   const { id, itemId, evaluationId } = useParams();
+  const { pageNum, isDesc } = JSON.parse(
+    sessionStorage.getItem("groupPageInfo") || "{}"
+  );
+
   return (
     <>
       <EvaluationDetailBlock>
@@ -31,7 +35,7 @@ const EvaluationDetail = ({
               indicator={[
                 {
                   name: "상품그룹관리 /",
-                  url: "/goods/groups",
+                  url: `/goods/groups?pageNum=${pageNum}&isDesc=${isDesc}`,
                 },
                 {
                   name: "상세정보 및 수정 /",
