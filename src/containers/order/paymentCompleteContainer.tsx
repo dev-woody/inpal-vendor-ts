@@ -112,7 +112,7 @@ const PaymentCompleteContainer = () => {
       render: (info) => info.payTotal + "원",
     },
     {
-      title: "배송준비",
+      title: "배송처리",
       dataIndex: "info",
       render: (info, itemInfo) => {
         return (

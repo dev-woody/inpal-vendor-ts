@@ -20,7 +20,7 @@ const CancelListContainer = () => {
     dispatch(
       vendorOrderActions.countOrderStatus({
         vendorId: user.vendorId,
-        orderStatus: "cancel",
+        orderStatus: "cancel_request",
       })
     );
   }, []);
@@ -37,7 +37,7 @@ const CancelListContainer = () => {
     dispatch(
       vendorOrderActions.pageOrderStatus({
         vendorId: user.vendorId,
-        orderStatus: "cancel",
+        orderStatus: "cancel_request",
         page: searchParams.get("pageNum"),
         isDesc: searchParams.get("isDesc"),
         size: 10,

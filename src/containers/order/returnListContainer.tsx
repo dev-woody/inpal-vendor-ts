@@ -36,7 +36,7 @@ const ReturnListContainer = () => {
     dispatch(
       vendorOrderActions.pageOrderStatus({
         vendorId: user.vendorId,
-        orderStatus: "cancel",
+        orderStatus: "return_request",
         page: searchParams.get("pageNum"),
         isDesc: searchParams.get("isDesc"),
         size: 10,
