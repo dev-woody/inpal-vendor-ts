@@ -25,7 +25,6 @@ const EvaluationUpdateContainer = ({
   }, []);
 
   useEffect(() => {
-    navigate(`?pageNum=0&isDesc=false`);
     sessionStorage.setItem(
       "reviewPageInfo",
       JSON.stringify({
@@ -46,6 +45,10 @@ const EvaluationUpdateContainer = ({
     searchParams.get("pageNum"),
     searchParams.get("isDesc"),
   ]);
+
+  useEffect(() => {
+    navigate(`?pageNum=0&isDesc=false`);
+  }, []);
 
   const evaluationColumn: ColumnsType[] = [
     {

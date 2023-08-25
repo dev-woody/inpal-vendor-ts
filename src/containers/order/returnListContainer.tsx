@@ -1,33 +1,51 @@
 import ReturnList from "components/order/return/returnList";
 import { ColumnsType } from "lib/columns/columnsList";
-import {
-  changeDays,
-  changeDeliveryStatus,
-  changePhone,
-} from "lib/functions/changeInput";
-import { Button, StyledSelect } from "lib/styles";
-import { CheckBox } from "lib/styles/checkBoxStyled";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Button } from "lib/styles";
+import { useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { vendorOrderActions } from "reducers/order/vendorOrder";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
-import { testVendorOrderData } from "types/data.test";
 
 const ReturnListContainer = () => {
-  const { user, orderList } = useAppSelector((store) => ({
+  const { user, orderList, countOrder } = useAppSelector((store) => ({
     user: store.user,
-    orderList: store.vendorOrder.itemFindAll,
+    orderList: store.vendorOrder.pageOrderStatus,
+    countOrder: store.vendorOrder.countOrderStatus,
   }));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     dispatch(
-      vendorOrderActions.itemFindAll({
+      vendorOrderActions.countOrderStatus({
         vendorId: user.vendorId,
-        isDesc: true,
+        orderStatus: "cancel",
       })
     );
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem(
+      "orderPageInfo",
+      JSON.stringify({
+        pageNum: searchParams.get("pageNum"),
+        isDesc: searchParams.get("isDesc"),
+      })
+    );
+    dispatch(
+      vendorOrderActions.pageOrderStatus({
+        vendorId: user.vendorId,
+        orderStatus: "cancel",
+        page: searchParams.get("pageNum"),
+        isDesc: searchParams.get("isDesc"),
+        size: 10,
+      })
+    );
+  }, [searchParams.get("pageNum"), searchParams.get("isDesc")]);
+
+  useEffect(() => {
+    navigate(`?pageNum=0&isDesc=false`);
   }, []);
 
   //* return
@@ -94,12 +112,7 @@ const ReturnListContainer = () => {
     },
   ];
 
-  return (
-    <ReturnList
-      returnList={orderList}
-      returnOrderColumns={returnOrderColumns}
-    />
-  );
+  return <ReturnList returnList={orderList} countOrder={countOrder} />;
 };
 
 export default ReturnListContainer;

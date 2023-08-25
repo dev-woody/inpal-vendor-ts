@@ -74,7 +74,7 @@ export const sidebarList: sideListType[] = [
       {
         icon: <FaBoxes />,
         menuName: "상품그룹관리",
-        url: "/groups?pageNum=0&isDesc=false",
+        url: "/groups",
       },
     ],
   },
@@ -85,57 +85,47 @@ export const sidebarList: sideListType[] = [
       {
         icon: <FaClipboardList />,
         menuName: "주문조회",
-        url: "/allList?pageNum=0&isDesc=false",
+        url: "/allList",
       },
       {
         icon: <FaDonate />,
         menuName: "무통장입금 현황",
-        url: "/beforePayment?pageNum=0&isDesc=false",
+        url: "/beforePayment",
       },
       {
         icon: <FaBoxes />,
         menuName: "결제완료",
-        url: "/paymentComplete?pageNum=0&isDesc=false",
+        url: "/paymentComplete",
       },
       {
         icon: <FaDollyFlatbed />,
         menuName: "배송상태",
-        url: "/beforeDelivery?pageNum=0&isDesc=false",
+        url: "/beforeDelivery",
       },
-      // {
-      //   icon: <FaShippingFast />,
-      //   menuName: "배송중 조회",
-      //   url: "/delivery",
-      // },
-      // {
-      //   icon: <FaUserCheck />,
-      //   menuName: "배송완료 조회",
-      //   url: "/afterDelivery",
-      // },
       {
         icon: <FaUserTimes />,
         menuName: "취소 관리",
-        url: "/cancel?pageNum=0&isDesc=false",
+        url: "/cancel",
       },
       {
         icon: <FaBox />,
         menuName: "반품 관리",
-        url: "/return?pageNum=0&isDesc=false",
+        url: "/return",
       },
       {
         icon: <FaExchangeAlt />,
         menuName: "교환 관리",
-        url: "/exchange?pageNum=0&isDesc=false",
+        url: "/exchange",
       },
       {
         icon: <FaHandHoldingUsd />,
         menuName: "환불 관리",
-        url: "/refund?pageNum=0&isDesc=false",
+        url: "/refund",
       },
       {
         icon: <FaBoxOpen />,
         menuName: "구매확정",
-        url: "/confirmation?pageNum=0&isDesc=false",
+        url: "/confirmation",
       },
     ],
   },
@@ -330,12 +320,12 @@ export const deliveryCodeColumns: ColumnsType[] = [
   {
     title: "배송료",
     dataIndex: "info",
-    render: (info) => info.basicFee,
+    render: (info) => info.basicFee + "원",
   },
   {
     title: "무료배송조건",
     dataIndex: "info",
-    render: (info) => info.freeCondition,
+    render: (info) => info.freeCondition + "원",
   },
   {
     title: "생성일",

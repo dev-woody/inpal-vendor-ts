@@ -3,12 +3,13 @@ import { BreadCrumb, Modal, Responsive, Table } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
 import { ColumnsType } from "lib/columns/columnsList";
 import { response } from "types/globalTypes";
-import { NavigateFunction } from "react-router-dom";
+import { NavigateFunction, useSearchParams } from "react-router-dom";
 
 const PaymentCompleteListBlock = styled(Responsive)``;
 
 type listProps = {
   paymentComplete: response;
+  countOrder: response;
   paymentCompleteOrderColumns: ColumnsType[];
   modalVisible: boolean;
   setModalVisible: (status: boolean) => void;
@@ -17,11 +18,17 @@ type listProps = {
 
 const PaymentCompleteList = ({
   paymentComplete,
+  countOrder,
   paymentCompleteOrderColumns,
   modalVisible,
   setModalVisible,
   navigate,
 }: listProps) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const newPageNum = Number(searchParams.get("pageNum") || "0");
+  const { pageNum, isDesc } = JSON.parse(
+    sessionStorage.getItem("orderPageInfo") || "{}"
+  );
   return (
     <>
       <PaymentCompleteListBlock>
@@ -31,7 +38,7 @@ const PaymentCompleteList = ({
               indicator={[
                 {
                   name: "결제완료",
-                  url: "/order/paymentComplete",
+                  url: `?pageNum=${pageNum}&isDesc=${isDesc}`,
                 },
               ]}
             />
@@ -42,13 +49,18 @@ const PaymentCompleteList = ({
         <Table
           columns={paymentCompleteOrderColumns}
           // content={paymentcompleteList}
-          content={paymentComplete?.data?.filter(
-            (list: any) => list?.info?.orderStatus === "PAYMENT_COMPLETE"
-          )}
+          content={paymentComplete?.data}
           url="/order/paymentComplete/detail"
+          searchParams={searchParams}
+          setSearchParams={(page: number) =>
+            setSearchParams({
+              pageNum: String(newPageNum + page),
+              isDesc: isDesc,
+            })
+          }
           moveKey={["base", "id"]}
           pagenation
-          filter
+          pageCount={countOrder.data}
         />
       </PaymentCompleteListBlock>
       <Modal

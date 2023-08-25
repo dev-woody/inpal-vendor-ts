@@ -1,17 +1,23 @@
 import styled from "styled-components";
 import { BreadCrumb, Responsive, Table } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
-import { ColumnsType, vendorOrderColumns } from "lib/columns/columnsList";
+import { vendorOrderColumns } from "lib/columns/columnsList";
 import { response } from "types/globalTypes";
+import { useSearchParams } from "react-router-dom";
 
 const CancelListBlock = styled(Responsive)``;
 
 type listProps = {
   cancelList: response;
-  cancelOrderColumns: ColumnsType[];
+  countOrder: response;
 };
 
-const CancelList = ({ cancelList, cancelOrderColumns }: listProps) => {
+const CancelList = ({ cancelList, countOrder }: listProps) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const newPageNum = Number(searchParams.get("pageNum") || "0");
+  const { pageNum, isDesc } = JSON.parse(
+    sessionStorage.getItem("orderPageInfo") || "{}"
+  );
   return (
     <>
       <CancelListBlock>
@@ -21,7 +27,7 @@ const CancelList = ({ cancelList, cancelOrderColumns }: listProps) => {
               indicator={[
                 {
                   name: "취소관리",
-                  url: "/order/cancel",
+                  url: `?pageNum=${pageNum}&isDesc=${isDesc}`,
                 },
               ]}
             />
@@ -32,13 +38,18 @@ const CancelList = ({ cancelList, cancelOrderColumns }: listProps) => {
         <Table
           columns={vendorOrderColumns}
           // content={cancelList}
-          content={cancelList?.data?.filter(
-            (list: any) => list.info.orderStatus === "CANCEL_REQUEST"
-          )}
+          content={cancelList?.data}
           url="/order/cancel/detail"
+          searchParams={searchParams}
+          setSearchParams={(page: number) =>
+            setSearchParams({
+              pageNum: String(newPageNum + page),
+              isDesc: isDesc,
+            })
+          }
           moveKey={["base", "id"]}
           pagenation
-          filter
+          pageCount={countOrder.data}
         />
       </CancelListBlock>
     </>

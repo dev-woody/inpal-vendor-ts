@@ -91,13 +91,13 @@ const GoodsGroupItemsContainer = () => {
     {
       title: "생성일",
       dataIndex: "base",
-      isDesc: true,
+      isDesc: false,
       render: (base) => changeDays(base.createdAt),
     },
     {
       title: "수정일",
       dataIndex: "base",
-      isDesc: true,
+      isDesc: false,
       render: (base) => changeDays(base.updatedAt),
     },
     {

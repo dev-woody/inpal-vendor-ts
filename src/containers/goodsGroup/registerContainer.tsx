@@ -40,7 +40,7 @@ const GoodsGroupRegisterContainer = () => {
   const onSelectProduct = (id: string) => {
     const data = {
       productId: id,
-      isDesc: true,
+      isDesc: false,
     };
     dispatch(vendorProductActions.findAllCategory(data));
     dispatch(vendorProductActions.findManufacturerByProductId(data));

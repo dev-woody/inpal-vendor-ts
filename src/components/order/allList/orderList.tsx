@@ -15,7 +15,7 @@ type listProps = {
 const OrderList = ({ orderList, countOrder }: listProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const newPageNum = Number(searchParams.get("pageNum") || "0");
-  const { isDesc } = JSON.parse(
+  const { pageNum, isDesc } = JSON.parse(
     sessionStorage.getItem("orderPageInfo") || "{}"
   );
   return (
@@ -27,7 +27,7 @@ const OrderList = ({ orderList, countOrder }: listProps) => {
               indicator={[
                 {
                   name: "주문 조회",
-                  url: "/order/allList",
+                  url: `?pageNum=${pageNum}&isDesc=${isDesc}`,
                 },
               ]}
             />

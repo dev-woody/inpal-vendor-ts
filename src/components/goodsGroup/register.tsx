@@ -203,6 +203,7 @@ const GoodsGroupRregister = ({
         />
       </GoodsGroupRregisterBlock>
       <GoodsGroupRregisterBlock>
+        <PageHeader title="상품 그룹 등록" />
         <StyledForm
           onSubmit={handleSubmit(
             (data) => onSubmit(data),

@@ -20,7 +20,7 @@ const BeforePayment = ({
 }: listProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const newPageNum = Number(searchParams.get("pageNum") || "0");
-  const { isDesc } = JSON.parse(
+  const { pageNum, isDesc } = JSON.parse(
     sessionStorage.getItem("orderPageInfo") || "{}"
   );
   return (
@@ -32,7 +32,7 @@ const BeforePayment = ({
               indicator={[
                 {
                   name: "무통장입금 현황",
-                  url: "/order/beforePayment",
+                  url: `?pageNum=${pageNum}&isDesc=${isDesc}`,
                 },
               ]}
             />

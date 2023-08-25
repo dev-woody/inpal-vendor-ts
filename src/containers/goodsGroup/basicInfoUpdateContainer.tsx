@@ -135,7 +135,7 @@ const BasicInfoUpdateContainer = ({ basicInfo }: { basicInfo: any }) => {
     if (checkStatus(goodsGroupInfo.status)) {
       const data = {
         productId: goodsGroupInfo.data.info.basic.info.product.id,
-        isDesc: true,
+        isDesc: false,
       };
       dispatch(vendorProductActions.findAllCategory(data));
       dispatch(vendorProductActions.findManufacturerByProductId(data));

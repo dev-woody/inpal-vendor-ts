@@ -53,7 +53,7 @@ const OrderExceptionContainer = ({ url, nextStatus }: ExceptionType) => {
         vendorOrderActions.orderLog({
           vendorId: user.vendorId,
           orderItemId: orderInfo.data.base.id,
-          isDesc: true,
+          isDesc: false,
         })
       );
     }

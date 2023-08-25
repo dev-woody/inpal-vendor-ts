@@ -4,8 +4,8 @@ import { BreadCrumb, Button, Responsive, Table } from "lib/styles";
 import styled from "styled-components";
 import { Description, DescriptionContent } from "lib/styles/descriptionStyles";
 import {
-  changeDays,
   changeDeliveryStatus,
+  changeOrderPathStatus,
   changePhone,
 } from "lib/functions/changeInput";
 import { response } from "types/globalTypes";
@@ -27,6 +27,7 @@ const OrderDetail = ({ orderInfo, orderLog, navigate }: orderDetailProps) => {
   const { pageNum, isDesc } = JSON.parse(
     sessionStorage.getItem("orderPageInfo") || "{}"
   );
+
   return (
     <Fragment>
       <OrderDetailBlock>
@@ -35,8 +36,8 @@ const OrderDetail = ({ orderInfo, orderLog, navigate }: orderDetailProps) => {
             <BreadCrumb
               indicator={[
                 {
-                  name: "주문 조회 /",
-                  url: `/order/allList?pageNum=${pageNum}&isDesc=${isDesc}`,
+                  name: `${changeOrderPathStatus(path[2])} /`,
+                  url: `/order/${path[2]}?pageNum=${pageNum}&isDesc=${isDesc}`,
                 },
                 {
                   name: "상세정보",

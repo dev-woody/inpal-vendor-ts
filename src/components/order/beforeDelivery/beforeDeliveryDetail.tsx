@@ -17,7 +17,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { vendorOrderItemColumns } from "lib/columns/columnsList";
 import { response } from "types/globalTypes";
-import { NavigateFunction } from "react-router-dom";
+import { NavigateFunction, useSearchParams } from "react-router-dom";
 
 const BeforeDeliveryDetailBlock = styled(Responsive)``;
 
@@ -63,10 +63,9 @@ const BeforeDeliveryDetail = ({
     return item.orderStatus === "ITEM_READY";
   });
 
-  const isDeleveryStart =
-    data?.info?.deliveryCompany &&
-    data?.info?.deliveryNum &&
-    data?.info?.description;
+  const { pageNum, isDesc } = JSON.parse(
+    sessionStorage.getItem("deliveryPageInfo") || "{}"
+  );
   return (
     <Fragment>
       <BeforeDeliveryDetailBlock>
@@ -76,7 +75,7 @@ const BeforeDeliveryDetail = ({
               indicator={[
                 {
                   name: "배송상태 관리 /",
-                  url: "/order/beforeDelivery",
+                  url: `/order/beforeDelivery?pageNum=${pageNum}&isDesc=${isDesc}`,
                 },
                 {
                   name: "상세정보",
@@ -187,7 +186,11 @@ const BeforeDeliveryDetail = ({
               type="button"
               needMarginTop
               withInput
-              onClick={() => navigate("/order/beforeDelivery")}
+              onClick={() =>
+                navigate(
+                  `/order/beforeDelivery?pageNum=${pageNum}&isDesc=${isDesc}`
+                )
+              }
             >
               뒤로가기
             </Button>

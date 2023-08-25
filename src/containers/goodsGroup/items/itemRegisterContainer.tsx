@@ -38,14 +38,14 @@ const GoodsGroupItemRegisterContainer = () => {
   //       vendorGoodsSpecActions.findAllByProductId({
   //         vendorId: user.vendorId,
   //         productId: goodsGroup.data.info.basic.info.product.id,
-  //         isDesc: true,
+  //         isDesc: false,
   //       })
   //     );
   //     // dispatch(
   //     //   vendorDeliveryCodeActions.findAllByProductId({
   //     //     vendorId: user.vendorId,
   //     //     // productId: goodsGroup.data.product.id,
-  //     //     isDesc: true,
+  //     //     isDesc: false,
   //     //   })
   //     // );
   //   }

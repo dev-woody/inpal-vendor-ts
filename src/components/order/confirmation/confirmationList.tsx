@@ -3,19 +3,21 @@ import { BreadCrumb, Responsive, Table } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
 import { ColumnsType, vendorOrderColumns } from "lib/columns/columnsList";
 import { response } from "types/globalTypes";
+import { useSearchParams } from "react-router-dom";
 
 const ConfirmationListBlock = styled(Responsive)``;
 
 type listProps = {
   confirmationList: response;
-  confirmationColumns: ColumnsType[];
+  countOrder: response;
 };
 
-// const ConfirmationList = ({ confirmationList }: listProps) => {
-const ConfirmationList = ({
-  confirmationList,
-  confirmationColumns,
-}: listProps) => {
+const ConfirmationList = ({ confirmationList, countOrder }: listProps) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const newPageNum = Number(searchParams.get("pageNum") || "0");
+  const { pageNum, isDesc } = JSON.parse(
+    sessionStorage.getItem("orderPageInfo") || "{}"
+  );
   return (
     <>
       <ConfirmationListBlock>
@@ -25,7 +27,7 @@ const ConfirmationList = ({
               indicator={[
                 {
                   name: "배송관리",
-                  url: "/order/confirmation",
+                  url: `?pageNum=${pageNum}&isDesc=${isDesc}`,
                 },
               ]}
             />
@@ -35,14 +37,18 @@ const ConfirmationList = ({
       <ConfirmationListBlock>
         <Table
           columns={vendorOrderColumns}
-          // content={confirmationList}
-          content={confirmationList?.data?.filter(
-            (list: any) => list.info.orderStatus === "CONFIRM"
-          )}
+          content={confirmationList?.data}
           url="/order/confirmation/detail"
+          searchParams={searchParams}
+          setSearchParams={(page: number) =>
+            setSearchParams({
+              pageNum: String(newPageNum + page),
+              isDesc: isDesc,
+            })
+          }
           moveKey={["base", "id"]}
           pagenation
-          filter
+          pageCount={countOrder.data}
         />
       </ConfirmationListBlock>
     </>

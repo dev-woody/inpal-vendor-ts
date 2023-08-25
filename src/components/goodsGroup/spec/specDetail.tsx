@@ -64,10 +64,10 @@ const SpecDetail = ({
   });
 
   useEffect(() => {
-    setValue("quantity", specDetail?.data?.info.quantity);
-    setValue("unitId", specDetail?.data?.info.unit.id);
-    setValue("deliveryId", specDetail?.data?.info.delivery.id);
-  }, []);
+    setValue("quantity", specDetail?.data?.info?.quantity);
+    setValue("unitId", specDetail?.data?.info?.unit.id);
+    setValue("deliveryId", specDetail?.data?.info?.delivery?.id);
+  }, [specDetail, specUpdate]);
   return (
     <>
       <SpecDetailBlock>
@@ -125,21 +125,26 @@ const SpecDetail = ({
               span="12"
               label="배송코드"
               content={
-                <StyledSelect
-                  placeholder={
-                    specDetail?.data?.info?.delivery.info.basicFee +
-                    "원 /" +
-                    specDetail?.data?.info?.delivery.info.freeCondition +
-                    "원"
-                  }
-                  label="deliveryId"
-                  optionList={deliveryCode.data}
-                  register={register}
-                  errors={errors}
-                  status={errors.deliveryId}
-                  setValue={setValue}
-                  align="vertical"
-                />
+                <>
+                  <StyledSelect
+                    placeholder={
+                      specDetail?.data?.info?.delivery.info.basicFee +
+                      "원 /" +
+                      specDetail?.data?.info?.delivery.info.freeCondition +
+                      "원"
+                    }
+                    label="deliveryId"
+                    optionList={deliveryCode.data}
+                    register={register}
+                    errors={errors}
+                    status={errors.deliveryId}
+                    setValue={setValue}
+                    align="vertical"
+                  />
+                  <span style={{ marginLeft: "0.5rem" }}>
+                    ( 배송료 / 무료배송조건 )
+                  </span>
+                </>
               }
             />
           </Description>

@@ -349,16 +349,21 @@ export const StyledSelect = (props: propsTypes) => {
                         <OptionItems
                           key={index}
                           keyName={
-                            list?.info?.spec?.info.quantity +
-                              list?.info?.spec?.info.unit.info.nameEn ||
-                            list?.info?.basic?.info?.nameKr ||
-                            list.id ||
-                            list.name ||
-                            list.desc ||
-                            list.info.property ||
-                            list.info.nameKr ||
-                            list.info.name ||
-                            list.info.code
+                            label === "deliveryId"
+                              ? list.info.basicFee +
+                                "원 /" +
+                                list.info.freeCondition +
+                                "원"
+                              : list?.info?.spec?.info.quantity +
+                                  list?.info?.spec?.info.unit.info.nameEn ||
+                                list?.info?.basic?.info?.nameKr ||
+                                list.name ||
+                                list.desc ||
+                                list.info.property ||
+                                list.info.nameKr ||
+                                list.info.name ||
+                                list.info.code ||
+                                list.id
                           }
                           id={list.id || list.base.id}
                         />

@@ -3,16 +3,26 @@ import { BreadCrumb, Responsive, Table } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
 import { ColumnsType, vendorOrderColumns } from "lib/columns/columnsList";
 import { response } from "types/globalTypes";
+import { useSearchParams } from "react-router-dom";
 
 const RefundListBlock = styled(Responsive)``;
 
 type listProps = {
   refundList: response;
+  countOrder: response;
   refundOrderColumns: ColumnsType[];
 };
 
-// const RefundList = ({ refundList }: listProps) => {
-const RefundList = ({ refundList, refundOrderColumns }: listProps) => {
+const RefundList = ({
+  refundList,
+  countOrder,
+  refundOrderColumns,
+}: listProps) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const newPageNum = Number(searchParams.get("pageNum") || "0");
+  const { pageNum, isDesc } = JSON.parse(
+    sessionStorage.getItem("orderPageInfo") || "{}"
+  );
   return (
     <>
       <RefundListBlock>
@@ -22,7 +32,7 @@ const RefundList = ({ refundList, refundOrderColumns }: listProps) => {
               indicator={[
                 {
                   name: "환불관리",
-                  url: "/order/refund",
+                  url: `?pageNum=${pageNum}&isDesc=${isDesc}`,
                 },
               ]}
             />
@@ -33,13 +43,18 @@ const RefundList = ({ refundList, refundOrderColumns }: listProps) => {
         <Table
           columns={vendorOrderColumns}
           // content={refundList}
-          content={refundList?.data?.filter(
-            (list: any) => list.info.orderStatus === "REFUND_REQUEST"
-          )}
+          content={refundList?.data}
           url="/order/refund/detail"
+          searchParams={searchParams}
+          setSearchParams={(page: number) =>
+            setSearchParams({
+              pageNum: String(newPageNum + page),
+              isDesc: isDesc,
+            })
+          }
           moveKey={["base", "id"]}
           pagenation
-          filter
+          pageCount={countOrder.data}
         />
       </RefundListBlock>
     </>

@@ -8,10 +8,10 @@ const ReturnListBlock = styled(Responsive)``;
 
 type listProps = {
   returnList: response;
-  returnOrderColumns: ColumnsType[];
+  countOrder: response;
 };
 
-const ReturnList = ({ returnList, returnOrderColumns }: listProps) => {
+const ReturnList = ({ returnList, countOrder }: listProps) => {
   return (
     <>
       <ReturnListBlock>
@@ -38,7 +38,7 @@ const ReturnList = ({ returnList, returnOrderColumns }: listProps) => {
           url="/order/return/detail"
           moveKey={["base", "id"]}
           pagenation
-          filter
+          pageCount={countOrder.data}
         />
       </ReturnListBlock>
     </>

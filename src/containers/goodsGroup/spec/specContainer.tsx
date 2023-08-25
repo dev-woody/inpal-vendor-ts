@@ -1,7 +1,6 @@
 import SpecList from "components/goodsGroup/spec/specList";
 import { ColumnsType } from "lib/columns/columnsList";
-import { StyledToggle } from "lib/styles";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { vendorGoodsSpecActions } from "reducers/goodsGroup/vendorGoodsSpec";
 import { vendorProductActions } from "reducers/product/vendorProduct";
@@ -21,13 +20,9 @@ const SpecContainer = () => {
       vendorGoodsSpecActions.findAllByProductId({
         vendorId: user.vendorId,
         productId: id,
-        isDesc: true,
+        isDesc: false,
       })
     );
-  };
-
-  const onSetOpenStatus = (data: object) => {
-    dispatch(vendorGoodsSpecActions.setPnOpenStatus({ ...data }));
   };
 
   useEffect(() => {

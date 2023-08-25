@@ -36,6 +36,10 @@ const OrderAllListContainer = () => {
     );
   }, [searchParams.get("pageNum"), searchParams.get("isDesc")]);
 
+  useEffect(() => {
+    navigate(`?pageNum=0&isDesc=false`);
+  }, []);
+
   return <OrderList orderList={orderList} countOrder={countOrder} />;
 };
 

@@ -2,29 +2,36 @@ import PaymentCompleteList from "components/order/paymentComplete/paymentComplet
 import { ColumnsType } from "lib/columns/columnsList";
 import { Button } from "lib/styles";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { vendorOrderActions } from "reducers/order/vendorOrder";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 import { checkStatus } from "types/globalTypes";
 
 const PaymentCompleteContainer = () => {
-  const { user, orderList, setStatus } = useAppSelector((store) => ({
-    user: store.user,
-    orderList: store.vendorOrder.itemFindAll,
-    setStatus: store.vendorOrder.setStatus,
-  }));
+  const { user, orderList, countOrder, setStatus } = useAppSelector(
+    (store) => ({
+      user: store.user,
+      orderList: store.vendorOrder.pageOrderStatus,
+      countOrder: store.vendorOrder.countOrderStatus,
+      setStatus: store.vendorOrder.setStatus,
+    })
+  );
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     if (checkStatus(setStatus.status)) {
       setModalVisible(true);
       dispatch(vendorOrderActions.reset("setStatus"));
       dispatch(
-        vendorOrderActions.itemFindAll({
+        vendorOrderActions.pageOrderStatus({
           vendorId: user.vendorId,
-          isDesc: true,
+          orderStatus: "payment_complete",
+          page: searchParams.get("pageNum"),
+          isDesc: searchParams.get("isDesc"),
+          size: 10,
         })
       );
     }
@@ -32,11 +39,34 @@ const PaymentCompleteContainer = () => {
 
   useEffect(() => {
     dispatch(
-      vendorOrderActions.itemFindAll({
+      vendorOrderActions.countOrderStatus({
         vendorId: user.vendorId,
-        isDesc: true,
+        orderStatus: "payment_complete",
       })
     );
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem(
+      "orderPageInfo",
+      JSON.stringify({
+        pageNum: searchParams.get("pageNum"),
+        isDesc: searchParams.get("isDesc"),
+      })
+    );
+    dispatch(
+      vendorOrderActions.pageOrderStatus({
+        vendorId: user.vendorId,
+        orderStatus: "payment_complete",
+        page: searchParams.get("pageNum"),
+        isDesc: searchParams.get("isDesc"),
+        size: 10,
+      })
+    );
+  }, [searchParams.get("pageNum"), searchParams.get("isDesc")]);
+
+  useEffect(() => {
+    navigate(`?pageNum=0&isDesc=false`);
   }, []);
 
   //* paymentComplete
@@ -107,6 +137,7 @@ const PaymentCompleteContainer = () => {
   return (
     <PaymentCompleteList
       paymentComplete={orderList}
+      countOrder={countOrder}
       paymentCompleteOrderColumns={paymentCompleteOrderColumns}
       modalVisible={modalVisible}
       setModalVisible={setModalVisible}

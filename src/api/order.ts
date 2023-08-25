@@ -100,6 +100,22 @@ export const pageOrder = async (data: object) => {
     .then((res) => res);
 };
 
+export const countDelivery = async (id: string) => {
+  return await accessClient
+    .get(`/vendor/order/byDelivery/getAllCount/${id}`)
+    .then((res) => res);
+};
+
+export const pageDelivery = async (data: object) => {
+  return await accessClient
+    .get(`/vendor/order/byDelivery/getPageByAll`, {
+      params: {
+        ...data,
+      },
+    })
+    .then((res) => res);
+};
+
 export const countOrderStatus = async (data: object) => {
   return await accessClient
     .get(`/vendor/order/item/getCountByOrderStatus`, {

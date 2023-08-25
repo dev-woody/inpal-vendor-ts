@@ -17,6 +17,7 @@ import { CheckBox } from "./checkBoxStyled";
 type trProps = {
   isHover?: boolean;
   isSelected?: boolean;
+  doNoting?: boolean;
 };
 
 type pagenationProps = {
@@ -117,6 +118,14 @@ const RowTable = styled.tr`
       &:hover {
         cursor: pointer;
         /* background-color: #d9d9d9; */
+      }
+    `}
+
+    ${(props: trProps) =>
+    props.doNoting &&
+    css`
+      &:hover {
+        cursor: default !important;
       }
     `}
 `;
@@ -321,6 +330,7 @@ export const Table = (props: propsTypes) => {
               content?.map((contentList: any, rowIndex: number) => (
                 <RowTable
                   isHover
+                  doNoting={doNoting}
                   key={rowIndex}
                   className={action ? "category" : undefined}
                   onClick={(e) => {

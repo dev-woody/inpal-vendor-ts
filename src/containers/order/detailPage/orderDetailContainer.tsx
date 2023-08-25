@@ -1,13 +1,5 @@
 import OrderDetail from "components/order/allList/orderDetail";
-import OrderList from "components/order/allList/orderList";
-import {
-  changeDays,
-  changeDeliveryStatus,
-  changePhone,
-} from "lib/functions/changeInput";
-import { StyledSelect } from "lib/styles";
-import { CheckBox } from "lib/styles/checkBoxStyled";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { vendorOrderActions } from "reducers/order/vendorOrder";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
@@ -42,7 +34,7 @@ const OrderDetailContainer = () => {
         vendorOrderActions.orderLog({
           vendorId: user.vendorId,
           orderItemId: orderInfo.data.base.id,
-          isDesc: true,
+          isDesc: false,
         })
       );
     }

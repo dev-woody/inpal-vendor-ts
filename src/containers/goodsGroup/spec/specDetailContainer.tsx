@@ -10,12 +10,12 @@ import { checkStatus } from "types/globalTypes";
 const SpecDetailContainer = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const { user, specDetail, deliveryCode, unitCode, specUpdate } =
-    useAppSelector((state) => ({
-      user: state.user,
-      specDetail: state.vendorGoodsSpec.findById,
-      deliveryCode: state.vendorDeliveryCode.findAllByProductId,
-      unitCode: state.vendorProduct.findUnitByProductId,
-      specUpdate: state.vendorGoodsSpec.update,
+    useAppSelector((store) => ({
+      user: store.user,
+      specDetail: store.vendorGoodsSpec.findById,
+      deliveryCode: store.vendorDeliveryCode.findAllByProductId,
+      unitCode: store.vendorProduct.findUnitByProductId,
+      specUpdate: store.vendorGoodsSpec.update,
     }));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -30,28 +30,34 @@ const SpecDetailContainer = () => {
 
   useEffect(() => {
     dispatch(vendorGoodsSpecActions.findById({ vendorId: user.vendorId, id }));
+    // return () => {
+    //   dispatch(vendorGoodsSpecActions.reset("findById"));
+    // };
   }, []);
 
   useEffect(() => {
     if (checkStatus(specUpdate.statsu)) {
       setModalVisible(true);
       dispatch(vendorGoodsSpecActions.reset("update"));
+      dispatch(
+        vendorGoodsSpecActions.findById({ vendorId: user.vendorId, id })
+      );
     }
   }, [specUpdate]);
 
   useEffect(() => {
-    if (specDetail.success) {
+    if (checkStatus(specDetail.status)) {
       dispatch(
         vendorProductActions.findUnitByProductId({
-          productId: specDetail.data.info.delivery.productId,
-          isDesc: true,
+          productId: specDetail?.data?.info?.delivery?.info?.productId,
+          isDesc: false,
         })
       );
       dispatch(
         vendorDeliveryCodeActions.findAllByProductId({
           vendorId: user.vendorId,
-          productId: specDetail.data.info.delivery.productId,
-          isDesc: true,
+          productId: specDetail?.data?.info?.delivery?.info?.productId,
+          isDesc: false,
         })
       );
     }

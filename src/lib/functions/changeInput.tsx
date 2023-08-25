@@ -81,6 +81,27 @@ export function changeDeliveryStatus(status: string | undefined) {
   }
 }
 
+export function changeOrderPathStatus(status: string | undefined) {
+  switch (status) {
+    case "allList":
+      return "주문 조회";
+    case "beforePayment":
+      return "무통장입금 현황";
+    case "paymentComplete":
+      return "결제완료";
+    case "cancel":
+      return "취소관리";
+    case "return":
+      return "반품관리";
+    case "exchange":
+      return "교환관리";
+    case "refund":
+      return "환불관리";
+    case "confirmation":
+      return "구매확정";
+  }
+}
+
 export const predictDelivery = (inputDays: string) => {
   // inputDays + 2;
   console.log(inputDays);

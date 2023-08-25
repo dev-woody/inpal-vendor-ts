@@ -42,6 +42,10 @@ const BeforePaymentContainer = () => {
         size: 10,
       })
     );
+  }, [searchParams.get("pageNum"), searchParams.get("isDesc")]);
+
+  useEffect(() => {
+    navigate(`?pageNum=0&isDesc=false`);
   }, []);
 
   //* beforePayment

@@ -58,7 +58,7 @@ const MyPageContainer = () => {
     dispatch(
       vendorAdminActions.findAll({
         vendorId: id,
-        isDesc: true,
+        isDesc: false,
       })
     );
     return () => {
