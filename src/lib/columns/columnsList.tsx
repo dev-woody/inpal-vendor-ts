@@ -2,6 +2,7 @@ import {
   changeDeliveryStatus,
   changeDays,
   changePhone,
+  priceToString,
 } from "lib/functions/changeInput";
 
 import {
@@ -379,7 +380,7 @@ export const vendorOrderColumns: ColumnsType[] = [
   {
     title: "주문금액",
     dataIndex: "info",
-    render: (info) => info.payTotal + "원",
+    render: (info) => priceToString(info.payTotal) + "원",
   },
   {
     title: "주문상태",

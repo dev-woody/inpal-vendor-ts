@@ -104,7 +104,9 @@ const DeliveryDetail = ({
                     errors={errors.basicFee?.message}
                     status={errors.basicFee}
                   />
-                  <span style={{ marginLeft: "0.5rem" }}>원</span>
+                  <span style={{ marginLeft: "0.5rem", fontSize: "0.875rem" }}>
+                    원
+                  </span>
                 </>
               }
             />
@@ -121,7 +123,9 @@ const DeliveryDetail = ({
                     errors={errors.freeCondition?.message}
                     status={errors.freeCondition}
                   />
-                  <span style={{ marginLeft: "0.5rem" }}>원</span>
+                  <span style={{ marginLeft: "0.5rem", fontSize: "0.875rem" }}>
+                    원
+                  </span>
                 </>
               }
             />

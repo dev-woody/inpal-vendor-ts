@@ -7,6 +7,7 @@ import {
   changeDeliveryStatus,
   changeOrderPathStatus,
   changePhone,
+  priceToString,
 } from "lib/functions/changeInput";
 import { response } from "types/globalTypes";
 import { NavigateFunction } from "react-router-dom";
@@ -77,30 +78,35 @@ const OrderDetail = ({ orderInfo, orderLog, navigate }: orderDetailProps) => {
           />
           <DescriptionContent
             label="정상가"
-            content={data?.priceNum?.info?.price + "원"}
+            content={priceToString(data?.priceNum?.info?.price) + "원"}
           />
           <DescriptionContent
             label="할인가"
-            content={data?.priceNum?.info?.salePrice + "원"}
+            content={priceToString(data?.priceNum?.info?.salePrice) + "원"}
           />
           <DescriptionContent
             label="배송료"
             content={
-              data?.priceNum?.info?.specNum?.info?.spec?.info?.delivery?.info
-                ?.basicFee + "원"
+              priceToString(
+                data?.priceNum?.info?.specNum?.info?.spec?.info?.delivery?.info
+                  ?.basicFee
+              ) + "원"
             }
           />
           <DescriptionContent
             label="무료배송조건"
             content={
-              data?.priceNum?.info?.specNum?.info?.spec?.info?.delivery?.info
-                ?.freeCondition + "원 이상"
+              priceToString(
+                data?.priceNum?.info?.specNum?.info?.spec?.info?.delivery?.info
+                  ?.freeCondition
+              ) + "원 이상"
             }
           />
           <DescriptionContent
             label="상품사양"
             content={
               data?.priceNum?.info?.specNum?.info?.spec?.info?.quantity +
+              " " +
               data?.priceNum?.info?.specNum?.info?.spec?.info?.unit?.info
                 ?.nameEn +
               "(" +
@@ -127,11 +133,11 @@ const OrderDetail = ({ orderInfo, orderLog, navigate }: orderDetailProps) => {
           />
           <DescriptionContent
             label="결제금액"
-            content={data?.payAmount + "원"}
+            content={priceToString(data?.payAmount) + "원"}
           />
           <DescriptionContent
             label="결제총액"
-            content={data?.payTotal + "원"}
+            content={priceToString(data?.payTotal) + "원"}
           />
           <DescriptionContent
             label="우편번호"

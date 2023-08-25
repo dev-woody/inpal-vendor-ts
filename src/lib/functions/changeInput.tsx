@@ -112,6 +112,10 @@ export const predictDelivery = (inputDays: string) => {
   return inputDays ? fulldays : "";
 };
 
+export function priceToString(price: number) {
+  return price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 export function changePostPhone(phone: string) {
   return phone.replace(/\-/g, "");
 }

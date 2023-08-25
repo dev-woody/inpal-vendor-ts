@@ -1,5 +1,6 @@
 import PaymentCompleteList from "components/order/paymentComplete/paymentCompleteList";
 import { ColumnsType } from "lib/columns/columnsList";
+import { priceToString } from "lib/functions/changeInput";
 import { Button } from "lib/styles";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -109,7 +110,7 @@ const PaymentCompleteContainer = () => {
     {
       title: "주문금액",
       dataIndex: "info",
-      render: (info) => info.payTotal + "원",
+      render: (info) => priceToString(info.payTotal) + "원",
     },
     {
       title: "배송처리",

@@ -5,6 +5,7 @@ import { propsTypes } from "types/globalTypes";
 import { ErrorMsg } from "./globalStyles";
 import { BiChevronDown } from "react-icons/bi";
 import { ErrorMessage } from "@hookform/error-message";
+import { priceToString } from "lib/functions/changeInput";
 
 type styledSelectTyps = {
   isOpen?: boolean;
@@ -350,9 +351,9 @@ export const StyledSelect = (props: propsTypes) => {
                           key={index}
                           keyName={
                             label === "deliveryId"
-                              ? list.info.basicFee +
+                              ? priceToString(list.info.basicFee) +
                                 "원 /" +
-                                list.info.freeCondition +
+                                priceToString(list.info.freeCondition) +
                                 "원"
                               : list?.info?.spec?.info.quantity +
                                   list?.info?.spec?.info.unit.info.nameEn ||

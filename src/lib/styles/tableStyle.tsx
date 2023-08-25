@@ -288,7 +288,7 @@ export const Table = (props: propsTypes) => {
   }, [content]);
 
   return (
-    <AlignBox align={align}>
+    <AlignBox align={align} style={{ width: "100%" }}>
       {filter && (
         <FilterBlock>
           <div style={{ display: "flex" }}>{filterInput}</div>

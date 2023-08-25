@@ -18,6 +18,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { response } from "types/globalTypes";
 import { NavigateFunction } from "react-router-dom";
 import { useEffect } from "react";
+import { priceToString } from "lib/functions/changeInput";
 
 const SpecDetailBlock = styled(Responsive)``;
 
@@ -128,9 +129,13 @@ const SpecDetail = ({
                 <>
                   <StyledSelect
                     placeholder={
-                      specDetail?.data?.info?.delivery.info.basicFee +
+                      priceToString(
+                        specDetail?.data?.info?.delivery.info.basicFee
+                      ) +
                       "원 /" +
-                      specDetail?.data?.info?.delivery.info.freeCondition +
+                      priceToString(
+                        specDetail?.data?.info?.delivery.info.freeCondition
+                      ) +
                       "원"
                     }
                     label="deliveryId"
@@ -141,7 +146,7 @@ const SpecDetail = ({
                     setValue={setValue}
                     align="vertical"
                   />
-                  <span style={{ marginLeft: "0.5rem" }}>
+                  <span style={{ marginLeft: "0.5rem", fontSize: "0.875rem" }}>
                     ( 배송료 / 무료배송조건 )
                   </span>
                 </>

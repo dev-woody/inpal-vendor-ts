@@ -131,6 +131,8 @@ const BasicInfoUpdateContainer = ({ basicInfo }: { basicInfo: any }) => {
     }
   }, [dispatch, updateResult]);
 
+  console.log(newCategory);
+
   useEffect(() => {
     if (checkStatus(goodsGroupInfo.status)) {
       const data = {
