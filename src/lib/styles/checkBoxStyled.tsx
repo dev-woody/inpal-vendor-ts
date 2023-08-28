@@ -47,8 +47,10 @@ const FormItem = styled.div`
   background-image: none;
   border: 1px solid #d9d9d9;
   border-radius: 0.75rem;
-  transition: all 0.2s;
   box-sizing: border-box;
+  * {
+    transition: none;
+  }
 
   ${(props: formProps) =>
     props.fullWidth &&

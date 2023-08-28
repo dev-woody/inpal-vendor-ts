@@ -20,7 +20,6 @@ const BeforeDeliveryContainer = () => {
   }, []);
 
   useEffect(() => {
-    navigate(`?pageNum=0&isDesc=false`);
     sessionStorage.setItem(
       "deliveryPageInfo",
       JSON.stringify({
@@ -37,6 +36,10 @@ const BeforeDeliveryContainer = () => {
       })
     );
   }, [searchParams.get("pageNum"), searchParams.get("isDesc")]);
+
+  useEffect(() => {
+    navigate(`?pageNum=0&isDesc=false`);
+  }, []);
 
   //* beforedelivery
   const beforedeliveryColumns: ColumnsType[] = [

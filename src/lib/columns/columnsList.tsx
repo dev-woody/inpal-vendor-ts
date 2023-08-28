@@ -236,50 +236,6 @@ export const masterAllListColumns = [
   },
 ];
 
-//* todo list
-export const todoColumns: ColumnsType[] = [
-  {
-    title: "무통장입금",
-    dataIndex: "beforePayment",
-  },
-  {
-    title: "결제완료",
-    dataIndex: "beforePayment",
-  },
-  {
-    title: "배송대기중",
-    dataIndex: "beforeDelivery",
-  },
-  {
-    title: "배송중",
-    dataIndex: "delivery",
-  },
-  {
-    title: "배송완료",
-    dataIndex: "afterDelivery",
-  },
-  {
-    title: "취소요청",
-    dataIndex: "cancel",
-  },
-  {
-    title: "반품요청",
-    dataIndex: "return",
-  },
-  {
-    title: "교환요청",
-    dataIndex: "exchange",
-  },
-  {
-    title: "환불요청",
-    dataIndex: "refund",
-  },
-  {
-    title: "구매확정",
-    dataIndex: "confirm",
-  },
-];
-
 //* dailySales
 export const dailySalesColumns: ColumnsType[] = [
   {
@@ -321,12 +277,12 @@ export const deliveryCodeColumns: ColumnsType[] = [
   {
     title: "배송료",
     dataIndex: "info",
-    render: (info) => info.basicFee + "원",
+    render: (info) => priceToString(info.basicFee) + "원",
   },
   {
     title: "무료배송조건",
     dataIndex: "info",
-    render: (info) => info.freeCondition + "원",
+    render: (info) => priceToString(info.freeCondition) + "원",
   },
   {
     title: "생성일",
@@ -360,7 +316,7 @@ export const vendorOrderColumns: ColumnsType[] = [
   {
     title: "주문자 연락처",
     dataIndex: "info",
-    render: (info) => info.address.info.mobile,
+    render: (info) => changePhone(info.address.info.mobile),
   },
   {
     title: "모델명",

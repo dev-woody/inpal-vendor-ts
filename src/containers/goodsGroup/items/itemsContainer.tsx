@@ -1,6 +1,6 @@
 import GoodsGroupItems from "components/goodsGroup/items/itemsList";
 import { ColumnsType } from "lib/columns/columnsList";
-import { changeDays } from "lib/functions/changeInput";
+import { changeDays, priceToString } from "lib/functions/changeInput";
 import { StyledToggle } from "lib/styles";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
@@ -81,12 +81,12 @@ const GoodsGroupItemsContainer = () => {
     {
       title: "재고",
       dataIndex: "info",
-      render: (info) => info.stock,
+      render: (info) => priceToString(info.stock),
     },
     {
       title: "판매량",
       dataIndex: "info",
-      render: (info) => info.sellCount,
+      render: (info) => priceToString(info.sellCount),
     },
     {
       title: "생성일",

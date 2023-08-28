@@ -1,5 +1,6 @@
 import SpecList from "components/goodsGroup/spec/specList";
 import { ColumnsType } from "lib/columns/columnsList";
+import { priceToString } from "lib/functions/changeInput";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { vendorGoodsSpecActions } from "reducers/goodsGroup/vendorGoodsSpec";
@@ -52,7 +53,7 @@ const SpecContainer = () => {
     {
       title: "용량",
       dataIndex: "info",
-      render: (info) => info.quantity,
+      render: (info) => priceToString(info.quantity),
     },
     {
       title: "단위",

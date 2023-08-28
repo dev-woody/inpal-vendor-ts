@@ -1,14 +1,59 @@
-import { mainOptions, supOptions } from "lib/columns/chartColumns";
-import { Responsive, ResponsiveFlex, Table } from "lib/styles";
+import { supOptions } from "lib/columns/chartColumns";
+import { Responsive, Table } from "lib/styles";
 import ReactApexCharts from "react-apexcharts";
 import PageHeader from "./pageHeader";
 import styled from "styled-components";
-import { dailySalesColumns, todoColumns } from "lib/columns/columnsList";
-import { testDashBoardData, testDashBoardOrderData } from "types/data.test";
+import { dailySalesColumns } from "lib/columns/columnsList";
+import { testDashBoardData } from "types/data.test";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "reducers/reducerHooks";
+import { useEffect } from "react";
+import { vendorOrderActions } from "reducers/order/vendorOrder";
 
 const DashboardBlock = styled(Responsive)``;
 
+const OrderListBox = styled.div`
+  flex-grow: 1;
+  & + & {
+    border-left: 1px solid rgba(0, 0, 0, 0.06);
+  }
+`;
+
+const TitleBox = styled.div`
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 1rem;
+  text-align: center;
+  background-color: #fafafa;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+`;
+const OrderBox = styled.div`
+  font-weight: bold;
+  padding: 1rem;
+  text-align: center;
+  &:hover {
+    cursor: pointer;
+    > span {
+      color: #faad14;
+      border-bottom-color: #faad14 !important;
+    }
+  }
+`;
+
 const Dashboard = () => {
+  const { user, findAll } = useAppSelector((store) => ({
+    user: store.user,
+    findAll: store.vendorOrder.itemFindAll.data,
+  }));
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(
+      vendorOrderActions.itemFindAll({ vendorId: user.vendorId, isDesc: false })
+    );
+  }, []);
+
   const series1 = [
     {
       name: "전체 판매량",
@@ -31,15 +76,110 @@ const Dashboard = () => {
     },
   ];
 
+  const statusLength = [
+    {
+      name: "무통장입금",
+      length: findAll?.filter(
+        (status: any) => status?.info?.orderStatus === "PAYMENT_WAIT"
+      ),
+      onClick: () => {
+        navigate(`/order/beforePayment`);
+      },
+    },
+    {
+      name: "결제완료",
+      length: findAll?.filter(
+        (status: any) => status?.info?.orderStatus === "PAYMENT_COMPLETE"
+      ),
+      onClick: () => {
+        navigate(`/order/paymentComplete`);
+      },
+    },
+    {
+      name: "배송대기중",
+      length: findAll?.filter(
+        (status: any) => status?.info?.orderStatus === "ITEM_READY"
+      ),
+      onClick: () => {
+        navigate(`/order/beforeDelivery`);
+      },
+    },
+    {
+      name: "취소요청",
+      length: findAll?.filter(
+        (status: any) => status?.info?.orderStatus === "CANCEL_REQUEST"
+      ),
+      onClick: () => {
+        navigate(`/order/cancel`);
+      },
+    },
+    {
+      name: "반품요청",
+      length: findAll?.filter(
+        (status: any) => status?.info?.orderStatus === "RETURN_REQUEST"
+      ),
+      onClick: () => {
+        navigate(`/order/return`);
+      },
+    },
+    {
+      name: "교환요청",
+      length: findAll?.filter(
+        (status: any) => status?.info?.orderStatus === "EXCHANGE_REQUEST"
+      ),
+      onClick: () => {
+        navigate(`/order/exchange`);
+      },
+    },
+    {
+      name: "환불요청",
+      length: findAll?.filter(
+        (status: any) => status?.info?.orderStatus === "REFUND_REQUEST"
+      ),
+      onClick: () => {
+        navigate(`/order/refund`);
+      },
+    },
+    {
+      name: "구매확정",
+      length: findAll?.filter(
+        (status: any) => status?.info?.orderStatus === "CONFIRM"
+      ),
+      onClick: () => {
+        navigate(`/order/confirmation`);
+      },
+    },
+  ];
+
   return (
     <>
       <DashboardBlock>
         <PageHeader title="주문현황" />
-        <Table
-          columns={todoColumns}
-          content={testDashBoardOrderData}
-          doNoting={true}
-        />
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            border: "1px solid rgba(0, 0, 0, 0.06)",
+          }}
+        >
+          {statusLength.map((orders: any, index: number) => {
+            return (
+              <OrderListBox key={index} style={{ flexGrow: "1" }}>
+                <TitleBox>{orders.name}</TitleBox>
+                <OrderBox onClick={orders.onClick}>
+                  <span
+                    style={{
+                      padding: "0 0.25rem",
+                      borderBottom: "1px solid black",
+                    }}
+                  >
+                    {orders.length.length}
+                  </span>
+                </OrderBox>
+              </OrderListBox>
+            );
+          })}
+        </div>
       </DashboardBlock>
       <DashboardBlock>
         <PageHeader title="쇼핑몰현황" />
