@@ -16,7 +16,8 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { response } from "types/globalTypes";
-import { useEffect } from "react";
+import { ReactElement, useEffect } from "react";
+import { AnyARecord } from "dns";
 
 const BasicInfoUpdateBlock = styled(Responsive)``;
 
@@ -82,6 +83,76 @@ const BasicInfoUpdate = ({
 
   const newCategory = JSON.parse(JSON.stringify(categoryList));
 
+  function createDescriptionElement(category: any) {
+    const descriptionElements = [];
+
+    if (
+      category.category2nd?.some((item: any) =>
+        item.category3rd?.some((subItem: any) => subItem.checked)
+      )
+    ) {
+      category.category2nd?.forEach((secondItem: any) => {
+        secondItem.category3rd?.forEach((thirdItem: any) => {
+          if (thirdItem.checked) {
+            descriptionElements.push(
+              <div>
+                {category.description +
+                  secondItem.description +
+                  thirdItem.description}
+              </div>
+            );
+          }
+        });
+        if (secondItem.isChecked) {
+          descriptionElements.push(
+            <div>{category.description + secondItem.description}</div>
+          );
+        }
+      });
+
+      // const otherCheckedCategory2nd = category.category2nd.filter(
+      //   (item: any) =>
+      //     item !==
+      //     category.category2nd.find((i: any) =>
+      //       i.category3rd?.some((subItem: any) => subItem.checked)
+      //     )
+      // );
+
+      // otherCheckedCategory2nd.forEach((otherItem: any) => {
+      //   if (otherCheckedCategory2nd.isChecked) {
+      //     descriptionElements.push(
+      //       <div>{category.description + otherItem.description}</div>
+      //     );
+      //   }
+      // });
+    } else if (category.category2nd?.some((item: any) => item.checked)) {
+      category.category2nd?.forEach((secondItem: any) => {
+        if (secondItem.checked) {
+          descriptionElements.push(
+            <div>{category.description + secondItem.description}</div>
+          );
+        }
+      });
+    } else {
+      if (category.checked) {
+        descriptionElements.push(<div>{category.description}</div>);
+      }
+    }
+
+    return descriptionElements;
+  }
+
+  const DisplayDescription = () => {
+    const renderDescription = newCategory.map((categorys: any) => {
+      return (
+        <div key={categorys.description}>
+          {createDescriptionElement(categorys)}
+        </div>
+      );
+    });
+    return renderDescription;
+  };
+
   useEffect(() => {
     let categoryIds: string[] = [];
     categoryList.map(
@@ -100,7 +171,7 @@ const BasicInfoUpdate = ({
       )
     );
     setValue("handleCategoryInfos.categoryIds", categoryIds);
-  }, [categoryList]);
+  }, [categoryList, setValue]);
 
   useEffect(() => {
     if (basicInfo) {
@@ -159,15 +230,18 @@ const BasicInfoUpdate = ({
             span="12"
             label="품목 분류"
             content={
-              <StyledCategory
-                disable={categoryList.length > 0 ? false : true}
-                label="handleCategoryInfos"
-                register={register}
-                status={errors.handleCategoryInfos}
-                errors={errors}
-                newCategory={newCategory}
-                setNewCategory={setNewCategory}
-              />
+              <div>
+                <StyledCategory
+                  disable={categoryList.length > 0 ? false : true}
+                  label="handleCategoryInfos"
+                  register={register}
+                  status={errors?.handleCategoryInfos}
+                  errors={errors}
+                  newCategory={newCategory}
+                  setNewCategory={setNewCategory}
+                />
+                <DisplayDescription />
+              </div>
             }
           />
           <DescriptionContent

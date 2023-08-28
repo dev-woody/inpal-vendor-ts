@@ -134,24 +134,7 @@ const GoodsGroupRregister = ({
     },
   });
   const navigate = useNavigate();
-  const [imageArray, setImageArray] = useState<{ id: string }[]>([]);
-  const newArray = JSON.parse(JSON.stringify(imageArray));
   const newCategory = JSON.parse(JSON.stringify(categoryList));
-
-  function changeImage(id: string) {
-    const deleteArray = newArray.filter(
-      (list: { id: string }) => list.id !== id
-    );
-    deleteArray.push({ id });
-    setImageArray(deleteArray);
-  }
-
-  function deleteImage(id: string) {
-    const deleteArray = newArray.filter(
-      (list: { id: string }) => list.id !== id
-    );
-    setImageArray(deleteArray);
-  }
 
   useEffect(() => {
     const selectedCategoryList: string[] = [];
