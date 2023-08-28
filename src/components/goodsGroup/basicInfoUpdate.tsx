@@ -103,28 +103,7 @@ const BasicInfoUpdate = ({
             );
           }
         });
-        if (secondItem.isChecked) {
-          descriptionElements.push(
-            <div>{category.description + secondItem.description}</div>
-          );
-        }
       });
-
-      // const otherCheckedCategory2nd = category.category2nd.filter(
-      //   (item: any) =>
-      //     item !==
-      //     category.category2nd.find((i: any) =>
-      //       i.category3rd?.some((subItem: any) => subItem.checked)
-      //     )
-      // );
-
-      // otherCheckedCategory2nd.forEach((otherItem: any) => {
-      //   if (otherCheckedCategory2nd.isChecked) {
-      //     descriptionElements.push(
-      //       <div>{category.description + otherItem.description}</div>
-      //     );
-      //   }
-      // });
     } else if (category.category2nd?.some((item: any) => item.checked)) {
       category.category2nd?.forEach((secondItem: any) => {
         if (secondItem.checked) {

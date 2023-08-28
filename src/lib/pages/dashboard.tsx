@@ -173,7 +173,7 @@ const Dashboard = () => {
                       borderBottom: "1px solid black",
                     }}
                   >
-                    {orders.length.length}
+                    {orders?.length?.length}
                   </span>
                 </OrderBox>
               </OrderListBox>
