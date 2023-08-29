@@ -28,6 +28,9 @@ const TitleBox = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 `;
 const OrderBox = styled.div`
+  * {
+    font-size: 0.875rem;
+  }
   font-weight: bold;
   padding: 1rem;
   text-align: center;

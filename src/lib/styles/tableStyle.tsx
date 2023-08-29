@@ -194,7 +194,7 @@ export const Table = (props: propsTypes) => {
     filterInput,
   } = props;
   const navigate = useNavigate();
-  const nowPage = Number(searchParams?.get("pageNum") || "0");
+  const nowPage = Number(atob(searchParams?.get("pageNum") || btoa("0")));
   const [isDesc, setIsDesc] = useState<boolean>(false);
   const [currPage, setCurrPage] = useState(nowPage);
   const [selectedRow, setSelectedRow] = useState<string>("");

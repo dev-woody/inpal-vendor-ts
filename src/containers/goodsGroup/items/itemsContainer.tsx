@@ -33,34 +33,34 @@ const GoodsGroupItemsContainer = () => {
     dispatch(
       vendorGoodsItemsActions.findByGoodsGroupId({
         goodGroupId: id,
-        page: searchParams.get("pageNum"),
-        isDesc: searchParams.get("isDesc"),
+        page: atob(searchParams.get("n") || btoa("0")),
+        isDesc: atob(searchParams.get("d") || btoa("false")),
         size: 10,
       })
     );
   }, [setSellStatus]);
 
   useEffect(() => {
-    navigate("?pageNum=0&isDesc=false");
+    navigate(`?n=${btoa("0")}&d=${btoa("false")}`);
     sessionStorage.setItem(
       "itemPageInfo",
       JSON.stringify({
-        pageNum: searchParams.get("pageNum"),
-        isDesc: searchParams.get("isDesc"),
+        n: searchParams.get("n"),
+        d: searchParams.get("d"),
       })
     );
     dispatch(
       vendorGoodsItemsActions.findByGoodsGroupId({
         goodGroupId: id,
-        page: searchParams.get("pageNum"),
-        isDesc: searchParams.get("isDesc"),
+        page: atob(searchParams.get("n") || btoa("0")),
+        isDesc: atob(searchParams.get("d") || btoa("false")),
         size: 10,
       })
     );
     return () => {
       dispatch(vendorGoodsItemsActions.reset("findByGoodsGroupId"));
     };
-  }, [dispatch, id, searchParams.get("pageNum"), searchParams.get("isDesc")]);
+  }, [dispatch, id, searchParams.get("n"), searchParams.get("d")]);
 
   const goodsGroupItemsColumns: ColumnsType[] = [
     {

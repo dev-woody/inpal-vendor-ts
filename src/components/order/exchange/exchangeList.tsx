@@ -14,10 +14,8 @@ type listProps = {
 
 const ExchangeList = ({ exchangeList, countOrder }: listProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const newPageNum = Number(searchParams.get("pageNum") || "0");
-  const { pageNum, isDesc } = JSON.parse(
-    sessionStorage.getItem("orderPageInfo") || "{}"
-  );
+  const newPageNum = Number(atob(searchParams.get("n") || btoa("0")));
+  const { n, d } = JSON.parse(sessionStorage.getItem("orderPageInfo") || "{}");
   return (
     <>
       <ExchangeListBlock>
@@ -27,7 +25,7 @@ const ExchangeList = ({ exchangeList, countOrder }: listProps) => {
               indicator={[
                 {
                   name: "교환관리",
-                  url: `?pageNum=${pageNum}&isDesc=${isDesc}`,
+                  url: `?n=${n}&d=${d}`,
                 },
               ]}
             />
@@ -42,8 +40,8 @@ const ExchangeList = ({ exchangeList, countOrder }: listProps) => {
           searchParams={searchParams}
           setSearchParams={(page: number) =>
             setSearchParams({
-              pageNum: String(newPageNum + page),
-              isDesc: isDesc,
+              n: btoa(String(newPageNum + page)),
+              d: d,
             })
           }
           moveKey={["base", "id"]}

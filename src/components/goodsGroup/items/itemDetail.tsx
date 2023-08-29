@@ -25,9 +25,7 @@ type ItemProps = {
 };
 
 const GoodsGroupItemDetail = ({ itemData, id }: ItemProps) => {
-  const { pageNum, isDesc } = JSON.parse(
-    sessionStorage.getItem("groupPageInfo") || "{}"
-  );
+  const { n, d } = JSON.parse(sessionStorage.getItem("groupPageInfo") || "{}");
   return (
     <>
       <GoodsGroupItemDetailBlock>
@@ -37,7 +35,7 @@ const GoodsGroupItemDetail = ({ itemData, id }: ItemProps) => {
               indicator={[
                 {
                   name: "상품그룹관리 /",
-                  url: `/goods/groups?pageNum=${pageNum}&isDesc=${isDesc}`,
+                  url: `/goods/groups?n=${n}&d=${d}`,
                 },
                 {
                   name: "상세정보 및 수정 /",

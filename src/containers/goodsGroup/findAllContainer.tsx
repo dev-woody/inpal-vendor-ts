@@ -32,8 +32,8 @@ const GoodsGroupListContainer = () => {
     dispatch(
       vendorGoodsGroupActions.pageGroup({
         vendorId: user.vendorId,
-        page: searchParams.get("pageNum"),
-        isDesc: searchParams.get("isDesc"),
+        page: atob(searchParams.get("n") || btoa("0")),
+        isDesc: atob(searchParams.get("d") || btoa("false")),
         size: 10,
       })
     );
@@ -43,25 +43,25 @@ const GoodsGroupListContainer = () => {
     sessionStorage.setItem(
       "groupPageInfo",
       JSON.stringify({
-        pageNum: searchParams.get("pageNum"),
-        isDesc: searchParams.get("isDesc"),
+        n: searchParams.get("n"),
+        d: searchParams.get("d"),
       })
     );
     dispatch(
       vendorGoodsGroupActions.pageGroup({
         vendorId: user.vendorId,
-        page: searchParams.get("pageNum"),
-        isDesc: searchParams.get("isDesc"),
+        page: atob(searchParams.get("n") || btoa("0")),
+        isDesc: atob(searchParams.get("d") || btoa("false")),
         size: 10,
       })
     );
     return () => {
       dispatch(vendorGoodsGroupActions.reset("findAll"));
     };
-  }, [searchParams.get("pageNum"), searchParams.get("isDesc")]);
+  }, [searchParams.get("n"), searchParams.get("d")]);
 
   useEffect(() => {
-    navigate(`?pageNum=0&isDesc=false`);
+    navigate(`?n=${btoa("0")}&d=${btoa("false")}`);
   }, []);
 
   const goodsGroupColumns: ColumnsType[] = [

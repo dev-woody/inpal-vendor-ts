@@ -70,6 +70,24 @@ export const deliveryFindById = async (data: object) => {
     .then((res) => res);
 };
 
+export const countDeliveryStatus = async (data: object) => {
+  return await accessClient
+    .get(`/vendor/order/byDelivery/getCountByDeliveryStatus`, {
+      params: { ...data },
+    })
+    .then((res) => res);
+};
+
+export const pageDeliveryStatus = async (data: object) => {
+  return await accessClient
+    .get(`/vendor/order/byDelivery/getPageByDeliveryStatus`, {
+      params: {
+        ...data,
+      },
+    })
+    .then((res) => res);
+};
+
 export const setStatus = async (data: any) => {
   return await accessClient
     .post(`/vendor/order/status/${data.url}`, { ...data })

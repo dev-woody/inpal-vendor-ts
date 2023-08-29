@@ -1,6 +1,6 @@
 import PaymentCompleteList from "components/order/paymentComplete/paymentCompleteList";
 import { ColumnsType } from "lib/columns/columnsList";
-import { priceToString } from "lib/functions/changeInput";
+import { changePhone, priceToString } from "lib/functions/changeInput";
 import { Button } from "lib/styles";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -51,23 +51,23 @@ const PaymentCompleteContainer = () => {
     sessionStorage.setItem(
       "orderPageInfo",
       JSON.stringify({
-        pageNum: searchParams.get("pageNum"),
-        isDesc: searchParams.get("isDesc"),
+        n: searchParams.get("p"),
+        d: searchParams.get("d"),
       })
     );
     dispatch(
       vendorOrderActions.pageOrderStatus({
         vendorId: user.vendorId,
         orderStatus: "payment_complete",
-        page: searchParams.get("pageNum"),
-        isDesc: searchParams.get("isDesc"),
+        page: atob(searchParams.get("n") || btoa("0")),
+        isDesc: atob(searchParams.get("d") || btoa("false")),
         size: 10,
       })
     );
-  }, [searchParams.get("pageNum"), searchParams.get("isDesc")]);
+  }, [searchParams.get("n"), searchParams.get("d")]);
 
   useEffect(() => {
-    navigate(`?pageNum=0&isDesc=false`);
+    navigate(`?n=${btoa("0")}&d=${btoa("false")}`);
   }, []);
 
   //* paymentComplete
@@ -90,7 +90,7 @@ const PaymentCompleteContainer = () => {
     {
       title: "주문자 연락처",
       dataIndex: "info",
-      render: (info) => info.address.info.mobile,
+      render: (info) => changePhone(info.address.info.mobile),
     },
     {
       title: "모델명",

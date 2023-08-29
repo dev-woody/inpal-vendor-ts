@@ -1,6 +1,6 @@
 import BasicInfoUpdate from "components/goodsGroup/basicInfoUpdate";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { vendorGoodsGroupActions } from "reducers/goodsGroup/vendorGoodsGroup";
 import { vendorGoodsSpecActions } from "reducers/goodsGroup/vendorGoodsSpec";
 import { vendorProductActions } from "reducers/product/vendorProduct";

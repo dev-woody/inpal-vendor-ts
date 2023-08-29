@@ -1,5 +1,6 @@
 import BeforeDelivery from "components/order/beforeDelivery/beforeDelivery";
 import { ColumnsType } from "lib/columns/columnsList";
+import { changePhone } from "lib/functions/changeInput";
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { vendorOrderActions } from "reducers/order/vendorOrder";
@@ -8,38 +9,64 @@ import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 const BeforeDeliveryContainer = () => {
   const { user, orderList, countOrder } = useAppSelector((store) => ({
     user: store.user,
-    orderList: store.vendorOrder.pageDelivery,
-    countOrder: store.vendorOrder.countDelivery,
+    orderList: store.vendorOrder.pageDeliveryStatus,
+    countOrder: store.vendorOrder.countDeliveryStatus,
   }));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  useEffect(() => {
-    dispatch(vendorOrderActions.countDelivery(user.vendorId));
-  }, []);
+  const onSelect = (status: string) => {
+    setSearchParams({
+      n: btoa("0"),
+      d: searchParams.get("d") || btoa("false"),
+      s: btoa(status),
+    });
+  };
+
+  // useEffect(() => {
+  //   dispatch(
+  //     vendorOrderActions.countDeliveryStatus({
+  //       vendorId: user.vendorId,
+  //       deliveryStatus: atob(searchParams.get("s") || btoa("all")),
+  //     })
+  //   );
+  // }, []);
 
   useEffect(() => {
     sessionStorage.setItem(
       "deliveryPageInfo",
       JSON.stringify({
-        pageNum: searchParams.get("pageNum"),
-        isDesc: searchParams.get("isDesc"),
+        n: searchParams.get("n"),
+        d: searchParams.get("d"),
+        s: searchParams.get("s"),
       })
     );
     dispatch(
-      vendorOrderActions.pageDelivery({
+      vendorOrderActions.countDeliveryStatus({
         vendorId: user.vendorId,
-        page: searchParams.get("pageNum"),
-        isDesc: searchParams.get("isDesc"),
+        deliveryStatus: atob(searchParams.get("s") || btoa("all")),
+      })
+    );
+    dispatch(
+      vendorOrderActions.pageDeliveryStatus({
+        vendorId: user.vendorId,
+        page: atob(searchParams.get("n") || btoa("0")),
+        isDesc: atob(searchParams.get("d") || btoa("false")),
+        deliveryStatus: atob(searchParams.get("s") || btoa("all")),
         size: 10,
       })
     );
-  }, [searchParams.get("pageNum"), searchParams.get("isDesc")]);
+  }, [searchParams.get("n"), searchParams.get("d"), searchParams.get("s")]);
 
   useEffect(() => {
-    navigate(`?pageNum=0&isDesc=false`);
-  }, []);
+    if (
+      (searchParams.get("n") ||
+        searchParams.get("d") ||
+        searchParams.get("s")) === null
+    )
+      navigate(`?n=${btoa("0")}&d=${btoa("false")}&s=${btoa("all")}`);
+  }, [searchParams.get("n"), searchParams.get("d"), searchParams.get("s")]);
 
   //* beforedelivery
   const beforedeliveryColumns: ColumnsType[] = [
@@ -61,7 +88,7 @@ const BeforeDeliveryContainer = () => {
     {
       title: "주문자 연락처",
       dataIndex: "info",
-      render: (info) => info.address.info.mobile,
+      render: (info) => changePhone(info.address.info.mobile),
     },
     {
       title: "택배사",
@@ -89,6 +116,7 @@ const BeforeDeliveryContainer = () => {
       beforeDelivery={orderList}
       countOrder={countOrder}
       beforedeliveryColumns={beforedeliveryColumns}
+      onSelect={onSelect}
     />
   );
 };

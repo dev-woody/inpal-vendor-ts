@@ -26,24 +26,27 @@ const CancelListContainer = () => {
   }, []);
 
   useEffect(() => {
-    navigate(`?pageNum=0&isDesc=false`);
     sessionStorage.setItem(
       "orderPageInfo",
       JSON.stringify({
-        pageNum: searchParams.get("pageNum"),
-        isDesc: searchParams.get("isDesc"),
+        n: searchParams.get("p"),
+        d: searchParams.get("d"),
       })
     );
     dispatch(
       vendorOrderActions.pageOrderStatus({
         vendorId: user.vendorId,
         orderStatus: "cancel_request",
-        page: searchParams.get("pageNum"),
-        isDesc: searchParams.get("isDesc"),
+        page: atob(searchParams.get("n") || btoa("0")),
+        isDesc: atob(searchParams.get("d") || btoa("false")),
         size: 10,
       })
     );
-  }, [searchParams.get("pageNum"), searchParams.get("isDesc")]);
+  }, [searchParams.get("n"), searchParams.get("d")]);
+
+  useEffect(() => {
+    navigate(`?n=${btoa("0")}&d=${btoa("false")}`);
+  }, []);
 
   //* cancel
   const cancelOrderColumns: ColumnsType[] = [

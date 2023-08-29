@@ -56,6 +56,8 @@ const DeliveryDetail = ({
     },
   });
 
+  const { p, d } = JSON.parse(sessionStorage.getItem("deliveryCode") || "{}");
+
   useEffect(() => {
     if (update) {
       reset();
@@ -74,7 +76,7 @@ const DeliveryDetail = ({
               indicator={[
                 {
                   name: "배송코드관리 /",
-                  url: "/dcode/dcode",
+                  url: `/dcode/dcode?p=${p}&d=${d}`,
                 },
                 { name: "상세정보", url: "" },
               ]}

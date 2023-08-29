@@ -207,7 +207,8 @@ const Sidebar = ({ activeUrl, visible }: sideBarProps) => {
                       key={index}
                       onClick={() => {
                         if (nowURL === `${list.url}${subMenu.url}`) {
-                          window.location.reload();
+                          navigate(`${list.url}${subMenu.url}`);
+                          navigate(0);
                         } else {
                           navigate(`${list.url}${subMenu.url}`);
                         }

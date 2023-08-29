@@ -19,10 +19,8 @@ const RefundList = ({
   refundOrderColumns,
 }: listProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const newPageNum = Number(searchParams.get("pageNum") || "0");
-  const { pageNum, isDesc } = JSON.parse(
-    sessionStorage.getItem("orderPageInfo") || "{}"
-  );
+  const newPageNum = Number(atob(searchParams.get("n") || btoa("0")));
+  const { n, d } = JSON.parse(sessionStorage.getItem("orderPageInfo") || "{}");
   return (
     <>
       <RefundListBlock>
@@ -32,7 +30,7 @@ const RefundList = ({
               indicator={[
                 {
                   name: "환불관리",
-                  url: `?pageNum=${pageNum}&isDesc=${isDesc}`,
+                  url: `?n=${n}&d=${d}`,
                 },
               ]}
             />
@@ -48,8 +46,8 @@ const RefundList = ({
           searchParams={searchParams}
           setSearchParams={(page: number) =>
             setSearchParams({
-              pageNum: String(newPageNum + page),
-              isDesc: isDesc,
+              n: btoa(String(newPageNum + page)),
+              d: d,
             })
           }
           moveKey={["base", "id"]}

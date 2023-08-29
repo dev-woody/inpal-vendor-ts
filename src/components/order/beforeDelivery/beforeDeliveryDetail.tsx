@@ -63,7 +63,7 @@ const BeforeDeliveryDetail = ({
     return item.orderStatus === "ITEM_READY";
   });
 
-  const { pageNum, isDesc } = JSON.parse(
+  const { n, d, s } = JSON.parse(
     sessionStorage.getItem("deliveryPageInfo") || "{}"
   );
   return (
@@ -75,7 +75,7 @@ const BeforeDeliveryDetail = ({
               indicator={[
                 {
                   name: "배송상태 관리 /",
-                  url: `/order/beforeDelivery?pageNum=${pageNum}&isDesc=${isDesc}`,
+                  url: `/order/beforeDelivery?n=${n}&d=${d}&s=${s}`,
                 },
                 {
                   name: "상세정보",
@@ -187,9 +187,7 @@ const BeforeDeliveryDetail = ({
               needMarginTop
               withInput
               onClick={() =>
-                navigate(
-                  `/order/beforeDelivery?pageNum=${pageNum}&isDesc=${isDesc}`
-                )
+                navigate(`/order/beforeDelivery?n=${n}&d=${d}&s=${s}`)
               }
             >
               뒤로가기

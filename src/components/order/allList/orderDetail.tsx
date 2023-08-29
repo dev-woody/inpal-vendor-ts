@@ -24,10 +24,7 @@ type orderDetailProps = {
 const OrderDetail = ({ orderInfo, orderLog, navigate }: orderDetailProps) => {
   const data = orderInfo?.data?.info;
   const path = window.location.pathname.split("/");
-  const rollbackPath = "/" + path[1] + "/" + path[2];
-  const { pageNum, isDesc } = JSON.parse(
-    sessionStorage.getItem("orderPageInfo") || "{}"
-  );
+  const { n, d } = JSON.parse(sessionStorage.getItem("orderPageInfo") || "{}");
 
   return (
     <Fragment>
@@ -38,7 +35,7 @@ const OrderDetail = ({ orderInfo, orderLog, navigate }: orderDetailProps) => {
               indicator={[
                 {
                   name: `${changeOrderPathStatus(path[2])} /`,
-                  url: `/order/${path[2]}?pageNum=${pageNum}&isDesc=${isDesc}`,
+                  url: `/order/${path[2]}?n=${n}&d=${d}`,
                 },
                 {
                   name: "상세정보",
@@ -175,7 +172,7 @@ const OrderDetail = ({ orderInfo, orderLog, navigate }: orderDetailProps) => {
           doNothing
         />
         <Button
-          onClick={() => navigate(`${rollbackPath}`)}
+          onClick={() => navigate(`/order/${path[2]}?n=${n}&d=${d}`)}
           type="button"
           withInput
           needMarginTop

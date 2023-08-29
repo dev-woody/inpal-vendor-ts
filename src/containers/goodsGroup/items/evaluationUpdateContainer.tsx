@@ -28,15 +28,15 @@ const EvaluationUpdateContainer = ({
     sessionStorage.setItem(
       "reviewPageInfo",
       JSON.stringify({
-        pageNum: searchParams.get("pageNum"),
-        isDesc: searchParams.get("isDesc"),
+        n: searchParams.get("p"),
+        d: searchParams.get("d"),
       })
     );
     dispatch(
       vendorGoodsEvaluationActions.findByGoodItemId({
         goodItemId: evaluationSummary?.vendorGoodItemId,
-        page: searchParams.get("pageNum"),
-        isDesc: searchParams.get("isDesc"),
+        page: atob(searchParams.get("n") || btoa("0")),
+        isDesc: atob(searchParams.get("d") || btoa("false")),
         size: 10,
       })
     );
@@ -47,7 +47,7 @@ const EvaluationUpdateContainer = ({
   ]);
 
   useEffect(() => {
-    navigate(`?pageNum=0&isDesc=false`);
+    navigate(`?n=${btoa("0")}&d=${btoa("false")}`);
   }, []);
 
   const evaluationColumn: ColumnsType[] = [

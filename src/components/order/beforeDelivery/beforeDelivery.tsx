@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { BreadCrumb, Responsive, Table } from "lib/styles";
+import { BreadCrumb, Responsive, StyledSelect, Table } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
 import { ColumnsType } from "lib/columns/columnsList";
 import { response } from "types/globalTypes";
@@ -11,6 +11,7 @@ type listProps = {
   beforeDelivery: response;
   countOrder: response;
   beforedeliveryColumns: ColumnsType[];
+  onSelect: (status: string) => void;
 };
 
 // const BeforeDelivery = ({ beforeDelivery }: listProps) => {
@@ -18,12 +19,28 @@ const BeforeDelivery = ({
   beforeDelivery,
   countOrder,
   beforedeliveryColumns,
+  onSelect,
 }: listProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const newPageNum = Number(searchParams.get("pageNum") || "0");
-  const { pageNum, isDesc } = JSON.parse(
+  const newPageNum = Number(atob(searchParams.get("n") || btoa("0")));
+  const { n, d, s } = JSON.parse(
     sessionStorage.getItem("deliveryPageInfo") || "{}"
   );
+
+  const statusColumns = [
+    {
+      name: "전체조회",
+      id: "all",
+    },
+    {
+      name: "배송전",
+      id: "not_yet",
+    },
+    {
+      name: "배송후",
+      id: "delivery",
+    },
+  ];
   return (
     <>
       <BeforeDeliveryBlock>
@@ -33,7 +50,7 @@ const BeforeDelivery = ({
               indicator={[
                 {
                   name: "배송상태 관리",
-                  url: `?pageNum=${pageNum}&isDesc=${isDesc}`,
+                  url: `?n=${n}&d=${d}&s=${s}`,
                 },
               ]}
             />
@@ -48,13 +65,22 @@ const BeforeDelivery = ({
           searchParams={searchParams}
           setSearchParams={(page: number) =>
             setSearchParams({
-              pageNum: String(newPageNum + page),
-              isDesc: isDesc,
+              n: btoa(String(newPageNum + page)),
+              d: d,
+              s: s,
             })
           }
           moveKey={["base", "id"]}
           pagenation
           pageCount={countOrder.data}
+          filter
+          filterInput={
+            <StyledSelect
+              placeholder="배송 상태"
+              optionList={statusColumns}
+              actions={onSelect}
+            />
+          }
         />
       </BeforeDeliveryBlock>
     </>

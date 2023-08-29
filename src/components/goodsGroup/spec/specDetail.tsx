@@ -64,6 +64,8 @@ const SpecDetail = ({
     },
   });
 
+  const { p, d } = JSON.parse(sessionStorage.getItem("spec") || "{}");
+
   useEffect(() => {
     setValue("quantity", specDetail?.data?.info?.quantity);
     setValue("unitId", specDetail?.data?.info?.unit.id);
@@ -78,11 +80,11 @@ const SpecDetail = ({
               indicator={[
                 {
                   name: "상품사양 관리 /",
-                  url: "/goods/spec",
+                  url: `/goods/spec?p=${p}&d=${d}`,
                 },
                 {
                   name: "상품사양 상세조회",
-                  url: "/goods/spec/detail",
+                  url: "",
                 },
               ]}
             />

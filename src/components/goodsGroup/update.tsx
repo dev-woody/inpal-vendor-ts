@@ -16,9 +16,7 @@ const GoodsGroupDetailBlock = styled(Responsive)``;
 
 const GoodsGroupDetail = ({ goodsGroup, id }: DetailProps) => {
   const data = goodsGroup.data;
-  const { pageNum, isDesc } = JSON.parse(
-    sessionStorage.getItem("groupPageInfo") || "{}"
-  );
+  const { n, d } = JSON.parse(sessionStorage.getItem("groupPageInfo") || "{}");
   return (
     <>
       <GoodsGroupDetailBlock>
@@ -28,7 +26,7 @@ const GoodsGroupDetail = ({ goodsGroup, id }: DetailProps) => {
               indicator={[
                 {
                   name: "상품그룹관리 /",
-                  url: `/goods/groups?pageNum=${pageNum}&isDesc=${isDesc}`,
+                  url: `/goods/groups?n=${n}&d=${d}`,
                 },
                 {
                   name: "상세정보 및 수정",

@@ -20,10 +20,8 @@ const GoodsGorupList = ({
 }: listProps) => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const newPageNum = Number(searchParams.get("pageNum") || "0");
-  const { isDesc } = JSON.parse(
-    sessionStorage.getItem("groupPageInfo") || "{}"
-  );
+  const newPageNum = Number(atob(searchParams.get("n") || btoa("0")));
+  const { n, d } = JSON.parse(sessionStorage.getItem("groupPageInfo") || "{}");
   return (
     <>
       <GoodsGorupListBlock>
@@ -33,7 +31,7 @@ const GoodsGorupList = ({
               indicator={[
                 {
                   name: "상품그룹관리",
-                  url: "/goods/groups",
+                  url: `?n=${n}&d=${d}`,
                 },
               ]}
             />
@@ -53,8 +51,8 @@ const GoodsGorupList = ({
           searchParams={searchParams}
           setSearchParams={(page: number) =>
             setSearchParams({
-              pageNum: String(newPageNum + page),
-              isDesc: isDesc,
+              n: btoa(String(newPageNum + page)),
+              d: d,
             })
           }
           moveKey={["base", "id"]}

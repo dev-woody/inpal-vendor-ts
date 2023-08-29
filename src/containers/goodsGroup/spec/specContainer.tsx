@@ -2,7 +2,7 @@ import SpecList from "components/goodsGroup/spec/specList";
 import { ColumnsType } from "lib/columns/columnsList";
 import { priceToString } from "lib/functions/changeInput";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { vendorGoodsSpecActions } from "reducers/goodsGroup/vendorGoodsSpec";
 import { vendorProductActions } from "reducers/product/vendorProduct";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
@@ -15,24 +15,44 @@ const SpecContainer = () => {
   }));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const onSelect = (id: string) => {
-    dispatch(
-      vendorGoodsSpecActions.findAllByProductId({
-        vendorId: user.vendorId,
-        productId: id,
-        isDesc: false,
-      })
-    );
+    setSearchParams({ p: btoa(id), d: searchParams.get("d") || btoa("false") });
   };
 
   useEffect(() => {
     dispatch(vendorProductActions.findAll(false));
+    dispatch(vendorGoodsSpecActions.reset("findAllByProductId"));
     return () => {
       dispatch(vendorProductActions.reset("findAll"));
       dispatch(vendorGoodsSpecActions.reset("findAllByProductId"));
     };
   }, []);
+
+  useEffect(() => {
+    if (searchParams.get("p") === btoa("none")) {
+      return;
+    } else {
+      sessionStorage.setItem(
+        "spec",
+        JSON.stringify({ p: searchParams.get("p"), d: searchParams.get("d") })
+      );
+      dispatch(
+        vendorGoodsSpecActions.findAllByProductId({
+          vendorId: user.vendorId,
+          productId: atob(searchParams.get("p") || btoa("")),
+          isDesc: atob(searchParams.get("d") || btoa("false")),
+        })
+      );
+    }
+  }, [searchParams.get("p"), searchParams.get("d")]);
+
+  useEffect(() => {
+    if ((searchParams.get("p") || searchParams.get("d")) === null) {
+      navigate(`?p=${btoa("none")}&d=${btoa("false")}`);
+    }
+  }, [searchParams.get("p"), searchParams.get("d")]);
 
   const specColunms: ColumnsType[] = [
     {
