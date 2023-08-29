@@ -16,10 +16,18 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { response } from "types/globalTypes";
-import { ReactElement, useEffect } from "react";
-import { AnyARecord } from "dns";
+import { useEffect } from "react";
 
 const BasicInfoUpdateBlock = styled(Responsive)``;
+
+const DescriptionBlock = styled.div`
+  margin: 0.25rem 0;
+  font-size: 0.875rem;
+
+  & + & {
+    margin-left: 0.25rem;
+  }
+`;
 
 type basicType = {
   updateResult: response;
@@ -83,38 +91,66 @@ const BasicInfoUpdate = ({
 
   const newCategory = JSON.parse(JSON.stringify(categoryList));
 
+  const DivideDepth = () => <DescriptionBlock>{">"}</DescriptionBlock>;
+
   function createDescriptionElement(category: any) {
     const descriptionElements = [];
 
-    if (
-      category.category2nd?.some((item: any) =>
-        item.category3rd?.some((subItem: any) => subItem.checked)
-      )
-    ) {
-      category.category2nd?.forEach((secondItem: any) => {
-        secondItem.category3rd?.forEach((thirdItem: any) => {
-          if (thirdItem.checked) {
-            descriptionElements.push(
-              <div>
-                {category.description +
-                  secondItem.description +
-                  thirdItem.description}
-              </div>
-            );
+    if (category.checked) {
+      if (category.category2nd?.some((item: any) => item.checked)) {
+        category.category2nd.forEach((secondItem: any) => {
+          if (secondItem.checked) {
+            if (
+              secondItem.category3rd?.some((subItem: any) => subItem.checked)
+            ) {
+              category.category2nd?.forEach((secondItem: any) => {
+                secondItem.category3rd?.forEach((thirdItem: any) => {
+                  if (thirdItem.checked) {
+                    descriptionElements.push(
+                      <div
+                        key={
+                          category.description +
+                          secondItem.description +
+                          thirdItem.description
+                        }
+                        style={{ display: "flex" }}
+                      >
+                        <DescriptionBlock>
+                          {category.description}
+                        </DescriptionBlock>
+                        <DivideDepth />
+                        <DescriptionBlock>
+                          {secondItem.description}
+                        </DescriptionBlock>
+                        <DivideDepth />
+                        <DescriptionBlock>
+                          {thirdItem.description}
+                        </DescriptionBlock>
+                      </div>
+                    );
+                  }
+                });
+              });
+            } else {
+              descriptionElements.push(
+                <div
+                  key={category.description + secondItem.description}
+                  style={{ display: "flex" }}
+                >
+                  <DescriptionBlock>{category.description}</DescriptionBlock>
+                  <DivideDepth />
+                  <DescriptionBlock>{secondItem.description}</DescriptionBlock>
+                </div>
+              );
+            }
           }
         });
-      });
-    } else if (category.category2nd?.some((item: any) => item.checked)) {
-      category.category2nd?.forEach((secondItem: any) => {
-        if (secondItem.checked) {
-          descriptionElements.push(
-            <div>{category.description + secondItem.description}</div>
-          );
-        }
-      });
-    } else {
-      if (category.checked) {
-        descriptionElements.push(<div>{category.description}</div>);
+      } else {
+        descriptionElements.push(
+          <div key={category.description}>
+            <DescriptionBlock>{category.description}</DescriptionBlock>
+          </div>
+        );
       }
     }
 
@@ -124,7 +160,7 @@ const BasicInfoUpdate = ({
   const DisplayDescription = () => {
     const renderDescription = newCategory.map((categorys: any) => {
       return (
-        <div key={categorys.description}>
+        <div key={categorys.description} style={{ marginTop: "0.5rem" }}>
           {createDescriptionElement(categorys)}
         </div>
       );
