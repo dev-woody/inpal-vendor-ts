@@ -108,8 +108,10 @@ const BasicInfoUpdateContainer = ({ basicInfo }: { basicInfo: any }) => {
                 list2nd.checked = true;
               }
             }
-            if (category2nd.category3rd) {
-              const category3rd = category2nd.category3rd;
+            if (list2nd.category3rd) {
+              const category3rd = list2nd.category3rd;
+              console.log(selectCategory3rd);
+              // console.log(category3rd);
               category3rd.map((list3rd: any) => {
                 for (let i = 0; i < selectCategory3rd?.length; i++) {
                   if (selectCategory3rd[i].id === list3rd.id) {

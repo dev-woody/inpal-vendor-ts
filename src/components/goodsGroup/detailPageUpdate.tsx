@@ -83,7 +83,7 @@ const DetailPageUpdate = ({
                 placeholder="상세페이지"
                 label="detailPageInfo.imageNumInfos"
                 isBox
-                maxLength={1}
+                maxLength={10}
                 errors={errors}
                 status={errors.detailPageInfo?.imageNumInfos}
                 subject="good_group"

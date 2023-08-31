@@ -71,6 +71,7 @@ const GoodsGroupItemRegisterContainer = () => {
 
   return (
     <GoodsGroupItemRegister
+      registerResult={registerResult}
       isColorItem={goodsGroup.data?.info?.dsType}
       colorCode={colorCode}
       goodsGroup={goodsGroup}

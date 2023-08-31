@@ -23,7 +23,6 @@ const SpecContainer = () => {
 
   useEffect(() => {
     dispatch(vendorProductActions.findAll(false));
-    dispatch(vendorGoodsSpecActions.reset("findAllByProductId"));
     return () => {
       dispatch(vendorProductActions.reset("findAll"));
       dispatch(vendorGoodsSpecActions.reset("findAllByProductId"));

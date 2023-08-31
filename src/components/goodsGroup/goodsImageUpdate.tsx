@@ -83,7 +83,7 @@ const GoodsImageUpdate = ({
                 placeholder="상품이미지"
                 label="goodImageInfo.imageNumInfos"
                 isBox
-                maxLength={1}
+                maxLength={10}
                 errors={errors}
                 status={errors.goodImageInfo?.imageNumInfos}
                 subject="good_group"

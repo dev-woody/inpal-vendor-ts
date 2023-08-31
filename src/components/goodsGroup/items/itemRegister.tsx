@@ -4,12 +4,14 @@ import {
   Button,
   Description,
   DescriptionContent,
+  ErrorMsg,
   Modal,
   Responsive,
   StyledForm,
   StyledInput,
   StyledSelect,
   StyledToggle,
+  StyledUpload,
   Table,
 } from "lib/styles";
 import PageHeader from "lib/pages/pageHeader";
@@ -20,10 +22,12 @@ import { response } from "types/globalTypes";
 import { Fragment, useEffect, useState } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { FaMinus } from "react-icons/fa";
+import { priceToString } from "lib/functions/changeInput";
 
 const GoodsGroupItemRegisterBlock = styled(Responsive)``;
 
 type ItemProps = {
+  registerResult: response;
   isColorItem: "COLOR" | "IMAGE" | "MATERIAL";
   colorCode: response;
   goodsGroup: response;
@@ -39,8 +43,8 @@ const priceSchema = yup.object({
     id: yup.string(),
     keyName: yup.string(),
   }),
-  price: yup.number(),
-  salePrice: yup.number(),
+  price: yup.number().typeError("숫자만 입력가능합니다."),
+  salePrice: yup.number().typeError("숫자만 입력가능합니다."),
 });
 
 const PriceOption = ({
@@ -52,10 +56,8 @@ const PriceOption = ({
 }) => {
   const {
     register,
-    getValues,
     setValue,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(priceSchema),
@@ -69,10 +71,6 @@ const PriceOption = ({
   const [list, setList] = useState<
     { specNumId: any; price: string; salePrice: string }[]
   >([]);
-
-  const addList = list.map((item: any) => {
-    return item.specNumId.id;
-  });
 
   const onSubmit = (data: any) => {
     const copyList = JSON.parse(JSON.stringify(list));
@@ -88,23 +86,13 @@ const PriceOption = ({
     setPriceValue("priceInfo.priceNumInfos", subMitList);
   };
 
-  // const filterData: any[] =
-  //   addList && addList.length > 0
-  //     ? addList.length === specInfo?.data.length
-  //       ? []
-  //       : specInfo.data?.map((filterItems: any) => {
-  //           if (!addList.includes(filterItems.base.id)) {
-  //             return filterItems;
-  //           }
-  //         })
-  //     : [];
-
   return (
     <div style={{ width: "100%" }}>
       <StyledForm
         style={{
           display: "flex",
           flexDirection: "row",
+          marginBottom: "1rem",
         }}
       >
         <div style={{ marginRight: "1rem" }}>
@@ -140,7 +128,7 @@ const PriceOption = ({
           />
         </div>
         <Button
-          style={{ margin: "0.25rem 0" }}
+          style={{ margin: "0.25rem 0", height: "30.5px" }}
           onClick={handleSubmit(
             (data) => onSubmit(data),
             (errors) => console.log(errors)
@@ -160,10 +148,12 @@ const PriceOption = ({
           {
             title: "사양",
             dataIndex: "price",
+            render: (price: any) => priceToString(price),
           },
           {
             title: "사양",
             dataIndex: "salePrice",
+            render: (salePrice: any) => priceToString(salePrice),
           },
           {
             title: "삭제",
@@ -199,6 +189,7 @@ const schema = yup.object({
   dsInfo: yup.object({
     dsType: yup.string(),
     rgb: yup.string(),
+    image: yup.object(),
   }),
   priceInfo: yup.object({
     priceNumInfos: yup.array().of(
@@ -209,10 +200,11 @@ const schema = yup.object({
       })
     ),
   }),
-  stock: yup.number(),
+  stock: yup.number().typeError("숫자를 입력해주세요."),
 });
 
 const GoodsGroupItemRegister = ({
+  registerResult,
   isColorItem,
   colorCode,
   goodsGroup,
@@ -241,7 +233,7 @@ const GoodsGroupItemRegister = ({
       dsInfo: {
         dsType: "",
         rgb: "",
-        // "image": {"imageInfo": {"id": ""}} ,
+        image: {},
       },
       priceInfo: {
         priceNumInfos: [],
@@ -253,7 +245,8 @@ const GoodsGroupItemRegister = ({
   const [isToggle, setIsToggle] = useState(false);
 
   useEffect(() => {
-    setValue("dsInfo.dsType", isColorItem?.toLowerCase());
+    setValue("dsInfo.dsType", isColorItem.toLowerCase());
+    console.log(isColorItem);
   }, []);
 
   useEffect(() => {
@@ -341,24 +334,62 @@ const GoodsGroupItemRegister = ({
                 />
               }
             />
-            {isColorItem === "COLOR" ? (
-              <Fragment>
-                <DescriptionContent
-                  span="12"
-                  label="색상코드"
-                  content={
-                    <StyledInput
-                      align="vertical"
-                      placeholder="색상코드"
-                      label="dsInfo.rgb"
-                      register={register}
-                      errors={errors}
-                      status={errors.dsInfo?.rgb}
-                    />
-                  }
+
+            <DescriptionContent
+              span="12"
+              label="상품명"
+              content={
+                <StyledInput
+                  align="vertical"
+                  placeholder="상품명"
+                  label="basicInfo.name"
+                  register={register}
+                  errors={errors}
+                  status={errors.basicInfo?.name}
                 />
-              </Fragment>
-            ) : null}
+              }
+            />
+            {isColorItem === "COLOR" ? (
+              <DescriptionContent
+                span="12"
+                label="색상코드"
+                content={
+                  <StyledInput
+                    align="vertical"
+                    placeholder="색상코드"
+                    label="dsInfo.rgb"
+                    register={register}
+                    errors={errors}
+                    status={errors.dsInfo?.rgb}
+                  />
+                }
+              />
+            ) : (
+              <DescriptionContent
+                span="12"
+                label="상품이미지"
+                content={
+                  <StyledUpload
+                    readOnly
+                    placeholder="상품이미지"
+                    isBox
+                    maxLength={1}
+                    label="dsInfo.image"
+                    register={register}
+                    errors={errors || "상세페이지는 필수입니다."}
+                    status={errors.dsInfo?.image}
+                    subject="good_item"
+                    type="ds_image"
+                    successAction={(result: any) => {
+                      const imageArray = {
+                        imageInfo: { id: result[0].imageId },
+                      };
+                      setValue("dsInfo.image", imageArray);
+                    }}
+                  />
+                }
+              />
+            )}
             <DescriptionContent
               span="12"
               label="재고"
@@ -398,6 +429,7 @@ const GoodsGroupItemRegister = ({
               }
             />
           </Description>
+          <ErrorMsg>{registerResult.message}</ErrorMsg>
           <Button type="submit" status="primary" withInput needMarginTop>
             등록
           </Button>

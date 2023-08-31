@@ -1,6 +1,6 @@
 import { sidebarList } from "lib/columns/columnsList";
 import styled, { css } from "styled-components";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 type ItemProps = {

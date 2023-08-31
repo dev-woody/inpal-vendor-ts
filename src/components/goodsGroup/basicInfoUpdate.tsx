@@ -198,6 +198,13 @@ const BasicInfoUpdate = ({
     }
   }, [basicInfo]);
 
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) =>
+      console.log(value, name, type)
+    );
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
   return (
     <BasicInfoUpdateBlock>
       <PageHeader title="상품그룹 기본정보" />

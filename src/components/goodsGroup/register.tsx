@@ -391,39 +391,13 @@ const GoodsGroupRregister = ({
             />
             <DescriptionContent
               span="12"
-              label="상세페이지"
-              content={
-                <StyledUpload
-                  readOnly
-                  register={register}
-                  placeholder="상세페이지"
-                  label="detailPageInfo.imageNumInfos"
-                  isBox
-                  maxLength={1}
-                  errors={errors}
-                  status={errors.detailPageInfo?.imageNumInfos}
-                  subject="good_group"
-                  type="detail_page"
-                  successAction={(result: any) => {
-                    const imageArray = result.map(
-                      (image: any, index: number) => {
-                        return { num: index, imageInfo: { id: image.imageId } };
-                      }
-                    );
-                    setValue("detailPageInfo.imageNumInfos", imageArray);
-                  }}
-                />
-              }
-            />
-            <DescriptionContent
-              span="12"
               label="상품이미지"
               content={
                 <StyledUpload
                   readOnly
                   placeholder="상품이미지"
                   isBox
-                  maxLength={1}
+                  maxLength={10}
                   label="goodImageInfo.imageNumInfos"
                   register={register}
                   errors={errors || "상세페이지는 필수입니다."}
@@ -442,6 +416,30 @@ const GoodsGroupRregister = ({
               }
             />
           </Description>
+          <DescriptionContent
+            span="12"
+            label="상세페이지"
+            content={
+              <StyledUpload
+                readOnly
+                register={register}
+                placeholder="상세페이지"
+                label="detailPageInfo.imageNumInfos"
+                isBox
+                maxLength={10}
+                errors={errors}
+                status={errors.detailPageInfo?.imageNumInfos}
+                subject="good_group"
+                type="detail_page"
+                successAction={(result: any) => {
+                  const imageArray = result.map((image: any, index: number) => {
+                    return { num: index, imageInfo: { id: image.imageId } };
+                  });
+                  setValue("detailPageInfo.imageNumInfos", imageArray);
+                }}
+              />
+            }
+          />
           <ErrorMsg>{groupRegister.message}</ErrorMsg>
           <Button type="submit" status="primary" withInput needMarginTop>
             등록
