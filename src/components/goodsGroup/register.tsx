@@ -20,6 +20,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { response } from "types/globalTypes";
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { isUseProduct } from "lib/functions/changeInput";
 
 const GoodsGroupRregisterBlock = styled(Responsive)``;
 
@@ -289,7 +290,7 @@ const GoodsGroupRregister = ({
                 <StyledSelect
                   placeholder="품목"
                   label="basicInfo.productId"
-                  optionList={productList.data}
+                  optionList={isUseProduct(productList?.data)}
                   register={register}
                   errors={errors}
                   status={errors?.basicInfo?.productId}

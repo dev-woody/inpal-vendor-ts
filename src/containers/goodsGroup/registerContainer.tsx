@@ -5,11 +5,12 @@ import { vendorGoodsGroupActions } from "reducers/goodsGroup/vendorGoodsGroup";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 import { vendorGoodsSpecActions } from "reducers/goodsGroup/vendorGoodsSpec";
 import { checkStatus } from "types/globalTypes";
+import { vendorAdminActions } from "reducers/admin/vendorAdmin";
 
 const GoodsGroupRegisterContainer = () => {
   const {
     user,
-    productList,
+    mypage,
     propertyList,
     categoryList,
     manufacturerList,
@@ -17,7 +18,7 @@ const GoodsGroupRegisterContainer = () => {
     groupRegister,
   } = useAppSelector((store) => ({
     user: store.user,
-    productList: store.vendorProduct.findAll,
+    mypage: store.vendorAdmin.mypage,
     propertyList: store.vendorProduct.findAllProperty,
     categoryList: store.vendorProduct.findAllCategory,
     manufacturerList: store.vendorProduct.findManufacturerByProductId,
@@ -92,12 +93,11 @@ const GoodsGroupRegisterContainer = () => {
 
   useEffect(() => {
     dispatch(vendorGoodsGroupActions.reset("register"));
-    dispatch(vendorProductActions.findAll(false));
+    dispatch(dispatch(vendorAdminActions.mypage(user.vendorId)));
     dispatch(vendorProductActions.reset("findAllCategory"));
     dispatch(vendorProductActions.reset("findManufacturerByProductId"));
     return () => {
       dispatch(vendorGoodsGroupActions.reset("register"));
-      dispatch(vendorProductActions.reset("findAll"));
       dispatch(vendorProductActions.reset("findAllCategory"));
       dispatch(vendorProductActions.reset("findManufacturerByProductId"));
     };
@@ -106,7 +106,7 @@ const GoodsGroupRegisterContainer = () => {
   return (
     <GoodsGroupRregister
       user={user}
-      productList={productList}
+      productList={mypage}
       propertyList={propertyList}
       categoryList={newCategory}
       manufacturerList={manufacturerList}

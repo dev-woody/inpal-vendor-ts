@@ -23,3 +23,4 @@ yarn start
 
 textarea 추가
 input type 설정 변경
+goods group 등록시 품목 필터 적용
