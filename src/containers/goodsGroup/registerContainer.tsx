@@ -96,10 +96,14 @@ const GoodsGroupRegisterContainer = () => {
     dispatch(dispatch(vendorAdminActions.mypage(user.vendorId)));
     dispatch(vendorProductActions.reset("findAllCategory"));
     dispatch(vendorProductActions.reset("findManufacturerByProductId"));
+    dispatch(vendorProductActions.reset("findAllProperty"));
+    dispatch(vendorGoodsSpecActions.reset("findAllByProductId"))
     return () => {
       dispatch(vendorGoodsGroupActions.reset("register"));
       dispatch(vendorProductActions.reset("findAllCategory"));
       dispatch(vendorProductActions.reset("findManufacturerByProductId"));
+      dispatch(vendorProductActions.reset("findAllProperty"));
+      dispatch(vendorGoodsSpecActions.reset("findAllByProductId"))
     };
   }, []);
 
