@@ -355,8 +355,10 @@ export const StyledSelect = (props: propsTypes) => {
                                 "원 /" +
                                 priceToString(list.info.freeCondition) +
                                 "원"
-                              : list?.info?.spec?.info.quantity +
-                                  list?.info?.spec?.info.unit.info.nameEn ||
+                              : priceToString(list?.info?.spec?.info.quantity) + " " +
+                                  list?.info?.spec?.info.unit.info.nameKr ||
+                                  priceToString(list?.info?.quantity) + " " +
+                                  list?.info?.unit?.info?.nameKr ||
                                 list?.info?.basic?.info?.nameKr ||
                                 list.name ||
                                 list.desc ||

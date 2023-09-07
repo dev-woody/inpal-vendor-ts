@@ -24,3 +24,5 @@ yarn start
 textarea 추가
 input type 설정 변경
 goods group 등록시 품목 필터 적용
+goods group 상품 등록시 설명과 카테고리 크기 변경
+goods group 싱품 등록시 상품사양 네임변경

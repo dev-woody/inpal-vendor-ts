@@ -277,6 +277,8 @@ const GoodsGroupRregister = ({
                   align="vertical"
                   placeholder="그룹설명"
                   label="basicInfo.description"
+                  fullWidth={true}
+                type="textarea"
                   register={register}
                   errors={errors}
                   status={errors?.basicInfo?.description}
@@ -325,6 +327,7 @@ const GoodsGroupRregister = ({
               span="12"
               label="품목분류"
               content={
+                <div style={{width: "100%"}}>
                 <StyledCategory
                   disable={categoryList.length > 0 ? false : true}
                   label="basicInfo.handleCategoryInfos"
@@ -334,6 +337,7 @@ const GoodsGroupRregister = ({
                   newCategory={newCategory}
                   setNewCategory={setNewCategory}
                 />
+                </div>
               }
             />
             <DescriptionContent
