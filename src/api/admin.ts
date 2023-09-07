@@ -54,8 +54,8 @@ export const findByUserId = async (data: object) => {
     .then((res) => res);
 };
 
-export const mypage = async () => {
-  return accessClient.get(`/vendor/admin/myPage`).then((res) => res);
+export const mypage = async (id:string) => {
+  return accessClient.get(`/vendor/myPage/${id}`).then((res) => res);
 };
 
 export const findCompany = async (id: string) => {

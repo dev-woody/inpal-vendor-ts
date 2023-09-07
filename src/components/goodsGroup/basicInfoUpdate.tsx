@@ -198,13 +198,6 @@ const BasicInfoUpdate = ({
     }
   }, [basicInfo]);
 
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
-      console.log(value, name, type)
-    );
-    return () => subscription.unsubscribe();
-  }, [watch]);
-
   return (
     <BasicInfoUpdateBlock>
       <PageHeader title="상품그룹 기본정보" />
@@ -235,6 +228,8 @@ const BasicInfoUpdate = ({
             content={
               <StyledInput
                 align="vertical"
+                fullWidth={true}
+                type="textarea"
                 placeholder={basicInfo?.description}
                 label="description"
                 register={register}
@@ -252,7 +247,7 @@ const BasicInfoUpdate = ({
             span="12"
             label="품목 분류"
             content={
-              <div>
+              <div style={{width: "100%"}}>
                 <StyledCategory
                   disable={categoryList.length > 0 ? false : true}
                   label="handleCategoryInfos"

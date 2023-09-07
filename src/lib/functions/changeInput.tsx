@@ -102,15 +102,13 @@ export function changeOrderPathStatus(status: string | undefined) {
   }
 }
 
-export const predictDelivery = (inputDays: string) => {
-  // inputDays + 2;
-  console.log(inputDays);
-  const year = inputDays?.substring(0, 4);
-  const month = inputDays?.substring(4, 6);
-  const days = inputDays?.substring(6, 8);
-  const fulldays = year + "." + month + "." + days;
-  return inputDays ? fulldays : "";
-};
+export function isUseProduct(productList: any) {
+  const useProduct = productList?.info?.bizInfo?.info?.basic?.info?.handleProductOwner?.info?.productNums?.filter((item: any) => item?.info?.openStatus === "OPEN" && item?.info?.product?.info?.openStatus === "OPEN")
+
+  return useProduct?.map((item:any) => {
+    return { id: item?.info?.product?.id, name: item?.info?.product?.info?.nameKr}
+  })
+}
 
 export function priceToString(price: number) {
   return price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

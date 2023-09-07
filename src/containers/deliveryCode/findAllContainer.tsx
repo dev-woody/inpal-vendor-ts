@@ -1,15 +1,16 @@
 import DeliveryCodeList from "components/deliveryCode/deliveryCodeList";
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { vendorAdminActions } from "reducers/admin/vendorAdmin";
 import { vendorDeliveryCodeActions } from "reducers/deliveryCode/vendorDeliveryCode";
 import { vendorProductActions } from "reducers/product/vendorProduct";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 
 const DeliveryFindAllContainer = () => {
-  const { user, deliveryCodeList, productList } = useAppSelector((state) => ({
-    user: state.user,
-    deliveryCodeList: state.vendorDeliveryCode.findAllByProductId,
-    productList: state.vendorProduct.findAll.data,
+  const { user,mypage, deliveryCodeList } = useAppSelector((store) => ({
+    user: store.user,
+    mypage: store.vendorAdmin.mypage,
+    deliveryCodeList: store.vendorDeliveryCode.findAllByProductId,
   }));
 
   const dispatch = useAppDispatch();
@@ -21,7 +22,7 @@ const DeliveryFindAllContainer = () => {
   };
 
   useEffect(() => {
-    dispatch(dispatch(vendorProductActions.findAll(false)));
+    dispatch(dispatch(vendorAdminActions.mypage(user.vendorId)));
     return () => {
       dispatch(vendorDeliveryCodeActions.reset("findAllByProductId"));
     };
@@ -53,8 +54,8 @@ const DeliveryFindAllContainer = () => {
 
   return (
     <DeliveryCodeList
-      deliveryCodeList={deliveryCodeList.data}
-      productList={productList}
+      deliveryCodeList={deliveryCodeList}
+      productList={mypage}
       onSelect={onSelect}
     />
   );

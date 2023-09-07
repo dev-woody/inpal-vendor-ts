@@ -3,15 +3,16 @@ import { ColumnsType } from "lib/columns/columnsList";
 import { priceToString } from "lib/functions/changeInput";
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { vendorAdminActions } from "reducers/admin/vendorAdmin";
 import { vendorGoodsSpecActions } from "reducers/goodsGroup/vendorGoodsSpec";
 import { vendorProductActions } from "reducers/product/vendorProduct";
 import { useAppSelector, useAppDispatch } from "reducers/reducerHooks";
 
 const SpecContainer = () => {
-  const { user, specList, productList } = useAppSelector((state) => ({
-    user: state.user,
-    specList: state.vendorGoodsSpec.findAllByProductId,
-    productList: state.vendorProduct.findAll,
+  const { user, specList, mypage } = useAppSelector((store) => ({
+    user: store.user,
+    specList: store.vendorGoodsSpec.findAllByProductId,
+    mypage: store.vendorAdmin.mypage,
   }));
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -22,9 +23,8 @@ const SpecContainer = () => {
   };
 
   useEffect(() => {
-    dispatch(vendorProductActions.findAll(false));
+    dispatch(dispatch(vendorAdminActions.mypage(user.vendorId)));
     return () => {
-      dispatch(vendorProductActions.reset("findAll"));
       dispatch(vendorGoodsSpecActions.reset("findAllByProductId"));
     };
   }, []);
@@ -103,7 +103,7 @@ const SpecContainer = () => {
 
   return (
     <SpecList
-      productList={productList}
+      productList={mypage}
       specList={specList}
       specColunms={specColunms}
       onSelect={onSelect}

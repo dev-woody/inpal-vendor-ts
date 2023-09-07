@@ -11,6 +11,7 @@ type formProps = {
   fullWidth?: boolean;
   disable?: boolean;
   status?: any;
+  type?: string;
 };
 
 export const StyledForm = styled.form`
@@ -18,7 +19,7 @@ export const StyledForm = styled.form`
   flex-direction: column;
 `;
 
-const FormItem = styled.span`
+const FormItem = styled.div`
   position: relative;
   display: flex;
   /* flex-wrap: wrap; */
@@ -30,7 +31,6 @@ const FormItem = styled.span`
   line-height: 1.5;
   list-style: none;
   position: relative;
-  min-width: 0;
   background-color: #fff;
   background-image: none;
   border-width: 1px;
@@ -48,6 +48,13 @@ const FormItem = styled.span`
     props.fullWidth &&
     css`
       width: 100% !important;
+      min-height: : 300px;
+    `}
+
+    ${(props: formProps) =>
+    props.type === "textarea" &&
+    css`
+      height: 300px !important;
     `}
 
   ${(props: formProps) =>
@@ -116,6 +123,20 @@ const StyledInputBlock = styled.input`
   }
 `;
 
+
+const StyledTextAreaBlock = styled.textarea`
+  flex-grow: 1;
+  border: 0 !important;
+  background-color: inherit;
+  color: inherit;
+  min-height: inherit;
+  /* cursor: inherit; */
+  &:focus-visible {
+    border: none;
+    outline: none;
+  }
+`;
+
 const CapsLockBlock = styled.div`
   position: absolute;
   background-color: #fff;
@@ -152,6 +173,7 @@ export const StyledInput = (props: propsTypes) => {
     errors,
     status,
     disable,
+    type,
     align,
     ...rest
   } = props;
@@ -167,15 +189,21 @@ export const StyledInput = (props: propsTypes) => {
 
   return (
     <AlignBox align={align}>
-      <FormItem fullWidth={fullWidth} disable={disable} status={status}>
+      <FormItem fullWidth={fullWidth} type={type} disable={disable} status={status}>
         {startItem && <FrontIcon>{startItem}</FrontIcon>}
-        <StyledInputBlock
+        {type === "textarea" ? (<StyledTextAreaBlock
           disabled={disable}
           {...rest}
           autoComplete="off"
           {...register(label)}
           onKeyPress={label === "password" ? passwordKeyPress : null}
-        />
+        />) : <StyledInputBlock
+          disabled={disable}
+          {...rest}
+          autoComplete="off"
+          {...register(label)}
+          onKeyPress={label === "password" ? passwordKeyPress : null}
+        />}
         {endItem && <BackIcon>{endItem}</BackIcon>}
         {label === "password" && isCapslock && (
           <CapsLockBlock>

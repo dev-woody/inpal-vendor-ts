@@ -10,11 +10,12 @@ import PageHeader from "lib/pages/pageHeader";
 import { deliveryCodeColumns } from "lib/columns/columnsList";
 import { useNavigate } from "react-router-dom";
 import { response } from "types/globalTypes";
+import { isUseProduct } from "lib/functions/changeInput";
 
 const DeliveryCodeListBlock = styled(Responsive)``;
 
 type codeProps = {
-  deliveryCodeList: object[];
+  deliveryCodeList: response;
   productList: response;
   onSelect: (id: string) => void;
 };
@@ -50,13 +51,13 @@ const DeliveryCodeList = ({
         <Table
           filter
           columns={deliveryCodeColumns}
-          content={deliveryCodeList}
+          content={deliveryCodeList?.data}
           url="/dcode/dcode/detail"
           moveKey={["base", "id"]}
           filterInput={
             <StyledSelect
               placeholder="품목 선택"
-              optionList={productList}
+              optionList={isUseProduct(productList?.data)}
               actions={onSelect}
             />
           }

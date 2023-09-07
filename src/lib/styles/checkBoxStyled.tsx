@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { BiCheckbox, BiCheckboxChecked } from "react-icons/bi";
 import { FaCheckSquare, FaRegSquare } from "react-icons/fa";
 import styled, { css } from "styled-components";
@@ -12,6 +13,7 @@ type checkboxProps = {
       }[]
     >
   >;
+  style?: any;
 };
 
 type categoryProps = {
@@ -37,11 +39,15 @@ type formProps = {
   status?: string;
 };
 
-const CheckboxCategoryBlock = styled.div``;
+const CheckboxCategoryBlock = styled.div`
+width: inherit;
+`
+
 
 const FormItem = styled.div`
   margin: 0;
   padding: 0.75rem;
+  width: inherit;
   color: rgba(0, 0, 0, 0.88);
   background-color: #fff;
   background-image: none;
@@ -92,7 +98,7 @@ const CheckboxBlock = styled.div`
 const CheckboxLabel = styled.label`
   display: flex;
   align-items: center;
-
+  width: inherit;
   &:hover {
     cursor: pointer;
   }
@@ -104,7 +110,8 @@ const CheckboxText = styled.div`
 `;
 
 const Title = styled.div`
-  width: 200px;
+  min-width: 200px;
+  flex-grow: 1;
   font-size: 0.875rem;
   margin-bottom: 0.25rem;
 `;
@@ -116,12 +123,14 @@ const LineFlex = styled.div`
 const ColFlex = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 `;
 
 export const StyledCheckBox = ({
   category,
   newCategory,
   setNewCategory,
+  style,
 }: checkboxProps) => {
   const onClick = () => {
     category.checked = !category.checked;
@@ -159,7 +168,7 @@ export const StyledCheckBox = ({
   };
 
   return (
-    <CheckboxBlock>
+    <CheckboxBlock style={style}>
       <CheckboxLabel htmlFor="checkBox" onClick={onClick}>
         {category.checked ? (
           <BiCheckboxChecked color="#faad14" />
@@ -175,13 +184,13 @@ export const StyledCheckBox = ({
 export const StyledCategory = ({
   disable,
   label,
-  align,
   register,
   status,
-  errors,
   newCategory,
   setNewCategory,
 }: categoryProps) => {
+  const titleWidth = useRef<HTMLDivElement>(null);
+  const title1stWidth = titleWidth.current?.offsetWidth
   return (
     <CheckboxCategoryBlock>
       <FormItem status={status} disable={disable}>
@@ -192,18 +201,19 @@ export const StyledCategory = ({
           autoComplete="off"
           {...register(label)}
         />
-        <div style={{ display: "flex" }}>
-          <Title>1차 품목분류</Title>
+        <div style={{ display: "flex", width: "inherit" }}>
+          <Title ref={titleWidth}>1차 품목분류</Title>
           <Title>2차 품목분류</Title>
           <Title>3차 품목분류</Title>
         </div>
         <ColFlex>
           {newCategory?.map((c1st, index) => (
-            <LineFlex key={index}>
+            <LineFlex key={index} >
               <StyledCheckBox
                 category={c1st}
                 newCategory={newCategory}
                 setNewCategory={setNewCategory}
+                style={{width: `${title1stWidth}px`}}
               />
               <ColFlex>
                 {c1st.category2nd?.map((c2nd: any, index: number) => (
@@ -212,6 +222,7 @@ export const StyledCategory = ({
                       category={c2nd}
                       newCategory={newCategory}
                       setNewCategory={setNewCategory}
+                      style={{width: `${title1stWidth}px`}}
                     />
                     <ColFlex>
                       {c2nd.category3rd?.map((c3rd: any, index: number) => (
@@ -220,6 +231,7 @@ export const StyledCategory = ({
                             category={c3rd}
                             newCategory={newCategory}
                             setNewCategory={setNewCategory}
+                            style={{width: `${title1stWidth}px`}}
                           />
                         </LineFlex>
                       ))}

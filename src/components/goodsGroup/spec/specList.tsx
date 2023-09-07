@@ -10,6 +10,7 @@ import PageHeader from "lib/pages/pageHeader";
 import { response } from "types/globalTypes";
 import { ColumnsType } from "lib/columns/columnsList";
 import { NavigateFunction } from "react-router-dom";
+import { isUseProduct } from "lib/functions/changeInput";
 
 const SpecListBlock = styled(Responsive)``;
 
@@ -63,7 +64,7 @@ const SpecList = ({
           filterInput={
             <StyledSelect
               placeholder="품목 선택"
-              optionList={productList.data}
+              optionList={isUseProduct(productList?.data)}
               actions={onSelect}
             />
           }

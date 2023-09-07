@@ -76,6 +76,11 @@ const GoodsGroupListContainer = () => {
       render: (info) => info.code,
     },
     {
+      title: "품목",
+      dataIndex: "info",
+      render: (info) => info.basic.info.product.info.nameKr,
+    },
+    {
       title: "그룹명",
       dataIndex: "info",
       render: (info) => info.basic.info.name,
