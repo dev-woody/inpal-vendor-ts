@@ -22,3 +22,4 @@ yarn start
 ### 상품 등록 화면 변경
 
 textarea 추가
+input type 설정 변경

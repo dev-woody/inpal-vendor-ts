@@ -191,15 +191,16 @@ export const StyledInput = (props: propsTypes) => {
     <AlignBox align={align}>
       <FormItem fullWidth={fullWidth} type={type} disable={disable} status={status}>
         {startItem && <FrontIcon>{startItem}</FrontIcon>}
-        {type === "textarea" ? (<StyledTextAreaBlock
+        {type === "textarea" ? <StyledTextAreaBlock
           disabled={disable}
           {...rest}
           autoComplete="off"
           {...register(label)}
           onKeyPress={label === "password" ? passwordKeyPress : null}
-        />) : <StyledInputBlock
+        /> : <StyledInputBlock
           disabled={disable}
           {...rest}
+          type={type}
           autoComplete="off"
           {...register(label)}
           onKeyPress={label === "password" ? passwordKeyPress : null}

@@ -239,11 +239,6 @@ export const masterAllListColumns = [
 //* dailySales
 export const dailySalesColumns: ColumnsType[] = [
   {
-    title: "번호",
-    dataIndex: "",
-    render: (_, __, index) => index,
-  },
-  {
     title: "날짜",
     dataIndex: "date",
     render: (date: string) => changeDays(date),
