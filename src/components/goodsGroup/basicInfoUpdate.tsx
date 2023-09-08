@@ -20,15 +20,6 @@ import { useEffect } from "react";
 
 const BasicInfoUpdateBlock = styled(Responsive)``;
 
-const DescriptionBlock = styled.div`
-  margin: 0.25rem 0;
-  font-size: 0.875rem;
-
-  & + & {
-    margin-left: 0.25rem;
-  }
-`;
-
 type basicType = {
   updateResult: response;
   basicInfo: any;
@@ -91,82 +82,7 @@ const BasicInfoUpdate = ({
 
   const newCategory = JSON.parse(JSON.stringify(categoryList));
 
-  const DivideDepth = () => <DescriptionBlock>{">"}</DescriptionBlock>;
-
-  function createDescriptionElement(category: any) {
-    const descriptionElements = [];
-
-    if (category.checked) {
-      if (category.category2nd?.some((item: any) => item.checked)) {
-        category.category2nd.forEach((secondItem: any) => {
-          if (secondItem.checked) {
-            if (
-              secondItem.category3rd?.some((subItem: any) => subItem.checked)
-            ) {
-              category.category2nd?.forEach((secondItem: any) => {
-                secondItem.category3rd?.forEach((thirdItem: any) => {
-                  if (thirdItem.checked) {
-                    descriptionElements.push(
-                      <div
-                        key={
-                          category.description +
-                          secondItem.description +
-                          thirdItem.description
-                        }
-                        style={{ display: "flex" }}
-                      >
-                        <DescriptionBlock>
-                          {category.description}
-                        </DescriptionBlock>
-                        <DivideDepth />
-                        <DescriptionBlock>
-                          {secondItem.description}
-                        </DescriptionBlock>
-                        <DivideDepth />
-                        <DescriptionBlock>
-                          {thirdItem.description}
-                        </DescriptionBlock>
-                      </div>
-                    );
-                  }
-                });
-              });
-            } else {
-              descriptionElements.push(
-                <div
-                  key={category.description + secondItem.description}
-                  style={{ display: "flex" }}
-                >
-                  <DescriptionBlock>{category.description}</DescriptionBlock>
-                  <DivideDepth />
-                  <DescriptionBlock>{secondItem.description}</DescriptionBlock>
-                </div>
-              );
-            }
-          }
-        });
-      } else {
-        descriptionElements.push(
-          <div key={category.description}>
-            <DescriptionBlock>{category.description}</DescriptionBlock>
-          </div>
-        );
-      }
-    }
-
-    return descriptionElements;
-  }
-
-  const DisplayDescription = () => {
-    const renderDescription = newCategory.map((categorys: any) => {
-      return (
-        <div key={categorys.description} style={{ marginTop: "0.5rem" }}>
-          {createDescriptionElement(categorys)}
-        </div>
-      );
-    });
-    return renderDescription;
-  };
+  
 
   useEffect(() => {
     let categoryIds: string[] = [];
@@ -257,7 +173,6 @@ const BasicInfoUpdate = ({
                   newCategory={newCategory}
                   setNewCategory={setNewCategory}
                 />
-                <DisplayDescription />
               </div>
             }
           />

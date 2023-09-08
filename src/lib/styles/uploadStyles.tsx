@@ -5,6 +5,7 @@ import { propsTypes } from "types/globalTypes";
 import { ErrorMsg } from "./globalStyles";
 import { BiTrash } from "react-icons/bi";
 import { ErrorMessage } from "@hookform/error-message";
+import Loading from "loading.gif"
 
 type formProps = {
   fullWidth?: boolean;
@@ -41,12 +42,16 @@ export const Label = styled.label`
   &:hover {
     /* border: 1px solid #faad14; */
     /* box-shadow: 0 0 0 2px rgb(250 173 20 / 10%); */
-    color: #faad14;
-    cursor: pointer;
+    color: inherit;
+    cursor: inherit;
   }
 `;
 
 const BoxBlock = styled.div`
+margin: 0.25rem 0;
+* {
+  transition: none;
+}
   ${(props: formProps) =>
     props.fullWidth &&
     css`
@@ -62,7 +67,6 @@ const FormItem = styled.div`
   align-items: center;
   justify-content: center;
   flex-wrap: nowrap;
-  margin: 0;
   padding: 0.375rem 12px;
   color: rgba(0, 0, 0, 0.88);
   font-size: 0.75rem;
@@ -114,10 +118,8 @@ const FormItem = styled.div`
   &:hover {
     border: 1px solid #faad14;
     box-shadow: 0 0 0 2px rgb(250 173 20 / 10%);
-    * {
       color: #faad14;
       cursor: pointer;
-    }
   }
 
   & + & {
@@ -184,8 +186,7 @@ const ImageArray = ({
               key={index}
               style={{
                 width: "100px",
-                alignSelf: "start",
-                marginRight: "0.25rem",
+                justifyContent: "start",
               }}
             >
               <Label
@@ -228,6 +229,7 @@ const ImageArray = ({
 export const StyledUpload = (props: propsTypes) => {
   const [isSrc, setIsSrc] = useState<{ imageId: string }[]>([]);
   const [isErrorMsg, setIsErrorMsg] = useState<string>("");
+  const [isRequest, setIsRequest] = useState<boolean>(false)
   const {
     fullWidth,
     label,
@@ -256,6 +258,7 @@ export const StyledUpload = (props: propsTypes) => {
     type: string
   ) => {
     setIsErrorMsg("");
+    setIsRequest(true);
     const files = e.target.files ? e.target.files : "";
     await client
       .post(
@@ -268,12 +271,14 @@ export const StyledUpload = (props: propsTypes) => {
         }
       )
       .then((res) => {
-        if (res.data.status === true) {
+        if (res.status === 200) {
+          setIsRequest(false)
           e.target.value = "";
           let newSrcList = [...isSrc];
           newSrcList?.push({ imageId: res.data.data.base.id });
           setIsSrc(newSrcList);
         } else {
+          setIsRequest(false)
           setIsErrorMsg("이미지 용량이 너무 큽니다.");
         }
       });
@@ -304,7 +309,7 @@ export const StyledUpload = (props: propsTypes) => {
             >
               <FormItem
                 fullWidth={fullWidth}
-                disable={disable}
+                disable={isRequest}
                 status={status}
                 style={{
                   width: "100px",
@@ -318,7 +323,7 @@ export const StyledUpload = (props: propsTypes) => {
                   type="file"
                   accept="image/*"
                   style={{ display: "none" }}
-                  disabled={disable}
+                  disabled={isRequest}
                   id={type}
                   {...rest}
                   autoComplete="off"
@@ -335,9 +340,10 @@ export const StyledUpload = (props: propsTypes) => {
                     fontWeight: "400",
                     fontSize: "2rem",
                     border: "0",
+                    color: "inherit"
                   }}
                 >
-                  +
+                  {isRequest ? <img src={Loading} style={{width: "inherit"}} />: "+"}
                 </Label>
               </FormItem>
             </BoxBlock>

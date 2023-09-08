@@ -45,6 +45,30 @@ type registerProps = {
   setModalVisible: (status: boolean) => void;
 };
 
+type submitValue = {
+  storeType: string,
+  dsType: string,
+  basicInfo: {
+    name: string,
+    description: string,
+    productId: string,
+    propertyId: string,
+    manufacturerId: string,
+    handleCategoryInfos: {
+      categoryIds: object,
+    },
+  },
+  detailPageInfo: {
+    imageNumInfos: { num: number, imageInfo: { id: string } }[],
+  },
+  goodImageInfo: {
+    imageNumInfos: {num: number, imageInfo: { id: string }}[],
+  },
+  specInfo: {
+    specNumInfos: {num: number, specId: string}[],
+  },
+}
+
 const schema = yup.object({
   storeType: yup.string().required("판매속성을 선택해주세요"),
   dsType: yup.string().required("분류속성을 선택해주세요"),
@@ -54,7 +78,7 @@ const schema = yup.object({
     productId: yup.string().required("품목을 선택해주세요."),
     propertyId: yup.string().required("속성을 선택해주세요."),
     handleCategoryInfos: yup.object({
-      categoryIds: yup.array().of(yup.string()),
+      categoryIds: yup.array().of(yup.string()).min(1, "카테고리를 선택해주세요."),
     }),
     manufacturerId: yup.string().required("제조사를 선택해주세요."),
   }),
@@ -66,7 +90,7 @@ const schema = yup.object({
           id: yup.string(),
         }),
       })
-    ),
+      ).min(1, "상품 상세페이지를 등록해주세요."),
   }),
   goodImageInfo: yup.object({
     imageNumInfos: yup.array().of(
@@ -76,15 +100,15 @@ const schema = yup.object({
           id: yup.string(),
         }),
       })
-    ),
+      ).min(1, "상품이미지를 등록해주세요."),
   }),
   specInfo: yup.object({
     specNumInfos: yup.array().of(
       yup.object({
-        num: yup.string(),
+        num: yup.number(),
         specId: yup.string(),
       })
-    ),
+    ).min(1, "상품 사양을 선택해주세요."),
   }),
 });
 
@@ -108,7 +132,7 @@ const GoodsGroupRregister = ({
     setValue,
     watch,
     formState: { errors },
-  } = useForm({
+  } = useForm<submitValue>({
     resolver: yupResolver(schema),
     defaultValues: {
       storeType: "",
@@ -120,17 +144,17 @@ const GoodsGroupRregister = ({
         propertyId: "",
         manufacturerId: "",
         handleCategoryInfos: {
-          categoryIds: new Array(),
+          categoryIds: [],
         },
       },
       detailPageInfo: {
-        imageNumInfos: [{ num: 0, imageInfo: { id: "" } }],
+        imageNumInfos: [],
       },
       goodImageInfo: {
-        imageNumInfos: [{ num: 0, imageInfo: { id: "" } }],
+        imageNumInfos: [],
       },
       specInfo: {
-        specNumInfos: [{ num: 0, specId: "" }],
+        specNumInfos: [],
       },
     },
   });
@@ -274,7 +298,7 @@ const GoodsGroupRregister = ({
               label="그룹설명"
               content={
                 <StyledInput
-                  align="vertical"
+                  // align="vertical"
                   placeholder="그룹설명"
                   label="basicInfo.description"
                   fullWidth={true}
@@ -330,7 +354,7 @@ const GoodsGroupRregister = ({
                 <div style={{width: "100%"}}>
                 <StyledCategory
                   disable={categoryList.length > 0 ? false : true}
-                  label="basicInfo.handleCategoryInfos"
+                  label="basicInfo.handleCategoryInfos.categoryIds"
                   register={register}
                   status={errors?.basicInfo?.handleCategoryInfos}
                   errors={errors}

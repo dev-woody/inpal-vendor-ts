@@ -19,10 +19,9 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { response } from "types/globalTypes";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { NavigateFunction } from "react-router-dom";
-import { FaMinus } from "react-icons/fa";
-import { priceToString } from "lib/functions/changeInput";
+import PriceOption from "./addPriceOption";
 
 const GoodsGroupItemRegisterBlock = styled(Responsive)``;
 
@@ -38,169 +37,52 @@ type ItemProps = {
   id: string | undefined;
 };
 
-const priceSchema = yup.object({
-  specNumId: yup.object({
-    id: yup.string(),
-    keyName: yup.string(),
-  }),
-  price: yup.number().typeError("숫자만 입력가능합니다."),
-  salePrice: yup.number().typeError("숫자만 입력가능합니다."),
-});
-
-const PriceOption = ({
-  goodsGroup,
-  setPriceValue,
-}: {
-  goodsGroup: response;
-  setPriceValue: any;
-}) => {
-  const {
-    register,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(priceSchema),
-    defaultValues: {
-      specNumId: {},
-      price: "",
-      salePrice: "",
-    },
-  });
-
-  const [list, setList] = useState<
-    { specNumId: any; price: string; salePrice: string }[]
-  >([]);
-
-  const onSubmit = (data: any) => {
-    const copyList = JSON.parse(JSON.stringify(list));
-    copyList.push(data);
-    const subMitList = copyList.map((items: any) => {
-      return {
-        specNumId: items.specNumId.id,
-        price: items.price,
-        salePrice: items.salePrice,
-      };
-    });
-    setList(copyList);
-    setPriceValue("priceInfo.priceNumInfos", subMitList);
+type submitValue = {
+  basicInfo: {
+    model: string;
+    name: string;
+    isOrderMade: false;
+    colorCodeId: string;
   };
-
-  return (
-    <div style={{ width: "100%" }}>
-      <StyledForm
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          marginBottom: "1rem",
-        }}
-      >
-        <div style={{ marginRight: "1rem" }}>
-          <StyledSelect
-            // optionList={filterData}
-            optionList={goodsGroup?.data?.info?.specs?.info?.specNums}
-            label="specNumId"
-            placeholder="사양옵션"
-            register={register}
-            errors={errors}
-            status={errors.specNumId}
-            setValue={(label: "specNumId", id: string, keyName: string) =>
-              setValue(label, { id: id, keyName: keyName })
-            }
-          />
-        </div>
-        <div style={{ marginRight: "1rem" }}>
-          <StyledInput
-            placeholder="가격"
-            label="price"
-            register={register}
-            errors={errors}
-            status={errors.price}
-          />
-        </div>
-        <div style={{ marginRight: "1rem" }}>
-          <StyledInput
-            placeholder="세일가격"
-            label="salePrice"
-            register={register}
-            errors={errors}
-            status={errors.salePrice}
-          />
-        </div>
-        <Button
-          style={{ margin: "0.25rem 0", height: "30.5px" }}
-          onClick={handleSubmit(
-            (data) => onSubmit(data),
-            (errors) => console.log(errors)
-          )}
-        >
-          추가
-        </Button>
-      </StyledForm>
-      <Table
-        doNoting
-        columns={[
-          {
-            title: "사양",
-            dataIndex: "specNumId",
-            render: (specNumId: any) => specNumId.keyName,
-          },
-          {
-            title: "사양",
-            dataIndex: "price",
-            render: (price: any) => priceToString(price),
-          },
-          {
-            title: "사양",
-            dataIndex: "salePrice",
-            render: (salePrice: any) => priceToString(salePrice),
-          },
-          {
-            title: "삭제",
-            dataIndex: "specNumId",
-            render: (specNumId: any) => {
-              const onClick = () => {
-                console.log(list);
-                setList(
-                  list.filter((oneList: any) => oneList.id === specNumId.id)
-                );
-              };
-              return (
-                <div onClick={onClick} style={{ color: "#ff4d4f" }}>
-                  <FaMinus />
-                </div>
-              );
-            },
-          },
-        ]}
-        content={list}
-      />
-    </div>
-  );
+  dsInfo: {
+    dsType: string;
+    rgb: string;
+    image: object;
+  };
+  priceInfo: {
+    priceNumInfos: { specNumId: string; price: number; salePrice: number }[];
+  };
+  stock: number;
 };
 
 const schema = yup.object({
   basicInfo: yup.object({
-    model: yup.string(),
-    name: yup.string(),
+    model: yup.string().required("모델명을 입력해주세요."),
+    name: yup.string().required("상품명을 입력해주세요."),
     isOrderMade: yup.boolean(),
-    colorCodeId: yup.string(),
+    colorCodeId: yup.string().required("색상코드를 입력해주세요."),
   }),
   dsInfo: yup.object({
     dsType: yup.string(),
-    rgb: yup.string(),
-    image: yup.object(),
+    rgb: yup.string().nullable().required("색상코드를 입력해주세요."),
+    image: yup.object().nullable().required("이미지를 등록해주세요."),
   }),
+  stock: yup
+    .number()
+    .typeError("숫자를 입력해주세요.")
+    .required("재고를 입력해주세요."),
   priceInfo: yup.object({
-    priceNumInfos: yup.array().of(
-      yup.object({
-        specNumId: yup.string(),
-        price: yup.number(),
-        salePrice: yup.number(),
-      })
-    ),
+    priceNumInfos: yup
+      .array()
+      .of(
+        yup.object({
+          specNumId: yup.string(),
+          price: yup.number(),
+          salePrice: yup.number(),
+        })
+      )
+      .min(1, "가격정보를 추가해주세요."),
   }),
-  stock: yup.number().typeError("숫자를 입력해주세요."),
 });
 
 const GoodsGroupItemRegister = ({
@@ -220,6 +102,7 @@ const GoodsGroupItemRegister = ({
     getValues,
     setValue,
     watch,
+    clearErrors,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -238,15 +121,14 @@ const GoodsGroupItemRegister = ({
       priceInfo: {
         priceNumInfos: [],
       },
-      stock: "",
+      stock: null,
     },
   });
 
   const [isToggle, setIsToggle] = useState(false);
 
   useEffect(() => {
-    setValue("dsInfo.dsType", isColorItem.toLowerCase());
-    console.log(isColorItem);
+    setValue("dsInfo.dsType", isColorItem?.toLowerCase());
   }, []);
 
   useEffect(() => {
@@ -320,21 +202,6 @@ const GoodsGroupItemRegister = ({
                 />
               }
             />
-            <DescriptionContent
-              span="12"
-              label="상품명"
-              content={
-                <StyledInput
-                  align="vertical"
-                  placeholder="상품명"
-                  label="basicInfo.name"
-                  register={register}
-                  errors={errors}
-                  status={errors.basicInfo?.name}
-                />
-              }
-            />
-
             <DescriptionContent
               span="12"
               label="상품명"
@@ -425,7 +292,13 @@ const GoodsGroupItemRegister = ({
               span="12"
               label="가격정보"
               content={
-                <PriceOption setPriceValue={setValue} goodsGroup={goodsGroup} />
+                <PriceOption
+                  setPriceValue={setValue}
+                  goodsGroup={goodsGroup}
+                  errorsMsg={errors}
+                  name="priceInfo.priceNumInfos"
+                  setErrorParent={clearErrors}
+                />
               }
             />
           </Description>

@@ -101,6 +101,7 @@ const AccountInfo = ({
             }
           />
           <DescriptionContent
+          span="12"
             label="계좌번호"
             content={
               <StyledInput

@@ -17,12 +17,9 @@ yarn start
 
 ## 패치노트
 
-### `09.07 Update`
+### `09.08 Update`
 
-### 상품 등록 화면 변경
+### 에러 수정
 
-textarea 추가
-input type 설정 변경
-goods group 등록시 품목 필터 적용
-goods group 상품 등록시 설명과 카테고리 크기 변경
-goods group 싱품 등록시 상품사양 네임변경
+여러 에러 수정함
+아이템 등록시에 가격정보 추가하는 것 에러 메시지 띄우기

@@ -31,8 +31,8 @@ type registerProps = {
 
 const schema = yup.object({
   productId: yup.string().required("품목을 선택해주세요."),
-  basicFee: yup.string().required("배송료를 입력해주세요."),
-  freeCondition: yup.string().required("무료배송조건을 입력해주세요."),
+  basicFee: yup.number().required("배송료를 입력해주세요.").typeError("숫자만 입력 가능합니다."),
+  freeCondition: yup.number().required("무료배송조건을 입력해주세요.").typeError("숫자만 입력 가능합니다."),
 });
 
 const DcodeRegister = ({
@@ -115,6 +115,7 @@ const DcodeRegister = ({
                   register={register}
                   errors={errors}
                   status={errors.basicFee}
+                  endItem="원"
                 />
               }
             />
@@ -129,6 +130,7 @@ const DcodeRegister = ({
                   register={register}
                   errors={errors}
                   status={errors.freeCondition}
+                  endItem="원"
                 />
               }
             />

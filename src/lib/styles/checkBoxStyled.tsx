@@ -1,7 +1,9 @@
+import { ErrorMessage } from "@hookform/error-message";
 import { useRef } from "react";
 import { BiCheckbox, BiCheckboxChecked } from "react-icons/bi";
 import { FaCheckSquare, FaRegSquare } from "react-icons/fa";
 import styled, { css } from "styled-components";
+import { ErrorMsg } from "./globalStyles";
 
 type checkboxProps = {
   category: any;
@@ -39,13 +41,22 @@ type formProps = {
   status?: string;
 };
 
+const DescriptionBlock = styled.div`
+  margin: 0.25rem 0;
+  font-size: 0.875rem;
+
+  & + & {
+    margin-left: 0.25rem;
+  }
+`;
+
 const CheckboxCategoryBlock = styled.div`
 width: inherit;
 `
 
 
 const FormItem = styled.div`
-  margin: 0;
+    margin: 0.25rem 0;
   padding: 0.75rem;
   width: inherit;
   color: rgba(0, 0, 0, 0.88);
@@ -93,6 +104,8 @@ const FormItem = styled.div`
 const CheckboxBlock = styled.div`
   padding: 0.5rem 0;
   min-width: 200px;
+  /* border: 1px solid red; */
+  //! 구분선 추가할지 결정할 것.
 `;
 
 const CheckboxLabel = styled.label`
@@ -187,10 +200,90 @@ export const StyledCategory = ({
   register,
   status,
   newCategory,
+  errors,
+  align,
   setNewCategory,
 }: categoryProps) => {
   const titleWidth = useRef<HTMLDivElement>(null);
   const title1stWidth = titleWidth.current?.offsetWidth
+
+  const DivideDepth = () => <DescriptionBlock>{">"}</DescriptionBlock>;
+
+  function createDescriptionElement(category: any) {
+    const descriptionElements = [];
+
+    if (category.checked) {
+      if (category.category2nd?.some((item: any) => item.checked)) {
+        category.category2nd.forEach((secondItem: any) => {
+          if (secondItem.checked) {
+            if (
+              secondItem.category3rd?.some((subItem: any) => subItem.checked)
+            ) {
+              category.category2nd?.forEach((secondItem: any) => {
+                secondItem.category3rd?.forEach((thirdItem: any) => {
+                  if (thirdItem.checked) {
+                    descriptionElements.push(
+                      <div
+                        key={
+                          category.description +
+                          secondItem.description +
+                          thirdItem.description
+                        }
+                        style={{ display: "flex" }}
+                      >
+                        <DescriptionBlock>
+                          {category.description}
+                        </DescriptionBlock>
+                        <DivideDepth />
+                        <DescriptionBlock>
+                          {secondItem.description}
+                        </DescriptionBlock>
+                        <DivideDepth />
+                        <DescriptionBlock>
+                          {thirdItem.description}
+                        </DescriptionBlock>
+                      </div>
+                    );
+                  }
+                });
+              });
+            } else {
+              descriptionElements.push(
+                <div
+                  key={category.description + secondItem.description}
+                  style={{ display: "flex" }}
+                >
+                  <DescriptionBlock>{category.description}</DescriptionBlock>
+                  <DivideDepth />
+                  <DescriptionBlock>{secondItem.description}</DescriptionBlock>
+                </div>
+              );
+            }
+          }
+        });
+      } else {
+        descriptionElements.push(
+          <div key={category.description}>
+            <DescriptionBlock>{category.description}</DescriptionBlock>
+          </div>
+        );
+      }
+    }
+
+    return descriptionElements;
+  }
+
+  const DisplayDescription = () => {
+    const renderDescription = newCategory?.map((categorys: any) => {
+      return (
+        <div key={categorys.description} style={{ marginTop: "0.5rem" }}>
+          {createDescriptionElement(categorys)}
+        </div>
+      );
+    });
+    return typeof renderDescription === "object" ? <>{renderDescription}</> : <></>
+  };
+
   return (
     <CheckboxCategoryBlock>
       <FormItem status={status} disable={disable}>
@@ -243,6 +336,16 @@ export const StyledCategory = ({
           ))}
         </ColFlex>
       </FormItem>
+      <DisplayDescription/>
+      {errors && (
+        <ErrorMessage
+          errors={errors}
+          name={label}
+          render={({ message }) => (
+            <ErrorMsg align={align}>{message ? message : "\u00A0"}</ErrorMsg>
+          )}
+        />
+      )}
     </CheckboxCategoryBlock>
   );
 };

@@ -31,7 +31,7 @@ type registerProps = {
 };
 
 const schema = yup.object({
-  quantity: yup.string().required("용량을 입력해주세요."),
+  quantity: yup.number().required("용량을 입력해주세요.").typeError("숫자만 입력가능합니다."),
   unitId: yup.string().required("단위를 선택해주세요."),
   deliveryId: yup.string().required("배송그룹을 선택해주세요."),
 });
@@ -114,7 +114,10 @@ const SpecRegister = ({
               label="단위"
               content={
                 <StyledSelect
-                  placeholder="단위"
+                disable={unitCode.data ? false : true}
+                placeholder={
+                  unitCode.data ? "단위" : "품목을 선택해주세요."
+                }
                   label="unitId"
                   optionList={unitCode.data}
                   register={register}
@@ -130,7 +133,10 @@ const SpecRegister = ({
               label="배송코드"
               content={
                 <StyledSelect
-                  placeholder="배송코드"
+                disable={deliveryCode.data ? false : true}
+                placeholder={
+                  deliveryCode.data ? "배송코드" : "품목을 선택해주세요."
+                }
                   label="deliveryId"
                   optionList={deliveryCode.data}
                   register={register}

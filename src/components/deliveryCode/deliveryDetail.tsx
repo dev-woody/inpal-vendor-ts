@@ -97,7 +97,6 @@ const DeliveryDetail = ({
               span="12"
               label="배송료"
               content={
-                <>
                   <StyledInput
                     align="vertical"
                     placeholder={dcode?.basicFee}
@@ -105,18 +104,14 @@ const DeliveryDetail = ({
                     register={register}
                     errors={errors.basicFee?.message}
                     status={errors.basicFee}
+                    endItem="원"
                   />
-                  <span style={{ marginLeft: "0.5rem", fontSize: "0.875rem" }}>
-                    원
-                  </span>
-                </>
               }
             />
             <DescriptionContent
               span="12"
               label="무료배송조건"
               content={
-                <>
                   <StyledInput
                     align="vertical"
                     placeholder={dcode?.freeCondition}
@@ -124,11 +119,8 @@ const DeliveryDetail = ({
                     register={register}
                     errors={errors.freeCondition?.message}
                     status={errors.freeCondition}
+                    endItem="원"
                   />
-                  <span style={{ marginLeft: "0.5rem", fontSize: "0.875rem" }}>
-                    원
-                  </span>
-                </>
               }
             />
             <DescriptionContent

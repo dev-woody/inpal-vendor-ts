@@ -188,7 +188,6 @@ export const StyledSelect = (props: propsTypes) => {
     placeholder,
     fullWidth,
     optionList,
-    isDepth,
     actions,
     register,
     label,
@@ -233,6 +232,7 @@ export const StyledSelect = (props: propsTypes) => {
         }
       }
     };
+    
     return (
       <OptionMenu onClick={onClick}>
         <OptionLabel>

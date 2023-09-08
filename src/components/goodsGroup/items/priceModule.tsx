@@ -59,12 +59,7 @@ export const PriceModule = ({ priceInfo, onSubmit }: PriceUpdateProps) => {
   }, [priceInfo]);
 
   return (
-    <>
-      <StyledForm
-        onSubmit={handleSubmit(
-          (data) => onSubmit(data),
-          (errors) => console.log(errors)
-        )}
+      <div
       >
         <DescriptionContent
           span="12"
@@ -81,8 +76,8 @@ export const PriceModule = ({ priceInfo, onSubmit }: PriceUpdateProps) => {
                   placeholder={priceInfo?.info?.price}
                   label={`priceInfo.price`}
                   register={register}
+                  endItem="원"
                 />
-                <PriceSpan>원 |</PriceSpan>
               </PriceItem>
               <PriceItem>세일가</PriceItem>
               <PriceItem>
@@ -91,20 +86,23 @@ export const PriceModule = ({ priceInfo, onSubmit }: PriceUpdateProps) => {
                   placeholder={priceInfo?.info?.salePrice}
                   label={`priceInfo.salePrice`}
                   register={register}
+                  endItem="원"
                 />
-                <PriceSpan>원</PriceSpan>
               </PriceItem>
               <Button
                 type="submit"
                 status="primary"
                 style={{ margin: "0.25rem 0" }}
+                onClick={handleSubmit(
+                  (data) => onSubmit(data),
+                  (errors) => console.log(errors)
+                )}
               >
                 수정
               </Button>
             </div>
           }
         />
-      </StyledForm>
-    </>
+      </div>
   );
 };
