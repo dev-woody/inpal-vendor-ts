@@ -211,7 +211,6 @@ export const StyledCategory = ({
 
   function createDescriptionElement(category: any) {
     const descriptionElements = [];
-
     if (category.checked) {
       if (category.category2nd?.some((item: any) => item.checked)) {
         category.category2nd.forEach((secondItem: any) => {
@@ -219,7 +218,7 @@ export const StyledCategory = ({
             if (
               secondItem.category3rd?.some((subItem: any) => subItem.checked)
             ) {
-              category.category2nd?.forEach((secondItem: any) => {
+              // category.category2nd?.forEach((secondItem: any) => {
                 secondItem.category3rd?.forEach((thirdItem: any) => {
                   if (thirdItem.checked) {
                     descriptionElements.push(
@@ -246,7 +245,7 @@ export const StyledCategory = ({
                     );
                   }
                 });
-              });
+              // });
             } else {
               descriptionElements.push(
                 <div
@@ -269,6 +268,8 @@ export const StyledCategory = ({
         );
       }
     }
+
+    console.log(category)
 
     return descriptionElements;
   }
